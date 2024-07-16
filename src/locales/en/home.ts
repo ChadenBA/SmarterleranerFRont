@@ -1,6 +1,6 @@
 export const home = {
-  description: 'The Leader in Online Learning',
-  title: 'Engaging & Accessible Online Courses For All',
+  description: 'Achieve your goals with our personalized e-learning platform, tailored to your unique style and needs.',
+  title: 'A FRESH TAKE ON DIGITAL LITERACY',
   search_for_courses: 'Search for courses...',
   cerified_courses: 'Ceritified Courses',
   expert_tutors: 'Expert Tutors',
@@ -32,4 +32,8 @@ export const home = {
   service_description_2: 'Learn on your schedule with on-demand video',
   service_description_3: 'Engage with a global community of learners',
   service_description_4: 'Get shareable certificates upon course completion',
+  hero_description_1: 'Customized learning path',
+  hero_description_2: 'Quality content',
+  hero_description_3: 'Affordable prices',
+
 }
