@@ -1,20 +1,30 @@
 import {
+  BlueStatsCardRoot,
+  BlueStyledCardImage,
   StatsCardRoot,
   StatsTypography,
   StyledCardImage,
-} from './statisticsCard.style'
-import { StatsticsCardProps } from './statisticsCard.type'
+} from "./statisticsCard.style";
+import { StatsticsCardProps } from "./statisticsCard.type";
 
 export default function StatsticsCard({
   image,
-  number,
   label,
+  isBlue,
 }: StatsticsCardProps) {
   return (
-    <StatsCardRoot>
-      <StyledCardImage src={image} alt={label} />
-      <StatsTypography variant="h5">{number}</StatsTypography>
-      <StatsTypography>{label}</StatsTypography>
-    </StatsCardRoot>
-  )
+    <>
+      {isBlue ? (
+        <BlueStatsCardRoot>
+          <BlueStyledCardImage src={image} alt={label} />
+          <StatsTypography>{label}</StatsTypography>
+        </BlueStatsCardRoot>
+      ) : (
+        <StatsCardRoot>
+          <StyledCardImage src={image} alt={label} />
+          <StatsTypography>{label}</StatsTypography>
+        </StatsCardRoot>
+      )}
+    </>
+  );
 }

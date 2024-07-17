@@ -1,6 +1,6 @@
 export const LIGHT_COLORS = {
   primary: {
-    light: '#f79b68BF',
+    light: '#f7dd99',
     main: '#fa853f',
     dark: '#c75b1d',
   },

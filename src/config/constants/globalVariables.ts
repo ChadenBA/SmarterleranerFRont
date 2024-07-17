@@ -5,7 +5,7 @@ export const GLOBAL_VARIABLES = {
   APP_NAME: 'Smart Learner',
   SINGLE_SPACE: ' ',
   APP_PHONE_NUMBER: '+1234567890',
-  APP_EMAIL: "'smartLearner@gmail.com'",
+  APP_EMAIL: "smartLearner@gmail.com",
 
   SUCCESS: 'success',
   ERROR: 'error',

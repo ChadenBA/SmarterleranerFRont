@@ -1,16 +1,16 @@
 import { styled } from '@mui/material/styles'
-import { Box, Stack } from '@mui/material'
+import {  Stack } from '@mui/material'
 
 import { BLUE, GREY } from '@config/colors/colors'
-export const HeaderContainer = styled(Box)(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'space-between',
+export const HeaderContainer = styled(Stack)(({ theme }) => ({
+  flexDirection: 'row',
   padding: theme.spacing(16),
-  width: '100%',
+  justifyContent: 'space-between',
   background: theme.palette.background.default,
   color: theme.palette.common.white,
-  height: '100vh',
+  height: '85vh',
   zIndex: 0,
+  width: '100%',
   [theme.breakpoints.down('sm')]: {
     display: 'block',
     padding: theme.spacing(4),
@@ -66,15 +66,4 @@ export const HeaderContent = styled(Stack)(({ theme }) => ({
   },
 }))
 
-export const HeaderImage = styled('img')(({ theme }) => ({
-  height: '100%',
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-    marginTop: '10vh',
-    height: 'auto',
-  },
-  [theme.breakpoints.down('md')]: {
-    marginTop: '10vh',
-    height: 'auto',
-  },
-}))
+
