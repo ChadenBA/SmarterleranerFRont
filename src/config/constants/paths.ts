@@ -35,11 +35,6 @@ export const PATHS = {
         ADD_CATEGORY: '/dashboard/admin/categories/add-category',
         EDIT_CATEGORY: '/dashboard/admin/categories/:categoryId',
       },
-      COURSES : {
-        ROOT: '/dashboard/admin/courses',
-        ADD_COURSE: '/dashboard/admin/courses/add-course',
-        EDIT_COURSE: '/dashboard/admin/courses/:course',
-      }
     },
     STUDENT: {
       ROOT: '/dashboard/student',

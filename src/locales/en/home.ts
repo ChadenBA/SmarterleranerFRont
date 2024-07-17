@@ -22,7 +22,9 @@ export const home = {
   page_not_found: 'Oh No! Error 404',
   page_not_found_description:
     'This page you requested counld not found. May the force be with you!',
-  share_knowledge: 'Customized paths and courses   according to your own needs',
+  share_knowledge: 'Want to share your knowledge? Join us a Mentor',
+  share_knowledge_description:
+    "Transform your expertise into a catalyst for change by becoming a mentor. Share your valuable knowledge and experience, guide aspiring professionals, and make a lasting impact in your field. Join our community of mentors and contribute to shaping the careers of tomorrow's leaders.",
   service_title: 'Master the skills to drive your career',
   service_description:
     "Enhance your professional trajectory by acquiring the skills that are in high demand in today's job market. Elevate your expertise, unlock new opportunities, and propel your career forward with targeted learning designed to advance your professional journey.",
@@ -33,10 +35,5 @@ export const home = {
   hero_description_1: 'Customized learning path',
   hero_description_2: 'Quality content',
   hero_description_3: 'Affordable prices',
-  get_started: 'Get Started',
-  how_does_work: 'How does it work?',
-  join: 'Join us Now',
-  login: 'Login',
-  sign_up: 'Sign Up',
 
 }

@@ -22,7 +22,10 @@ export const home = {
   page_not_found: "Oh non! Erreur 404",
   page_not_found_description:
     "Cette page que vous avez demandée n’a pas été trouvée. Que la force soit avec vous!",
-  share_knowledge: "Parcours et cours personnalisés selon vos propres besoins",
+  share_knowledge:
+    "Vous voulez partager vos connaissances? Rejoignez-nous en tant que mentor",
+  share_knowledge_description:
+    "Transformez votre expertise en un catalyseur de changement en devenant mentor. Partagez vos connaissances et votre expérience précieuses, guidez les professionnels en herbe et ayez un impact durable dans votre domaine. Rejoignez notre communauté de mentors et contribuez à façonner les carrières des leaders de demain.",
   service_title: "Maîtrisez les compétences pour faire avancer votre carrière",
   service_description:
     "Améliorez votre trajectoire professionnelle en acquérant les compétences très demandées sur le marché du travail d’aujourd’hui. Élevez votre expertise, débloquez de nouvelles opportunités et propulsez votre carrière vers l’avant avec un apprentissage ciblé conçu pour faire avancer votre parcours professionnel.",
@@ -35,9 +38,4 @@ export const home = {
   hero_description_1: "Chemin d'apprentissage personnalisé",
   hero_description_2: "Contenu de qualité",
   hero_description_3: "Prix abordables",
-  get_started: "Commencer",
-  how_does_work: "Comment ça marche?",
-  join: "Rejoignez-nous maintenant",
-  login: "S'identifier",
-  sign_up: "S'inscrire",
 };

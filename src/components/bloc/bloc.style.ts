@@ -16,7 +16,6 @@ export const ViewAllContainer = styled(Stack)(({ theme }) => ({
 export const FirstBloc = styled(Stack)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'row',
-  width: '85vh',
   justifyContent: 'space-between',
   marginBottom: '16px',
   [theme.breakpoints.down('sm')]: {
@@ -32,6 +31,7 @@ export const SecondBloc = styled(Stack)(({ theme }) => ({
 }))
 export const BlocContainer = styled(Box)(({ theme }) => ({
   height: 'auto',
+  marginBottom: '200px',
 
   [theme.breakpoints.down('sm')]: {
     marginTop: 0,

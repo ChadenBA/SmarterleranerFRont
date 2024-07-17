@@ -50,8 +50,8 @@ function Footer() {
         }
         src={FooterImage}
         alt={GLOBAL_VARIABLES.APP_NAME}
-        height="200px"
-        width="200px"
+        height="300px"
+        width="300px"
       />
       <Stack
         direction={{ sm: 'column', lg: 'row' }}
