@@ -20,8 +20,8 @@ import CustomLink from "@components/customLink/CustomLink";
 import CustomIconButton from "@components/buttons/customIconButton/CustomIconButton";
 import LanguageSwitcher from "@components/languageSwitcher/LanguageSwitcher";
 
-import lernado_dark from "@assets/logo/logo-white.png";
-import lernado from "@assets/logo/logo-no-background.png";
+import logo_dark from "@assets/logo/logo-white.png";
+import logo from "@assets/logo/logo-no-background.png";
 
 import { ThemeModeEnum } from "@config/enums/theme.enum";
 import TopbarDrawer from "./topbarDrawer/TopbarDrawer";
@@ -104,9 +104,7 @@ export const TopBar = ({ items }: TopBarProps) => {
         sx={{ cursor: "pointer" }}
         onClick={() => navigate(PATHS.ROOT)}
         alt={GLOBAL_VARIABLES.APP_NAME}
-        src={
-          theme.palette.mode === ThemeModeEnum.LIGHT ? lernado : lernado_dark
-        }
+        src={theme.palette.mode === ThemeModeEnum.LIGHT ? logo : logo_dark}
         variant="square"
       />
 
