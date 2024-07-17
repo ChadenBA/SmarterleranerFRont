@@ -8,6 +8,7 @@ import { AuthGuard } from "@guards/AuthGuard";
 import DashboardLayout from "@layouts/dashboardLayout/DashboardLayout";
 import { RoleBasedGuard } from "@guards/RoleBasedGuard";
 import { UserRoleEnum } from "@config/enums/role.enum";
+import CategoriesPage from "@pages/dashboard/admin/categories/CategoriesPage";
 // import { GuestGuard } from '@guards/GuestGuard'
 // import AuthLayout from '@layouts/authLayout/AuthLayout'
 // import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
@@ -116,6 +117,24 @@ export const ROUTE_CONFIG: RouteObject[] = [
             element: <AcceptedUsersTable />,
           },
         ],
+      },
+
+      {
+        path: PATHS.DASHBOARD.ADMIN.CATEGORY.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <CategoriesPage />
+          </RoleBasedGuard>
+        ),
+      },
+      
+      {
+        path: PATHS.DASHBOARD.ADMIN.CATEGORY.EDIT_CATEGORY,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <CategoriesPage />
+          </RoleBasedGuard>
+        ),
       },
 
       // {

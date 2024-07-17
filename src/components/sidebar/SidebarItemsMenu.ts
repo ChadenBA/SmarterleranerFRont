@@ -7,6 +7,7 @@ import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlin
 import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
 import AutoStoriesOutlinedIcon from "@mui/icons-material/AutoStoriesOutlined";
+
 export interface SidebarItem {
   id: number;
   label: string;
@@ -62,6 +63,7 @@ export const ItemsSidebar: SidebarItem[] = [
     icon: CategoryOutlinedIcon,
     accessibleRoles: [UserRoleEnum.ADMIN],
   },
+
   {
     id: 7,
     label: "sidebar.courses",
@@ -69,4 +71,5 @@ export const ItemsSidebar: SidebarItem[] = [
     icon: RocketLaunchOutlinedIcon,
     accessibleRoles: [UserRoleEnum.ADMIN],
   },
+
 ];

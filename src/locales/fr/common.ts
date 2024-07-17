@@ -28,4 +28,5 @@ export const common = {
   save: 'Enregistrer',
   minutes: 'minutes',
   submit: 'Soumettre',
-}
+  expand: 'étendre',
+};
