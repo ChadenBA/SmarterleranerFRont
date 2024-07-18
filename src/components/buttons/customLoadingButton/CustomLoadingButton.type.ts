@@ -1,7 +1,8 @@
-import { ReactNode } from 'react'
+import { ReactNode } from 'react';
 
 export interface CustomLoadingButtonProps {
-  children: ReactNode
-  isLoading: boolean
-  onClick: () => void
+  children: ReactNode;
+  isLoading: boolean;
+  onClick: () => void;
+  contained?: boolean;
 }

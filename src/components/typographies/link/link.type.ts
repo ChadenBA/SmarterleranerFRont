@@ -1,4 +1,6 @@
+import { ReactNode } from 'react';
+
 export interface LinkProps {
-  children: string;
+  children: ReactNode;
   onClick?: () => void;
 }

@@ -1,9 +1,6 @@
-import noImage from '@assets/images/image_not_available.png';
 import { ApiPaginationResponse } from '../type';
 import { PaginationResponse } from 'types/interfaces/Pagination';
-import { Category } from 'types/models/Category';
-import { CategoryApi } from './categoriesApi.type';
-import { ConfigEnv } from '@config/configEnv';
+import { Category, Children } from 'types/models/Category';
 import { transformPaginationResponse } from '@redux/apis/transform';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
@@ -38,33 +35,38 @@ const transformCategories = (data: Category[]): Category[] => {
   }));
 };
 
-const transformCategory = (data: CategoryApi): Category => {
+const transformCategory = (data: Category): Category => {
   return {
     id: data.id,
-    title: data.category,
-    nbrOfLessons: data.courses_count,
-    url: data.media[0]?.file_name
-      ? `${ConfigEnv.MEDIA_BASE_URL}/${data.media[0].file_name}`
-      : noImage,
+    title: data.title,
+    children: data.children,
   };
 };
 export const transformSingleCategory = (
-  response: ItemDetailsResponse<CategoryApi>,
+  response: ItemDetailsResponse<Category>,
 ): ItemDetailsResponse<Category> => {
   return {
     data: transformCategory(response.data),
     message: response.message,
   };
 };
-export const encodeCategory = (values: FieldValues): FormData => {
+export const encodeCategory = (values: FieldValues, deletedChildren?: number[]): FormData => {
   const formData = new FormData();
 
-  if (values.category) {
-    formData.append('category', values.category);
+  if (values.title) {
+    formData.append('title', values.title);
   }
-  if (values.media && values.media instanceof File) {
-    formData.append('media', values.media);
-  }
+
+  values.children?.forEach((child: Children, index: number) => {
+    if (child.title.length > 0) {
+      formData.append(`subCategories[${index}][title]`, child.title);
+      formData.append(`subCategories[${index}][id]`, child.index ? child.index.toString() : '0');
+    }
+  });
+
+  deletedChildren?.forEach((childId: number, index: number) => {
+    formData.append(`deletedSubCategories[${index}]`, childId.toString());
+  });
 
   return formData;
 };

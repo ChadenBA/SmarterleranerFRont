@@ -1,16 +1,17 @@
-import { RegisterOptions } from 'react-hook-form'
+import { RegisterOptions } from 'react-hook-form';
 
 export interface InputConfig {
-  label: string
-  name: string
-  placeholder: string
-  defaultValue?: string | number | number[] | string[]
-  type?: InputType
-  rules?: RegisterOptions
-  disabled?: boolean
-  options?: InputOption[]
-  multiple?: boolean
-  ommitedFromSubmissionData?: boolean
+  label: string;
+  name: string;
+  placeholder: string;
+  defaultValue?: string | number | number[] | string[];
+  type?: InputType;
+  rules?: RegisterOptions;
+  disabled?: boolean;
+  options?: InputOption[];
+  multiple?: boolean;
+  hasLabel?: boolean;
+  ommitedFromSubmissionData?: boolean;
 }
 
 export type InputType =
@@ -20,9 +21,9 @@ export type InputType =
   | 'text'
   | 'date'
   | 'datetime-local'
-  | 'textarea'
+  | 'textarea';
 
 export interface InputOption {
-  label: string
-  value: string | number
+  label: string;
+  value: string | number;
 }

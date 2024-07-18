@@ -1,127 +1,138 @@
-import { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { useAppDispatch } from '@redux/hooks'
+import { useEffect, useState } from 'react';
+import { FieldValues, useFieldArray, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useAppDispatch } from '@redux/hooks';
 import {
   useCreateCategoryMutation,
   useGetCategoryByIdQuery,
   useUpdateCategoryMutation,
-} from '@redux/apis/categories/categoriesApi'
-import useUploadFile from 'src/hooks/useUploadFile'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
-import { showSuccess } from '@redux/slices/snackbarSlice'
-import { IError } from 'types/interfaces/Error'
-import useError from 'src/hooks/useError'
+} from '@redux/apis/categories/categoriesApi';
+import { showSuccess } from '@redux/slices/snackbarSlice';
+import { IError } from 'types/interfaces/Error';
+import useError from 'src/hooks/useError';
+import { DialogFormNamesEnum } from './CategoriesPage.consts';
 
 export default function useManageCategories() {
-  const { t } = useTranslation()
-  const dispatch = useAppDispatch()
+  //_____________________ Hooks ____________________//
+  const { t } = useTranslation();
+  const dispatch = useAppDispatch();
 
-  const [open, setOpen] = useState(false)
-  const [categoryId, setCategoryId] = useState<number | undefined>(undefined)
+  //____________________ State ____________________//
+  const [open, setOpen] = useState(false);
+  const [categoryId, setCategoryId] = useState<number | undefined>(undefined);
+  const [deletedCategoryArray, setDeletedCategoryArray] = useState<number[]>([]);
 
-  const isEditMode = Boolean(categoryId)
+  const isEditMode = Boolean(categoryId);
 
-  const CategoryFormMethods = useForm({
+  //____________________ Form Definition ____________________//
+  const categoryFormMethods = useForm<FieldValues>({
     mode: 'onChange',
     shouldFocusError: true,
-  })
+  });
 
-  // Error handling Hook
+  //____________________ Field Array ____________________//
+  const { fields, prepend, remove } = useFieldArray({
+    control: categoryFormMethods.control,
+    name: DialogFormNamesEnum.CHILDREN,
+  });
+
+  const handleDeleteCategory = (categoryId: number) => {
+    setDeletedCategoryArray((prev: number[]) => [...prev, categoryId]);
+  };
+
+  //_____________________ API Calls ____________________//
+  const [createCategoryApiAction, { isLoading: isCreating }] = useCreateCategoryMutation();
+
+  const [updateCategoryApiAction, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+
+  const {
+    data: categoryData,
+    isLoading: isLoadingCategory,
+    isFetching: isFetchingCategory,
+  } = useGetCategoryByIdQuery(categoryId, {
+    skip: !categoryId,
+  });
+
+  //_____________________ Error Handling ____________________//
   const { getError } = useError({
-    formMethods: CategoryFormMethods,
-  })
+    formMethods: categoryFormMethods,
+  });
 
-  // APIs CALLS
-  const [createCategoryApiAction, { isLoading: isCreating }] =
-    useCreateCategoryMutation()
-  const [updateCategoryApiAction, { isLoading: isUpdating }] =
-    useUpdateCategoryMutation()
-  const { data: categoryData, isLoading: isLoadingCategory } =
-    useGetCategoryByIdQuery(categoryId, {
-      skip: !categoryId,
-    })
-  const category = categoryData?.data
+  //_____________________ Data ____________________//
+  const category = categoryData?.data;
 
-  // Upload File Hook
-  const { preview, handleOnChange, handleResetPreview } = useUploadFile({
-    formMethods: CategoryFormMethods,
-    fieldName: 'media',
-    initPreview:
-      isEditMode && categoryId !== undefined && category?.url
-        ? String(category?.url)
-        : GLOBAL_VARIABLES.EMPTY_STRING,
-    index: 0,
-    id: category?.id,
-  })
-
-  // OnClick on Edit icon
+  //_____________________ Functions ____________________//
   const handleOnEdit = (categoryId: number) => {
-    setCategoryId(categoryId)
-    CategoryFormMethods.setValue('category', category?.title)
-    setOpen(true)
-  }
+    handleResetForm;
+    setCategoryId(categoryId);
+    setOpen(true);
+  };
 
-  // OnClick on Add Category button
+  const handleResetForm = () => {
+    categoryFormMethods.reset({ title: '', children: [] });
+  };
+
   const handleOnAdd = () => {
-    setOpen(true)
-    CategoryFormMethods.reset()
-  }
+    handleResetForm;
+    setOpen(true);
+  };
 
-  // Close Modal
   const handleCloseModal = () => {
-    handleResetPreview()
-    CategoryFormMethods.reset()
-    setCategoryId(undefined)
-    setOpen(false)
-  }
+    setOpen(false);
+    setCategoryId(undefined);
+    setTimeout(handleResetForm, 200);
+  };
 
-  // Submit Form
-  const handleSubmit = CategoryFormMethods.handleSubmit(async (values) => {
+  const handleSubmit = categoryFormMethods.handleSubmit(async (values) => {
     try {
       if (isEditMode) {
         await updateCategoryApiAction({
           id: Number(categoryId),
           category: values,
-        }).unwrap()
-        dispatch(showSuccess(t('category.update_category_success')))
+          deletedChildren: deletedCategoryArray,
+        }).unwrap();
+        handleCloseModal();
+        dispatch(showSuccess(t('category.update_category_success')));
       } else {
-        await createCategoryApiAction(values).unwrap()
-        CategoryFormMethods.reset()
-        dispatch(showSuccess(t('category.create_category_success')))
+        await createCategoryApiAction(values).unwrap();
+        handleCloseModal();
+        dispatch(showSuccess(t('category.create_category_success')));
       }
-      handleCloseModal()
     } catch (error) {
-      getError(error as IError)
+      getError(error as IError);
     }
-  })
+  });
 
+  //_____________________ Effects __________________
   useEffect(() => {
     if (category) {
-      CategoryFormMethods.setValue('media', category?.url)
-      CategoryFormMethods.setValue('category', category?.title)
+      categoryFormMethods.reset({
+        title: category.title,
+        children: category.children.map((child) => ({
+          title: child.title,
+          index: child.id,
+        })),
+      });
     }
-
-    return () => {
-      CategoryFormMethods.reset()
-    }
-  }, [category])
+  }, [category, categoryFormMethods]);
 
   return {
     open,
     categoryId,
     isEditMode,
     category,
-    preview,
     isCreating,
     isUpdating,
     isLoadingCategory,
-    CategoryFormMethods,
-    handleOnChangeFile: handleOnChange,
-    handleResetPreview,
+    isFetchingCategory,
+    categoryFormMethods,
     handleOnAdd,
     handleOnEdit,
     handleCloseModal,
     handleSubmit,
-  }
+    fields,
+    prepend,
+    remove,
+    handleDeleteCategory,
+  };
 }

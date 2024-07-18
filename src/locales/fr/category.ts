@@ -16,4 +16,6 @@ export const category = {
   add_sub_category: 'Ajouter une sous-catégorie',
   category: 'Ex: IT, Business, ...',
   sub_category: 'Ex: Développement Web, Développement Mobile, ...',
+  children_title_required: 'Le titre de la sous-catégorie est requis',
+  update_category_success: 'Catégorie mise à jour avec succès',
 };

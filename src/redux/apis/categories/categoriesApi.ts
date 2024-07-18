@@ -34,35 +34,6 @@ export const categoriesApi = createApi({
       },
       providesTags: ['Categories'],
     }),
-    getCategoriesFilter: builder.query<PaginationResponse<Category>, QueryParams>({
-      query: (params) => {
-        return {
-          url: injectPaginationParamsToUrl(ENDPOINTS.CATEGORIES_FILTER, params),
-          method: MethodsEnum.GET,
-        };
-      },
-      transformResponse: (
-        response: ApiPaginationResponse<CategoryApi>,
-      ): PaginationResponse<Category> => {
-        return transformFetchCategoryResponse(response);
-      },
-      providesTags: ['Categories'],
-    }),
-
-    getCategoriesLearningPaths: builder.query<PaginationResponse<Category>, QueryParams>({
-      query: (params) => {
-        return {
-          url: injectPaginationParamsToUrl(ENDPOINTS.CATEGORIES_LEARNING_PATHS, params),
-          method: MethodsEnum.GET,
-        };
-      },
-      transformResponse: (
-        response: ApiPaginationResponse<CategoryApi>,
-      ): PaginationResponse<Category> => {
-        return transformFetchCategoryResponse(response);
-      },
-      providesTags: ['Categories'],
-    }),
 
     getCategoryById: builder.query<ItemDetailsResponse<Category>, number | undefined>({
       query: (id) => ({
@@ -84,11 +55,14 @@ export const categoriesApi = createApi({
       invalidatesTags: ['Categories'],
     }),
 
-    updateCategory: builder.mutation<void, { id: number; category: FieldValues }>({
-      query: ({ id, category }) => ({
+    updateCategory: builder.mutation<
+      void,
+      { id: number; category: FieldValues; deletedChildren: number[] }
+    >({
+      query: ({ id, category, deletedChildren }) => ({
         url: `${ENDPOINTS.UPDATE_CATEGORY}/${id}`,
         method: MethodsEnum.POST,
-        body: encodeCategory(category),
+        body: encodeCategory(category, deletedChildren),
       }),
       invalidatesTags: ['Categories', 'Category'],
     }),
@@ -109,6 +83,4 @@ export const {
   useGetCategoryByIdQuery,
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
-  useGetCategoriesFilterQuery,
-  useGetCategoriesLearningPathsQuery,
 } = categoriesApi;

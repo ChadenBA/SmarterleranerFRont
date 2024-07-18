@@ -56,7 +56,7 @@ function CategoriesRow({ category, onEdit }: CategoriesRowProps) {
               size="small"
               onClick={() => setOpenSubCategories(!openSubCategories)}
             >
-              {openSubCategories ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+              {openSubCategories ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
             </IconButton>
             {t(category.title)}
           </Stack>

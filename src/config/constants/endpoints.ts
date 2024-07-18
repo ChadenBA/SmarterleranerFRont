@@ -16,8 +16,8 @@ export const ENDPOINTS = {
   SEND_RESET_PASSWORD_EMAIL: 'send-password-reset-mail',
   USER_PROFILE: 'profile',
   UPDATE_PROFILE: 'update-profile',
-  DELETE_CATEGORY: 'admin/delete-category',
-  CREATE_CATEGORY: 'admin/create-category',
-  UPDATE_CATEGORY: 'admin/update-category',
+  DELETE_CATEGORY: 'categories/delete-category',
+  CREATE_CATEGORY: 'categories/create-category',
+  UPDATE_CATEGORY: 'categories/update-category',
   REFRESH_TOKEN: 'refresh-token',
-}
+};
