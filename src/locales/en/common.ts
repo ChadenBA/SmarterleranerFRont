@@ -29,4 +29,5 @@ export const common = {
   update: 'Update',
   minutes: 'minutes',
   submit: 'Submit',
-}
+  expand: 'Expand',
+};

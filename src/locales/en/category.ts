@@ -11,4 +11,10 @@ export const category = {
   title_required: 'Category title is required',
   create_category_success: 'Category created successfully',
   edit_category: 'Edit Category',
-}
+  parent_category: 'Parent Category',
+  add_sub_category: 'Add sub category',
+  category: 'Ex: IT, Business, ...',
+  sub_category: 'Ex: Web Development, Mobile Development, ...',
+  children_title_required: 'Sub category title is required',
+  update_category_success: 'Category updated successfully',
+};

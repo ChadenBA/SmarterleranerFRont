@@ -1,13 +1,13 @@
-import { Stack, TextField, Typography } from '@mui/material'
-import { Controller, useFormContext } from 'react-hook-form'
-import { CustomTextFieldProps } from './CustomTextField.type'
-import { useTranslation } from 'react-i18next'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
-import { BLUE } from '@config/colors/colors'
+import { Stack, TextField, Typography } from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+import { CustomTextFieldProps } from './CustomTextField.type';
+import { useTranslation } from 'react-i18next';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { BLUE } from '@config/colors/colors';
 
 function CustomTextField({ config }: CustomTextFieldProps) {
-  const { t } = useTranslation()
-  const { control } = useFormContext()
+  const { t } = useTranslation();
+  const { control } = useFormContext();
   const {
     label,
     name,
@@ -17,16 +17,19 @@ function CustomTextField({ config }: CustomTextFieldProps) {
     placeholder,
     disabled,
     ommitedFromSubmissionData,
-  } = config
+    hasLabel = true,
+  } = config;
 
   return (
     <Controller
       render={({ field, fieldState }) => {
         return (
-          <Stack spacing={1}>
-            <Typography variant="h6" sx={{ color: BLUE.main }}>
-              {t(label)}
-            </Typography>
+          <Stack spacing={1} width="100%">
+            {hasLabel && (
+              <Typography variant="h6" sx={{ color: BLUE.main }}>
+                {t(label)}
+              </Typography>
+            )}
             <TextField
               type={type}
               placeholder={t(placeholder)}
@@ -35,16 +38,16 @@ function CustomTextField({ config }: CustomTextFieldProps) {
               onChange={field.onChange}
               error={!!fieldState.error}
               helperText={
-                fieldState.error &&
-                t(fieldState.error?.message || GLOBAL_VARIABLES.EMPTY_STRING)
+                fieldState.error && t(fieldState.error?.message || GLOBAL_VARIABLES.EMPTY_STRING)
               }
               fullWidth
               disabled={disabled}
               multiline={type === 'textarea'}
               rows={6}
+              {...(!hasLabel ? { label: t(label) } : {})}
             />
           </Stack>
-        )
+        );
       }}
       rules={rules}
       name={name}
@@ -52,7 +55,7 @@ function CustomTextField({ config }: CustomTextFieldProps) {
       control={control}
       disabled={ommitedFromSubmissionData || disabled}
     />
-  )
+  );
 }
 
-export default CustomTextField
+export default CustomTextField;
