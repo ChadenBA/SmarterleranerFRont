@@ -7,10 +7,7 @@ import { DEFAULT_SECTIONS, STEPS } from './AddCourseForm.constants';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
 import { GoBackButton } from './AddCourseForm.style';
 import { useForm } from 'react-hook-form';
-// import {
-//   useCreateCourseMutation,
-//   useUpdateCourseMutation,
-// } from '@redux/apis/courses/coursesApi'
+import { useCreateCourseMutation, useUpdateCourseMutation } from '@redux/apis/courses/coursesApi';
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
@@ -22,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { AddCourseFormProps } from './AddCourseForm.type';
 import { CourseFormValues } from './courseForm/CourseForm.type';
 import { generateCourseFormDefaultValues } from './AddCourseForm.helpers';
+import { FormValues } from './sectionForm/module/Module.type';
 
 export default function AddCourseForm({
   isEditMode,

@@ -74,4 +74,5 @@ export const course = {
   certificates: 'Certificates',
   enrolled_courses: 'Enrolled Courses',
   completed_courses: 'Completed Courses',
-}
+  pretest: 'Add Pretest here',
+};

@@ -1,7 +1,7 @@
-import { Grid, Stack } from '@mui/material';
+import { Divider, Grid, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { FormProvider } from 'react-hook-form';
 import { CourseFormProps } from './CourseForm.type';
-import { CREATE_COURSE_FORM_CONFIG, Quiz } from './CourseForm.constants';
+import { CREATE_COURSE_FORM_CONFIG } from './CourseForm.constants';
 import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
 import UploadInput from '@components/Inputs/uploadInput/UploadInput';
 import CustomSelectField from '@components/Inputs/customSelectField/CustomSelectField';
@@ -10,7 +10,9 @@ import useUploadFile from 'src/hooks/useUploadFile';
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import { useTranslation } from 'react-i18next';
 import { generatePictureSrc } from '@utils/helpers/string.helpers';
-import Question from '../sectionForm/question/Question';
+import QuestionPretest from './pretest/questionPretest/QuestionPretest';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { GREY } from '@config/colors/colors';
 
 function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
   const {
@@ -18,9 +20,11 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
     categoryOptions,
     subCategoriesOption,
     selectedCategory,
+    questions,
     handleAddQuestion,
     handleRemoveQuestion,
-    fields,
+    handleAddAnswer,
+    handleRemoveAnswer,
   } = useCourseForm({
     formMethods,
   });
@@ -30,11 +34,11 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
   const { preview, handleOnChange, handleResetPreview } = useUploadFile({
     formMethods,
     fieldName: 'courseMedia',
-    initPreview: generatePictureSrc(defaultValues?.courseMedia.name) || null,
+    initPreview: generatePictureSrc(defaultValues?.courseMedia.fileName) || null,
     index: 0,
   });
 
-  const isEditMode = !!defaultValues;
+  //TODO: const isEditMode = !!defaultValues;
 
   if (isLoadingData) return <FallbackLoader />;
 
@@ -78,35 +82,42 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
           </Grid>
 
           <Grid item xs={12}>
-            <Stack spacing={1}>
-              {fields?.map((i, questionIndex) => (
-                <Question
-                  key={i.id || questionIndex} // Ensure each child in a list has a unique "key" prop
-                  handleAddQuestion={handleAddQuestion}
-                  handleDeleteQuestion={() => {
-                    // isEditMode && !isNewSection && field.quiz.questions[questionIndex].id
-                    //   ? setOpenQuestionDialog(true)
-                    //   : handleRemoveQuestion(index, questionIndex);
-                    handleRemoveQuestion(1, questionIndex);
-                  }}
-                  canDelete={fields.length > 1}
-                  questionIndex={questionIndex}
-                  field={i}
-                  sectionIndex={index}
-                  handleRemoveAnswer={() => {
-                    isEditMode &&
-                      !isNewSection &&
-                      field.quiz.questions[questionIndex].answers.map((j, answerIndex) => {
-                        if (j.id) {
-                          setOpenAnswerDialog(true);
-                        } else {
-                          handleRemoveAnswer(index, questionIndex, answerIndex);
-                        }
-                      });
-                  }}
-                  handleAddAnswer={() => handleAddAnswer(index, questionIndex)}
-                />
-              ))}
+            <Stack
+              spacing={2}
+              width="100%"
+              p={8}
+              sx={{ border: `1px solid ${GREY.light}`, borderRadius: 8 }}
+            >
+              <Typography color="primary" fontWeight={'medium'} variant="h2">
+                {t('course.pretest')}
+              </Typography>
+              <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                <Typography color="secondary" fontWeight={'medium'} variant="h3">
+                  {t('section.quiz.questions')}
+                </Typography>
+                <Tooltip title={t('section.quiz.add_question')} placement="right">
+                  <IconButton onClick={handleAddQuestion} color="success">
+                    <AddCircleOutlineOutlinedIcon fontSize="medium" />
+                  </IconButton>
+                </Tooltip>
+              </Stack>
+              <Divider />
+              {questions.map((field, questionIndex) => {
+                return (
+                  <Grid item xs={12} key={field.id} p={2}>
+                    <QuestionPretest
+                      field={field}
+                      formMethods={formMethods}
+                      handleAddQuestion={handleAddQuestion}
+                      handleDeleteQuestion={handleRemoveQuestion}
+                      canDelete={questions.length > 1}
+                      questionIndex={questionIndex}
+                      handleRemoveAnswer={handleRemoveAnswer}
+                      handleAddAnswer={() => handleAddAnswer(questionIndex)}
+                    />
+                  </Grid>
+                );
+              })}
             </Stack>
           </Grid>
         </Grid>

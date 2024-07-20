@@ -1,21 +1,18 @@
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
-// import {
-//   TeachingTypeEnum,
-//   TeachingTypeFilterEnum,
-// } from '@config/enums/teachingType.enum'
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import { InputConfig, InputOption } from 'types/interfaces/InputConfig';
 
 export const BOOLEAN_OPTIONS: InputOption[] = [
-  //   { label: 'common.yes', value: 1 },
-  //   { label: 'common.no', value: 0 },
-  // ]
-  // const TEACHING_TYPE_OPTIONS = [
-  //   { label: TeachingTypeEnum.NO_TYPE, value: TeachingTypeFilterEnum.NO_TYPE },
-  //   { label: TeachingTypeEnum.ONLINE, value: TeachingTypeFilterEnum.ONLINE },
-  //   {
-  //     label: TeachingTypeEnum.ON_A_PLACE,
-  //     value: TeachingTypeFilterEnum.ON_A_PLACE,
-  //   },
+  { label: 'common.yes', value: 1 },
+  { label: 'common.no', value: 0 },
+];
+export const TRUE_FALSE_OPTIONS: InputOption[] = [
+  { label: 'common.true', value: 1 },
+  { label: 'common.false', value: 0 },
+];
+export const QUESTION_TYPES = [
+  { label: 'section.quiz.question_qcm', value: QuestionTypeEnum.QCM },
+  { label: 'section.quiz.question_binary', value: QuestionTypeEnum.BINARY },
 ];
 
 export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
@@ -53,111 +50,51 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
       required: 'category.sub_category_required',
     },
   },
-};
+  questionTitle: {
+    name: 'questionTitle',
+    placeholder: 'section.quiz.question_placeholder',
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    type: 'text',
+    defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
+    rules: { required: 'section.quiz.question_required' },
+  },
+  questionType: {
+    name: 'questionType',
+    placeholder: 'section.quiz.question_type_placeholder',
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    options: QUESTION_TYPES,
+    defaultValue: QuestionTypeEnum.BINARY,
+    rules: { required: 'section.quiz.type_required' },
+  },
 
-// !! This is a sample data structure for the quiz section of the course form DANGER !! CHANGE IT TO PROPER LOCATION
-
-export enum QuestionTypeEnum {
-  QCM = 1,
-  OPEN = 2,
-  BINARY = 3,
-}
-
-export enum QuestionTypeLabelEnum {
-  QCM = 'QCM',
-  OPEN = 'OPEN',
-  BINARY = 'BINARY',
-}
-
-export interface Answer {
-  id?: number;
-  answer: string;
-  isValid: 0 | 1;
-}
-
-export interface Question {
-  id?: number;
-  question: string;
-  type: QuestionTypeEnum;
-  isValid: 0 | 1;
-  answers: Answer[];
-}
-export interface Quiz {
-  id?: number;
-  questions: Question[];
-  timeLeft?: number;
-}
-
-export interface Section {
-  databaseId?: number;
-  title: string;
-  description: string;
-  duration: string;
-  hasQuiz: 1 | 0;
-  quiz: Quiz;
-  externalUrls?: {
-    id: number;
-    url: string;
-    title: string;
-  }[];
-  media?: {
-    id: number;
-    modelId: number;
-    fileName: string;
-    title: string;
-    mimeType: string;
-  }[];
-}
-export const DEFAULT_MODULE_OBJECT: Section = {
-  title: GLOBAL_VARIABLES.EMPTY_STRING,
-  description: GLOBAL_VARIABLES.EMPTY_STRING,
-  duration: GLOBAL_VARIABLES.EMPTY_STRING,
-  hasQuiz: 0,
-  externalUrls: [
-    {
-      id: 0,
-      url: GLOBAL_VARIABLES.EMPTY_STRING,
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
+  questionIsValid: {
+    name: 'questionIsValid',
+    defaultValue: 0,
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
+    options: TRUE_FALSE_OPTIONS,
+    rules: {
+      required: 'section.quiz.questionIsValid_required',
     },
-  ],
-  quiz: {
-    questions: [
+  },
+  answerTitle: {
+    name: 'answerText',
+    placeholder: 'section.quiz.answer_placeholder',
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    type: 'text',
+    defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
+    rules: { required: 'section.quiz.answer_required' },
+  },
+  answerIsValid: {
+    name: 'answerIsValid',
+    defaultValue: 0,
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
+    options: [
       {
-        question: GLOBAL_VARIABLES.EMPTY_STRING,
-        type: QuestionTypeEnum.BINARY,
-        isValid: 0,
-        answers: [
-          {
-            answer: GLOBAL_VARIABLES.EMPTY_STRING,
-            isValid: 0,
-          },
-          {
-            answer: GLOBAL_VARIABLES.EMPTY_STRING,
-            isValid: 0,
-          },
-        ],
+        label: GLOBAL_VARIABLES.EMPTY_STRING,
+        value: 0,
       },
     ],
   },
-};
-
-export const DEFAULT_QUESTION_OBJECT: Question = {
-  question: GLOBAL_VARIABLES.EMPTY_STRING,
-  type: QuestionTypeEnum.BINARY,
-  isValid: 0,
-  answers: [
-    {
-      answer: GLOBAL_VARIABLES.EMPTY_STRING,
-      isValid: 0,
-    },
-    {
-      answer: GLOBAL_VARIABLES.EMPTY_STRING,
-      isValid: 0,
-    },
-  ],
-};
-
-export const DEFAULT_ANSWER_OBJECT: Answer = {
-  answer: GLOBAL_VARIABLES.EMPTY_STRING,
-  isValid: 0,
 };

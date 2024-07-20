@@ -3,14 +3,27 @@ import { useGetCategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { CourseFormValues } from './CourseForm.type';
 import { useState, useEffect } from 'react';
+import {
+  DEFAULT_ANSWER_OBJECT,
+  DEFAULT_QUESTION_OBJECT,
+} from '../sectionForm/SectionForm.constants';
 
 interface UseCourseForm {
   formMethods: UseFormReturn<CourseFormValues, undefined>;
 }
 
 export default function useCourseForm({ formMethods }: UseCourseForm) {
-  // Watch the category field
-  const { watch } = formMethods;
+
+  const { watch, setValue } = formMethods;
+
+  const {
+    fields: questions,
+    append,
+    update,
+  } = useFieldArray({
+    control: formMethods.control,
+    name: 'quiz.questions',
+  });
 
   // Initialize the usePagination hook
   const { queryParams } = usePagination();
@@ -56,40 +69,40 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
 
   //_________________________ Quiz Section ___________________________ //
 
-  const { fields, append, move, remove, update } = useFieldArray({
-    control: formMethods.control,
-    name: 'quiz.questions',
-  });
+  const handleRemoveQuestion = (questionIndex: number) => {
+    const questionsToUpdate = formMethods.watch('quiz.questions');
 
-  console.log('fields', fields);
-  const handleAddQuestion = (index: number) => {
-    // Watch over the section object at the index
-    const fieldToUpdate = formMethods.watch(`quiz`);
+    const updatedQuestions = [
+      ...questionsToUpdate.slice(0, questionIndex),
+      ...questionsToUpdate.slice(questionIndex + 1),
+    ];
 
-    // Update the Fields with the new object at the same index
-    // With the new question added to the questions array
-    // update(index, {
-    //   ...fieldToUpdate,
-    //   quiz: {
-    //     questions: [...fieldToUpdate.quiz.questions, DEFAULT_QUESTION_OBJECT],
-    //   },
-    // });
+    setValue('quiz.questions', updatedQuestions);
   };
 
-  const handleRemoveQuestion = (sectionIndex: number, questionIndex: number) => {
-    const fieldToUpdate = formMethods.watch(`quiz`);
-    // const updatedQuestions = [
-    //   ...fieldToUpdate.quiz.questions.slice(0, questionIndex),
-    //   ...fieldToUpdate.quiz.questions.slice(questionIndex + 1),
-    // ];
+  const handleAddAnswer = (questionIndex: number) => {
+    const fieldToUpdate = formMethods.watch('quiz.questions');
+    const updatedAnswers = [...fieldToUpdate[questionIndex].answers, DEFAULT_ANSWER_OBJECT];
+    update(questionIndex, {
+      ...fieldToUpdate[questionIndex],
+      answers: updatedAnswers,
+    });
+  };
 
-    // update(sectionIndex, {
-    //   ...fieldToUpdate,
-    //   quiz: {
-    //     ...fieldToUpdate.quiz,
-    //     questions: updatedQuestions,
-    //   },
-    // });
+  const handleRemoveAnswer = (questionIndex: number, answerIndex: number) => {
+    const fieldToUpdate = formMethods.watch('quiz.questions');
+    const updatedAnswers = [
+      ...fieldToUpdate[questionIndex].answers.slice(0, answerIndex),
+      ...fieldToUpdate[questionIndex].answers.slice(answerIndex + 1),
+    ];
+
+    update(questionIndex, {
+      ...fieldToUpdate[questionIndex],
+      answers: updatedAnswers,
+    });
+  };
+  const handleAddQuestion = () => {
+    append(DEFAULT_QUESTION_OBJECT);
   };
 
   return {
@@ -97,8 +110,10 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     categoryOptions,
     selectedCategory,
     subCategoriesOption,
+    questions,
     handleAddQuestion,
     handleRemoveQuestion,
-    fields,
+    handleRemoveAnswer,
+    handleAddAnswer,
   };
 }

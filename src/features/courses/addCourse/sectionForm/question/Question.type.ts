@@ -4,10 +4,10 @@ import { FormValues } from '../module/Module.type'
 export interface QuestionProps {
   field: FieldArrayWithId<FormValues, 'sections', 'id'>
   questionIndex: number
-  sectionIndex: number
+  loIndex?: number
 
   canDelete: boolean
-  sectionFormMethods: UseFormReturn<FormValues, any, undefined>
+  loFormMethods: UseFormReturn<FormValues, any, undefined>
 
   handleDeleteQuestion: (index: number, questionIndex: number) => void
   handleAddQuestion: (index: number) => void
