@@ -68,5 +68,11 @@ export const course = {
   enrolled_courses: 'Cours inscrits',
   completed_courses: 'Cours terminés',
   pretest: 'Ajoutez le Pré-test ici',
-
+  avert: 'Avertissement',
+  avert_confirm: 'Êtes-vous sûr de vouloir terminer ce cours ?',
+  number_of_eu: '{{count}} unités éducatives',
+  number_of_lo: '{{count}} objectifs d’apprentissage',
+  active_course_success: 'Cours activé avec succès',
+  offline_course_success: 'Cours désactivé avec succès',
+  online_course_success: 'Cours en ligne avec succès',
 };

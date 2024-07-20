@@ -6,10 +6,12 @@ export const BOOLEAN_OPTIONS: InputOption[] = [
   { label: 'common.yes', value: 1 },
   { label: 'common.no', value: 0 },
 ];
+
 export const TRUE_FALSE_OPTIONS: InputOption[] = [
   { label: 'common.true', value: 1 },
   { label: 'common.false', value: 0 },
 ];
+
 export const QUESTION_TYPES = [
   { label: 'section.quiz.question_qcm', value: QuestionTypeEnum.QCM },
   { label: 'section.quiz.question_binary', value: QuestionTypeEnum.BINARY },
@@ -66,7 +68,6 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
     defaultValue: QuestionTypeEnum.BINARY,
     rules: { required: 'section.quiz.type_required' },
   },
-
   questionIsValid: {
     name: 'questionIsValid',
     defaultValue: 0,

@@ -49,6 +49,7 @@ function SectionForm({
   if (isFetching) {
     return <FallbackLoader />;
   }
+
   return (
     <FormProvider {...sectionFormMethods}>
       {!isEditMode ? (

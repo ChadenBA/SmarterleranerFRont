@@ -5,6 +5,7 @@ import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import { CourseFormValues } from './courseForm/CourseForm.type';
 import { Step } from '@components/CustomStepper/CustomStepper.type';
 
+
 export const STEPS: Step[] = [
   {
     label: 'course.create_course',
@@ -15,6 +16,8 @@ export const STEPS: Step[] = [
     icon: null,
   },
 ];
+
+
 export const DEFAULT_SECTIONS: Section[] = [
   {
     title: GLOBAL_VARIABLES.EMPTY_STRING,
@@ -48,7 +51,9 @@ export const DEFAULT_SECTIONS: Section[] = [
       ],
     },
   },
+
 ];
+
 
 export const DEFAULT_COURSE: CourseFormValues = {
   title: GLOBAL_VARIABLES.EMPTY_STRING,
@@ -83,3 +88,4 @@ export const DEFAULT_COURSE: CourseFormValues = {
     ],
   },
 };
+

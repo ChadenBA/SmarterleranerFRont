@@ -9,7 +9,8 @@ import {
 } from '@mui/material'
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
 import { TopBarContainerProps } from './topbar.type'
-import { BLUE, GREY } from '@config/colors/colors'
+import { BLUE } from '@config/colors/colors'
+import { ThemeModeEnum } from '@config/enums/theme.enum'
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -42,7 +43,9 @@ export const TopBarContainer = styled(Stack)(
         isscrolled === GLOBAL_VARIABLES.TRUE_STRING
           ? alpha(theme.palette.background.default, 0.8)
           : ishomepage === GLOBAL_VARIABLES.FALSE_STRING
-          ? theme.palette.common.white
+          ? theme.palette.mode === 'dark'
+            ? theme.palette.background.paper
+            : theme.palette.common.white
           : 'transparent',
     }),
 )
@@ -60,7 +63,7 @@ export const LogoAvatar = styled(Avatar)(({ theme }) => ({
 export const UserTitle = styled(Typography)(({ theme }) => ({
   display: 'none',
   fontWeight: 'bold',
-  color: BLUE.main,
+  color: theme.palette.mode === ThemeModeEnum.DARK ? BLUE.light : BLUE.main,
   fontSize: '1rem',
   margin: theme.spacing(1),
   [theme.breakpoints.up('md')]: {
@@ -70,7 +73,7 @@ export const UserTitle = styled(Typography)(({ theme }) => ({
 
 export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   lineHeight: '1.5rem',
-  color: GREY.dark,
+  color: theme.palette.mode === ThemeModeEnum.DARK ? BLUE.light : BLUE.main,
   '&:hover': {
     color: theme.palette.primary.main,
     backgroundColor: 'transparent',
@@ -81,6 +84,7 @@ export const StyledMenu = styled(Menu)(({ theme }) => ({
     borderRadius: '10px',
     padding: theme.spacing(1),
     width: '200px',
-    background: theme.palette.common.white,
+    background:theme.palette.background.default
+       
   },
 }))

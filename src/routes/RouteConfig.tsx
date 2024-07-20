@@ -9,7 +9,16 @@ import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
 import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
 import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
+
 import AddCoursePage from '@pages/dashboard/designer/courses/addCoursePage/AddCoursePage';
+
+// import { GuestGuard } from '@guards/GuestGuard'
+// import AuthLayout from '@layouts/authLayout/AuthLayout'
+// import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
+// import { AuthGuard } from '@guards/AuthGuard'
+// import { RoleBasedGuard } from '@guards/RoleBasedGuard'
+// import { UserRoleEnum } from '@config/enums/role.enum'
+
 
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
@@ -35,6 +44,11 @@ const PendingUsersTable = lazy(
 const AcceptedUsersTable = lazy(
   () => import('src/pages/dashboard/admin/users/acceptedUsersTable/AcceptedUsersTable'),
 );
+const AddUserPages = lazy(() => import('src/pages/dashboard/admin/users/addUser/AddUserPages'));
+
+const AdminDashboard = lazy(() => import('src/pages/dashboard/admin/AdminDashboard'));
+
+const CoursesPage = lazy(() => import('src/pages/dashboard/admin/courses/CoursesPage'));
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -71,6 +85,14 @@ export const ROUTE_CONFIG: RouteObject[] = [
       {
         path: PATHS.DASHBOARD.PROFILE.SETTINGS,
         element: <AccountSettingsPage />,
+      },
+      {
+        path: PATHS.DASHBOARD.ADMIN.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AdminDashboard />
+          </RoleBasedGuard>
+        ),
       },
       {
         path: PATHS.DASHBOARD.ADMIN.USERS.ROOT,
@@ -116,55 +138,34 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
+    
 
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <AddUserPages />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.USERS.EDIT_USER,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <AddUserPages />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.LANGUAGES.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <LanguagesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.CATEGORY.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CategoriesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.CATEGORY.EDIT_CATEGORY,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CategoriesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.COURSES.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CoursesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+      {
+        path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AddUserPages />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.DASHBOARD.ADMIN.USERS.EDIT_USER,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AddUserPages />
+          </RoleBasedGuard>
+        ),
+      },
+
+      {
+        path: PATHS.DASHBOARD.ADMIN.COURSES.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <CoursesPage />
+          </RoleBasedGuard>
+        ),
+      },
+     
       {
         path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
         element: (

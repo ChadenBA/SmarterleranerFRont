@@ -14,8 +14,6 @@ import CourseForm from './courseForm/CourseForm';
 import SectionForm from './sectionForm/SectionForm';
 import { PATHS } from '@config/constants/paths';
 import { useNavigate } from 'react-router-dom';
-// import { useCreateModuleMutation } from '@redux/apis/modules/moduleApi'
-
 import { AddCourseFormProps } from './AddCourseForm.type';
 import { CourseFormValues } from './courseForm/CourseForm.type';
 import { generateCourseFormDefaultValues } from './AddCourseForm.helpers';
@@ -55,36 +53,31 @@ export default function AddCourseForm({
   });
 
   // const [createCourseActionApi, { isLoading }] = useCreateCourseMutation()
-
-  // const [createSectionActionApi, { isLoading: isLoadingSection }] =
-  //   useCreateModuleMutation()
-
-  // const [updateCourseActionApi, { isLoading: isLoadingUpdate }] =
-  //   useUpdateCourseMutation()
+  // const [createSectionActionApi, { isLoading: isLoadingSection }] = useCreateModuleMutation()
+  // const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation()
 
   const handleAddCourse = StepperFormMethods.handleSubmit(async (values) => {
     // try {
     //   if (isEditMode) {
-    //     // Handle Update Course
     //     await updateCourseActionApi({
     //       id: Number(courseId),
     //       course: values,
-    //     }).unwrap()
-    //     dispatch(showSuccess(t('course.update_course_success')))
+    //     }).unwrap();
+    //     dispatch(showSuccess(t('course.update_course_success')));
     //   } else {
-    //     const courseResponse = await createCourseActionApi(values).unwrap()
-    //     setCourseId(String(courseResponse.data.id))
-    //     dispatch(showSuccess(t('course.add_course_success')))
+    //     const courseResponse = await createCourseActionApi(values).unwrap();
+    //     setCourseId(String(courseResponse.data.id));
+    //     dispatch(showSuccess(t('course.add_course_success')));
     //   }
-    //   setCompleted({ ...completed, [activeStep]: true })
-    //   setActiveStep((prev) => prev + 1)
+    //   setCompleted({ ...completed, [activeStep]: true });
+    //   setActiveStep((prev) => prev + 1);
     // } catch (error) {
-    //   dispatch(showError(t('course.api_course_failure')))
+    //   dispatch(showError(t('course.api_course_failure')));
     // }
   });
 
   const handleAddSection = SectionFormMethods.handleSubmit(async (values) => {
-    //let addedSections: Section[] = [];
+    // let addedSections: Section[] = [];
 
     if (isEditMode) {
       // const defaultLength = courseDefaultValues?.sections.length;
@@ -143,9 +136,7 @@ export default function AddCourseForm({
     <Box>
       <CustomStepper steps={STEPS} activeStep={activeStep} completed={completed} />
       {/* Stepper Content */}
-
       {renderStepContent(activeStep)}
-
       <Divider />
       {/* Stepper Buttons */}
       <Stack mt={2} direction={'row'} justifyContent={'space-between'} alignItems={'center'}>

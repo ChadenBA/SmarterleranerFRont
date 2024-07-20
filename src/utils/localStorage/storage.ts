@@ -54,8 +54,20 @@ export const getUserFromLocalStorage = (): User | null => {
 export const removeFromLocalStorage = (key: LocalStorageKeysEnum) => {
   localStorage.removeItem(key)
 }
+// ___________________save language to local storage___________________
+export const saveLanguageToLocalStorage = (language: string) => {
+  setToLocalStorage(LocalStorageKeysEnum.Language, language)
+}
+
+//___________________get language from local storage___________________
+export const getLanguageFromLocalStorage = () => {
+  return getFromLocalStorage(LocalStorageKeysEnum.Language, false)
+}
 
 //------------------clear local storage------------------//
 export const clearLocalStorage = () => {
+  //clear all data except language
+  const language = getLanguageFromLocalStorage()
   localStorage.clear()
+  saveLanguageToLocalStorage(language)
 }

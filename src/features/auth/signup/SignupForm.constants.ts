@@ -51,18 +51,17 @@ export const SIGNUP_FORM_CONFIG: Record<string, InputConfig> = {
     label: "auth.confirm_password",
     placeholder: "auth.confirm_password_placeholder",
   },
-  age: {
-    name: "age",
+  birthdate: {
+    name: "birth_date",
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
-    label: "auth.age",
-    placeholder: "auth.age_placeholder",
-    rules: { required: "auth.age_required" },
+    label: "auth.birthdate",
+    placeholder: "auth.birthdate_placeholder",
+    type: "date",
   },
   major: {
     name: "major",
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
     label: "auth.major",
     placeholder: "auth.major_placeholder",
-    rules: { required: "auth.major_required" },
   },
 };

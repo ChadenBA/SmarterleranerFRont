@@ -1,22 +1,28 @@
-import StatisticsCard from '@components/statisticsCard/StatisticsCard'
-import { useGetAdminStatisticsQuery } from '@redux/apis/dashboard/dashboardApi'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
-import { useTranslation } from 'react-i18next'
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined'
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined'
-import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
-import { Grid } from '@mui/material'
-import DashboardSkeleton from '../DashboardSkeleton'
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined'
-import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined'
-import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined'
-import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined'
+import StatisticsCard from '@components/statisticsCard/StatisticsCard';
+import { useGetAdminStatisticsQuery } from '@redux/apis/dashboard/dashboardApi';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import { useTranslation } from 'react-i18next';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import { Grid } from '@mui/material';
+import DashboardSkeleton from '../DashboardSkeleton';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import PieChartComponent from '@components/CustomCharts/pieChart/PieChart';
 
 function AdminDashboard() {
-  const { data, isLoading } = useGetAdminStatisticsQuery()
-  const { t } = useTranslation()
+  const { data, isLoading } = useGetAdminStatisticsQuery();
+  const { t } = useTranslation();
 
-  if (isLoading) return <DashboardSkeleton />
+  //const { data, isLoading } = useGetAdminStatisticsQuery()
+
+
+  const pieChartData = {
+    enrolledStudentsInPrivateCourses: data?.enrolledStudentsInPrivateCourses,
+    enrolledStudentsInPublicCourses: data?.enrolledStudentsInPublicCourses,
+    enrolledStudentsInPrivateLearningPaths: data?.enrolledStudentsInPrivateLearningPaths,
+    enrolledStudentsInPublicLearningPaths: data?.enrolledStudentsInPublicLearningPaths,
+  };
+
+  if (isLoading) return <DashboardSkeleton />;
   return (
     <>
       <Grid container gap={2}>
@@ -36,30 +42,7 @@ function AdminDashboard() {
             icon={<MenuBookOutlinedIcon />}
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={3.8}>
-          <StatisticsCard
-            title={t('dashboard.admin.certificates')}
-            value={data?.certificates}
-            subtitle={t('dashboard.admin.certificates_subtitle')}
-            icon={<WorkspacePremiumOutlinedIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3.8}>
-          <StatisticsCard
-            title={t('dashboard.admin.learning_paths')}
-            value={data?.learningPaths}
-            subtitle={t('dashboard.admin.learning_paths_subtitle')}
-            icon={<ExploreOutlinedIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3.8}>
-          <StatisticsCard
-            title={t('dashboard.admin.attestation')}
-            value={data?.attestations}
-            subtitle={t('dashboard.admin.attestation_subtitle')}
-            icon={<SchoolOutlinedIcon />}
-          />
-        </Grid>
+
         <Grid item xs={12} md={6} lg={3.8}>
           <StatisticsCard
             title={t('dashboard.admin.categories')}
@@ -68,25 +51,19 @@ function AdminDashboard() {
             icon={<CategoryOutlinedIcon />}
           />
         </Grid>
-        <Grid item xs={12} md={6} lg={3.8}>
-          <StatisticsCard
-            title={t('dashboard.admin.languages')}
-            value={data?.languages}
-            subtitle={t('dashboard.admin.languages_subtitle')}
-            icon={<TranslateOutlinedIcon />}
-          />
-        </Grid>
-        <Grid item xs={12} md={6} lg={3.8}>
-          <StatisticsCard
-            title={t('dashboard.admin.income')}
-            value={`$${data?.income}`}
-            subtitle={t('dashboard.admin.income_subtitle')}
-            icon={<CurrencyExchangeOutlinedIcon />}
-          />
-        </Grid>
       </Grid>
+      <PieChartComponent
+        data={{
+          enrolledStudentsInPrivateCourses: pieChartData.enrolledStudentsInPrivateCourses ?? 0,
+          enrolledStudentsInPublicCourses: pieChartData.enrolledStudentsInPublicCourses ?? 0,
+          enrolledStudentsInPrivateLearningPaths:
+            pieChartData.enrolledStudentsInPrivateLearningPaths ?? 0,
+          enrolledStudentsInPublicLearningPaths:
+            pieChartData.enrolledStudentsInPublicLearningPaths ?? 0,
+        }}
+      />
     </>
-  )
+  );
 }
 
-export default AdminDashboard
+export default AdminDashboard;

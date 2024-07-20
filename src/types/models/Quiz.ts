@@ -1,4 +1,4 @@
-import { QuestionTypeEnum } from "@config/enums/questionType.enum"
+import { QuestionTypeEnum } from '@config/enums/questionType.enum'
 
 export interface Quiz {
   id?: number
