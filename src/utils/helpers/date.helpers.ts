@@ -14,10 +14,42 @@ export const transformDuration = (durationInMinutes: number): string => {
   }${minutes > 0 ? `${minutes}m` : GLOBAL_VARIABLES.EMPTY_STRING}`
 }
 
-export const transformDateFormat = (date: string): string => {
-  return dayjs(date).format('DD/MM/YYYY')
+export const transformDateFormat = (date: number): string => {
+  return dayjs(date).format(GLOBAL_VARIABLES.DATES_FORMAT.DATE)
+}
+export const transformDateTime = (date: string | undefined): string => {
+  return dayjs(date).format(GLOBAL_VARIABLES.DATES_FORMAT.DATE_TIME)
 }
 
-export const transformDateTimeFormat = (date: string | undefined): string => {
-  return dayjs(date).format(GLOBAL_VARIABLES.DATES_FORMAT.DATE_TIME)
+export const transformDateTimeFormat = (date: number | undefined): string => {
+  if (date === undefined) {
+    return GLOBAL_VARIABLES.EMPTY_STRING
+  }
+  return dayjs.unix(date).format(GLOBAL_VARIABLES.DATES_FORMAT.DATE_TIME)
+}
+export const convertToUnixTimestamp = (date: string): number => {
+  return dayjs(date).unix()
+}
+export const convertFromUnixTimestampToDateTime = (
+  timestamp: number,
+): string => {
+  return dayjs
+    .unix(timestamp)
+    .format(GLOBAL_VARIABLES.DATES_FORMAT.DATE_TIME_ISO)
+}
+
+export const convertFromUnixTimestampToDate = (
+  timestamp: number,
+): string => {
+  return dayjs
+    .unix(timestamp)
+    .format(GLOBAL_VARIABLES.DATES_FORMAT.DATE)
+}
+export const transformUnixToISO = (
+  unixTimestamp: number | undefined,
+): string => {
+  if (unixTimestamp === undefined) {
+    return GLOBAL_VARIABLES.EMPTY_STRING
+  }
+  return dayjs.unix(unixTimestamp).toISOString()
 }

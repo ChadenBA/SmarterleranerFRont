@@ -1,27 +1,34 @@
-import { User } from 'types/models/User'
-import { ENDPOINTS } from '@config/constants/endpoints'
-import { baseQueryConfigWithRefresh } from '@redux/baseQueryConfig'
-import { injectPaginationParamsToUrl } from '@utils/helpers/queryParamInjector'
-import { PaginationResponse } from 'types/interfaces/Pagination'
-import { QueryParams } from 'types/interfaces/QueryParams'
-import { ApiPaginationResponse } from '../type'
-import { MethodsEnum } from '@config/enums/method.enum'
-import { SingleUserResponseData, UserApi } from './usersApi.type'
+import { User } from 'types/models/User';
+import { ENDPOINTS } from '@config/constants/endpoints';
+import { baseQueryConfigWithRefresh } from '@redux/baseQueryConfig';
+import { injectPaginationParamsToUrl } from '@utils/helpers/queryParamInjector';
+import { PaginationResponse } from 'types/interfaces/Pagination';
+import { QueryParams } from 'types/interfaces/QueryParams';
+import { ApiPaginationResponse } from '../type';
+import { MethodsEnum } from '@config/enums/method.enum';
+import {
+  SingleUserResponseData,
+  UpdateResponse,
+  UpdateResponseApi,
+  UserApi,
+} from './usersApi.type';
 import {
   encodeUser,
   transformFetchUsersResponse,
   transformUserResponse,
-} from './usersApi.transform'
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse'
-import { transformRegisterResponse } from '../auth/authApi.transform'
-import { FieldValues } from 'react-hook-form'
+} from './usersApi.transform';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
+import { transformRegisterResponse } from '../auth/authApi.transform';
+import { FieldValues } from 'react-hook-form';
+import { decodeUpdateResponse } from '../transform';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: baseQueryConfigWithRefresh,
   tagTypes: ['Users', 'User', 'Profile'],
   endpoints: (builder) => ({
+  
     getUsersForAdmin: builder.query<PaginationResponse<User>, QueryParams>({
       query: (params) => ({
         url: injectPaginationParamsToUrl(ENDPOINTS.USERS, params),
@@ -36,8 +43,7 @@ export const userApi = createApi({
         url: ENDPOINTS.USERS + `/${id}`,
         method: MethodsEnum.GET,
       }),
-      transformResponse: (response: SingleUserResponseData) =>
-        transformUserResponse(response),
+      transformResponse: (response: SingleUserResponseData) => transformUserResponse(response),
       providesTags: ['User'],
     }),
 
@@ -118,20 +124,21 @@ export const userApi = createApi({
         url: ENDPOINTS.USER_PROFILE,
         method: MethodsEnum.GET,
       }),
-      transformResponse: (response: SingleUserResponseData) =>
-        transformUserResponse(response),
+      transformResponse: (response: SingleUserResponseData) => transformUserResponse(response),
       providesTags: ['Profile'],
     }),
-    updateProfile: builder.mutation<void, FieldValues>({
+    updateProfile: builder.mutation<UpdateResponse, FieldValues>({
       query: (data) => ({
         url: ENDPOINTS.UPDATE_PROFILE,
         method: MethodsEnum.POST,
         body: encodeUser(data),
       }),
+      transformResponse: (response: UpdateResponseApi): UpdateResponse =>
+        decodeUpdateResponse(response),
       invalidatesTags: ['Profile'],
     }),
   }),
-})
+});
 
 export const {
   useGetUsersForAdminQuery,
@@ -146,4 +153,4 @@ export const {
   useGetUserByIdQuery,
   useGetUserProfileQuery,
   useUpdateProfileMutation,
-} = userApi
+} = userApi;

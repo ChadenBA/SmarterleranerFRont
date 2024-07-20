@@ -57,4 +57,5 @@ export const auth = {
   major: "Majeur",
   major_placeholder: "Entrez votre majeur",
   major_required: "Majeur est requis",
+  birthdate: "Date de naissance",
 };

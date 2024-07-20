@@ -27,20 +27,26 @@ export const AllUserTableHeaders: ColumnHeader[] = [
   },
   {
     id: 5,
-    label: 'auth.role',
-    minWidth: 140,
+    label: 'auth.birthdate',
+    minWidth: 120,
     align: 'left',
   },
   {
     id: 6,
+    label: 'auth.major',
+    minWidth: 120,
+    align: 'left',
+  },
+  {
+    id: 7,
     label: 'common.status',
     minWidth: 140,
     align: 'left',
   },
   {
-    id: 7,
+    id: 8,
     label: 'common.action',
-    minWidth: 200,
+    minWidth: 100,
     align: 'left',
   },
 ]

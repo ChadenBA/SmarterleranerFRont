@@ -1,5 +1,4 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { CategoryApi } from './categoriesApi.type';
 import { PaginationResponse } from 'types/interfaces/Pagination';
 import { ApiPaginationResponse } from '../type';
 import {
@@ -40,7 +39,7 @@ export const categoriesApi = createApi({
         url: `${ENDPOINTS.CATEGORIES}/${id}`,
         method: MethodsEnum.GET,
       }),
-      transformResponse: (response: ItemDetailsResponse<CategoryApi>) => {
+      transformResponse: (response: ItemDetailsResponse<Category>) => {
         return transformSingleCategory(response);
       },
       providesTags: ['Category'],

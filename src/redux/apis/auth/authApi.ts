@@ -1,18 +1,18 @@
-import { User } from 'types/models/User'
-import { ENDPOINTS } from '@config/constants/endpoints'
-import { baseQueryConfig } from '@redux/baseQueryConfig'
-import { MethodsEnum } from '@config/enums/method.enum'
-import { createApi } from '@reduxjs/toolkit/query/react'
-import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse'
-import { RegisterBody } from '@features/auth/signup/SignupForm.type'
-import { UserApi } from '../user/usersApi.type'
-import { LoginRequest, LoginResponse, LoginResponseApi } from './authApi.type'
+import { User } from 'types/models/User';
+import { ENDPOINTS } from '@config/constants/endpoints';
+import { baseQueryConfig } from '@redux/baseQueryConfig';
+import { MethodsEnum } from '@config/enums/method.enum';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
+import { RegisterBody } from '@features/auth/signup/SignupForm.type';
+import { UserApi } from '../user/usersApi.type';
+import { LoginRequest, LoginResponse, LoginResponseApi } from './authApi.type';
 import {
   decodeLoginResponse,
   setPasswordEncoder,
   signupEncoder,
   transformRegisterResponse,
-} from './authApi.transform'
+} from './authApi.transform';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
@@ -46,8 +46,8 @@ export const authApi = createApi({
     setPassword: builder.mutation<
       void,
       {
-        token: string
-        data: { password: string; passwordConfirmation: string }
+        token: string;
+        data: { password: string; passwordConfirmation: string };
       }
     >({
       query: ({ token, data }) => ({
@@ -63,13 +63,12 @@ export const authApi = createApi({
         body: { email },
       }),
     }),
-    
   }),
-})
+});
 export const {
   useLoginMutation,
   useSignupMutation,
   useLogoutMutation,
   useSetPasswordMutation,
   useSendResetPasswordEmailMutation,
-} = authApi
+} = authApi;

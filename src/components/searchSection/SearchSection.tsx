@@ -1,14 +1,11 @@
-import { Search } from '@mui/icons-material'
-import { InputAdornment } from '@mui/material'
-import { SearchSectionProps } from './SearchSection.type'
-import { useTranslation } from 'react-i18next'
-import { StyledTextField } from './SearchSection.style'
+import { Search } from '@mui/icons-material';
+import { InputAdornment } from '@mui/material';
+import { SearchSectionProps } from './SearchSection.type';
+import { useTranslation } from 'react-i18next';
+import { StyledTextField } from './SearchSection.style';
 
-function SearchSection({
-  searchValue,
-  handleSearchChange,
-}: SearchSectionProps) {
-  const { t } = useTranslation()
+function SearchSection({ searchValue, handleSearchChange }: SearchSectionProps) {
+  const { t } = useTranslation();
   return (
     <StyledTextField
       placeholder={t('common.search_placeholder')}
@@ -22,7 +19,7 @@ function SearchSection({
         ),
       }}
     />
-  )
+  );
 }
 
-export default SearchSection
+export default SearchSection;

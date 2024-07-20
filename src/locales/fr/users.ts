@@ -28,4 +28,5 @@ export const users = {
   update_password: 'Mettre à jour le mot de passe',
   update_profile: 'Mettre à jour le profil',
   profile_updated_successfully: 'Profil mis à jour avec succès',
+  manage_user: 'Gérer les utilisateurs',
 }

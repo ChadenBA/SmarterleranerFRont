@@ -15,6 +15,7 @@ export const GLOBAL_VARIABLES = {
     FIRST_PAGE: 1,
     CHUNK_ROWS_PER_PAGE: 8,
     ROWS_PER_PAGE: 9,
+    MIN_ROWS_PER_PAGE: 6,
     TOTAL_ITEMS: 0,
   },
   DEBOUNCE_TIME: {
@@ -35,5 +36,11 @@ export const GLOBAL_VARIABLES = {
   DATES_FORMAT: {
     DATE: 'DD/MM/YYYY',
     DATE_TIME: 'DD/MM/YYYY HH:mm',
+    DATE_TIME_ISO: 'YYYY-MM-DDTHH:mm:ss',
   },
+  DEFAULT_LOCALIZATION: {
+    LAT: 36.806389,
+    LNG: 10.181667,
+  },
+  BACKEND_SCHEMA: 'http',
 }

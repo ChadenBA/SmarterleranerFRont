@@ -1,6 +1,6 @@
-import { useRef } from 'react'
-import { useTranslation } from 'react-i18next'
-import { Stack, Tooltip } from '@mui/material'
+import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Stack, Tooltip } from '@mui/material';
 import {
   StyledDeleteIcon,
   StyledInputContainer,
@@ -10,60 +10,48 @@ import {
   StyledPreviewPdf,
   StyledPreviewVideo,
   StyledUploadIcon,
-} from './UploadInput.style'
-import { UploadInputProps } from './UploadInput.type'
+} from './UploadInput.style';
+import { UploadInputProps } from './UploadInput.type';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
-function UploadInput({
-  preview,
-  multiple,
-  label,
-  file,
-  isEditMode,
-  onChange,
-  onDelete,
-}: UploadInputProps) {
-  const { t } = useTranslation()
-  const ref = useRef<HTMLInputElement>(null)
+function UploadInput({ preview, multiple, label, file, onChange, onDelete }: UploadInputProps) {
+  const { t } = useTranslation();
+  const ref = useRef<HTMLInputElement>(null);
 
   const handleOnContainerClick = () => {
-    ref.current?.click()
-  }
+    ref.current?.click();
+  };
 
   const FilePreview = (file: File) => {
-    const fileURL = isEditMode ? file.name : URL.createObjectURL(file)
-
+    const fileURL = file.name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
+      ? file.name
+      : URL.createObjectURL(file);
     if (file.type.startsWith('image/')) {
-      return <StyledPreviewImage src={preview ?? fileURL} alt="File preview" />
+      return <StyledPreviewImage src={fileURL} alt="File preview" />;
     } else if (file.type.startsWith('video/')) {
       return (
         <StyledPreviewVideo controls>
           <source src={fileURL} type={file.type} />
         </StyledPreviewVideo>
-      )
+      );
     } else if (file.type === 'application/pdf') {
       return (
         <StyledPreviewPdf data={fileURL}>
           <embed src={fileURL} type="application/pdf" />
         </StyledPreviewPdf>
-      )
+      );
     }
-  }
+  };
 
   return (
     <>
       <Stack direction={'column'} spacing={1} width={'100%'}>
-        {label && (
-          <StyledInputTypography variant="h6">{label}</StyledInputTypography>
-        )}
+        {label && <StyledInputTypography variant="h6">{label}</StyledInputTypography>}
 
         <StyledInputContainer onClick={handleOnContainerClick}>
           {preview ? (
             <StyledPreviewContainer>
-              {file && FilePreview(file) ? (
-                FilePreview(file)
-              ) : (
-                <StyledPreviewImage src={preview} />
-              )}
+              {file && FilePreview(file) ? FilePreview(file) : <StyledPreviewImage src={preview} />}
               <Tooltip title={t('common.delete')} arrow>
                 <StyledDeleteIcon onClick={onDelete} />
               </Tooltip>
@@ -81,7 +69,7 @@ function UploadInput({
         multiple={multiple}
       />
     </>
-  )
+  );
 }
 
-export default UploadInput
+export default UploadInput;

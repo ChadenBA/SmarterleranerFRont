@@ -1,14 +1,14 @@
-import { Navigate, RouteObject } from "react-router-dom";
-import { PATHS } from "@config/constants/paths";
-import GuestLayout from "@layouts/GuestLayout/GuestLayout";
-import { lazy } from "react";
-import { GuestGuard } from "@guards/GuestGuard";
-import AuthLayout from "@layouts/authLayout/AuthLayout";
-import { AuthGuard } from "@guards/AuthGuard";
-import DashboardLayout from "@layouts/dashboardLayout/DashboardLayout";
-import { RoleBasedGuard } from "@guards/RoleBasedGuard";
-import { UserRoleEnum } from "@config/enums/role.enum";
-import CategoriesPage from "@pages/dashboard/admin/categories/CategoriesPage";
+import { Navigate, RouteObject } from 'react-router-dom';
+import { PATHS } from '@config/constants/paths';
+import GuestLayout from '@layouts/GuestLayout/GuestLayout';
+import { lazy } from 'react';
+import { GuestGuard } from '@guards/GuestGuard';
+import AuthLayout from '@layouts/authLayout/AuthLayout';
+import { AuthGuard } from '@guards/AuthGuard';
+import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
+import { RoleBasedGuard } from '@guards/RoleBasedGuard';
+import { UserRoleEnum } from '@config/enums/role.enum';
+import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
 // import { GuestGuard } from '@guards/GuestGuard'
 // import AuthLayout from '@layouts/authLayout/AuthLayout'
 // import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
@@ -16,45 +16,35 @@ import CategoriesPage from "@pages/dashboard/admin/categories/CategoriesPage";
 // import { RoleBasedGuard } from '@guards/RoleBasedGuard'
 // import { UserRoleEnum } from '@config/enums/role.enum'
 
-const HomePage = lazy(() => import("src/pages/home/HomePage"));
-const NotFound = lazy(() => import("src/pages/notFound/NotFound"));
-const SignUpPage = lazy(() => import("src/pages/auth/signup/signupPage"));
-const LoginPage = lazy(() => import("src/pages/auth/login/LoginPage"));
-const SetPasswordPage = lazy(
-  () => import("src/pages/auth/setPassword/SetPasswordpage")
-);
+const HomePage = lazy(() => import('src/pages/home/HomePage'));
+const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
+const SignUpPage = lazy(() => import('src/pages/auth/signup/signupPage'));
+const LoginPage = lazy(() => import('src/pages/auth/login/LoginPage'));
+const SetPasswordPage = lazy(() => import('src/pages/auth/setPassword/SetPasswordpage'));
 const EmailConfirmationPage = lazy(
-  () =>
-    import(
-      "src/pages/auth/forgetPassword/emailConfirmationPage/EmailConfirmationPage"
-    )
+  () => import('src/pages/auth/forgetPassword/emailConfirmationPage/EmailConfirmationPage'),
 );
-const DashboardPage = lazy(() => import("src/pages/dashboard/DashboardPage"));
-const ProfilePage = lazy(
-  () => import("src/pages/dashboard/profile/ProfilePage")
-);
+const DashboardPage = lazy(() => import('src/pages/dashboard/DashboardPage'));
+const ProfilePage = lazy(() => import('src/pages/dashboard/profile/ProfilePage'));
 const AccountSettingsPage = lazy(
-  () => import("src/pages/dashboard/accountSettings/AccountSettingsPage")
+  () => import('src/pages/dashboard/accountSettings/AccountSettingsPage'),
 );
-const AboutUsPage = lazy(() => import("src/pages/about/AboutUsPage"));
-const UsersPage = lazy(
-  () => import("src/pages/dashboard/admin/users/UsersPage")
-);
+const AboutUsPage = lazy(() => import('src/pages/about/AboutUsPage'));
+const UsersPage = lazy(() => import('src/pages/dashboard/admin/users/UsersPage'));
 const AllUsersTable = lazy(
-  () => import("src/pages/dashboard/admin/users/allUsersTable/AllUsersTable")
+  () => import('src/pages/dashboard/admin/users/allUsersTable/AllUsersTable'),
 );
 const PendingUsersTable = lazy(
-  () =>
-    import(
-      "src/pages/dashboard/admin/users/pendingUsersTable/PendingUsersTable"
-    )
+  () => import('src/pages/dashboard/admin/users/pendingUsersTable/PendingUsersTable'),
 );
 const AcceptedUsersTable = lazy(
-  () =>
-    import(
-      "src/pages/dashboard/admin/users/acceptedUsersTable/AcceptedUsersTable"
-    )
+  () => import('src/pages/dashboard/admin/users/acceptedUsersTable/AcceptedUsersTable'),
 );
+const AddUserPages = lazy(() => import('src/pages/dashboard/admin/users/addUser/AddUserPages'));
+
+const AdminDashboard = lazy(() => import('src/pages/dashboard/admin/AdminDashboard'));
+
+const CoursesPage = lazy(() => import('src/pages/dashboard/admin/courses/CoursesPage'));
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -93,6 +83,14 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: <AccountSettingsPage />,
       },
       {
+        path: PATHS.DASHBOARD.ADMIN.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AdminDashboard />
+          </RoleBasedGuard>
+        ),
+      },
+      {
         path: PATHS.DASHBOARD.ADMIN.USERS.ROOT,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
@@ -127,7 +125,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-      
+
       {
         path: PATHS.DASHBOARD.ADMIN.CATEGORY.EDIT_CATEGORY,
         element: (
@@ -137,54 +135,31 @@ export const ROUTE_CONFIG: RouteObject[] = [
         ),
       },
 
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <AddUserPages />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.USERS.EDIT_USER,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <AddUserPages />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.LANGUAGES.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <LanguagesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.CATEGORY.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CategoriesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.CATEGORY.EDIT_CATEGORY,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CategoriesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.COURSES.ROOT,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <CoursesPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+      {
+        path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AddUserPages />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.DASHBOARD.ADMIN.USERS.EDIT_USER,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AddUserPages />
+          </RoleBasedGuard>
+        ),
+      },
+
+      {
+        path: PATHS.DASHBOARD.ADMIN.COURSES.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <CoursesPage />
+          </RoleBasedGuard>
+        ),
+      },
       // {
       //   path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
       //   element: (
