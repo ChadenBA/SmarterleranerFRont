@@ -20,14 +20,14 @@ export const ItemsSidebar: SidebarItem[] = [
   {
     id: 1,
     label: "sidebar.dashboard",
-    path: PATHS.DASHBOARD.ROOT,
+    path: PATHS.DASHBOARD.STUDENT.ROOT,
     icon: DashboardOutlinedIcon,
     accessibleRoles: [UserRoleEnum.USER],
   },
   {
     id: 2,
     label: "sidebar.dashboard",
-    path: PATHS.DASHBOARD.ROOT,
+    path: PATHS.DASHBOARD.ADMIN.ROOT,
     icon: DashboardOutlinedIcon,
     accessibleRoles: [UserRoleEnum.ADMIN],
   },

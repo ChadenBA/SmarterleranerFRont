@@ -1,11 +1,12 @@
-import { authApi } from "@redux/apis/auth/authApi";
-import { configureStore } from "@reduxjs/toolkit";
-import snackbarReducer from "./slices/snackbarSlice";
-import themeReducer from "./slices/theme";
-import searchQueryReducer from "./slices/appSlice";
-import authReducer from "./slices/authSlice";
-import { userApi } from "./apis/user/usersApi";
-import { categoriesApi } from "./apis/categories/categoriesApi";
+import { authApi } from '@redux/apis/auth/authApi';
+import { configureStore } from '@reduxjs/toolkit';
+import snackbarReducer from './slices/snackbarSlice';
+import themeReducer from './slices/theme';
+import { categoriesApi } from './apis/categories/categoriesApi';
+import searchQueryReducer from './slices/appSlice';
+import { userApi } from './apis/user/usersApi';
+import authReducer from './slices/authSlice';
+import { dashboardApi } from './apis/dashboard/dashboardApi';
 
 export const store = configureStore({
   reducer: {
@@ -13,12 +14,18 @@ export const store = configureStore({
     theme: themeReducer,
     snackbar: snackbarReducer,
     auth: authReducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [userApi.reducerPath]: userApi.reducer,
     [categoriesApi.reducerPath]: categoriesApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
+    [dashboardApi.reducerPath]: dashboardApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, userApi.middleware, categoriesApi.middleware),
+    getDefaultMiddleware().concat(
+      categoriesApi.middleware,
+      userApi.middleware,
+      authApi.middleware,
+      dashboardApi.middleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

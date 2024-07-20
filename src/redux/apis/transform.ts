@@ -1,9 +1,11 @@
-import { Media, MediaApi } from 'types/models/Media'
-import { ApiPaginationResponse } from './type'
-import { generatePictureSrc } from '@utils/helpers/string.helpers'
+import { Media, MediaApi } from 'types/models/Media';
+import { ApiPaginationResponse } from './type';
+import { generatePictureSrc } from '@utils/helpers/string.helpers';
+import { transformSingleUser } from './user/usersApi.transform';
+import { UpdateResponse, UpdateResponseApi } from './user/usersApi.type';
 export const transformMedia = (medias: MediaApi[]): Media[] => {
-  return medias.map((media) => transformSingleMedia(media))
-}
+  return medias.map((media) => transformSingleMedia(media));
+};
 
 export const transformSingleMedia = (media: MediaApi): Media => {
   return {
@@ -13,14 +15,12 @@ export const transformSingleMedia = (media: MediaApi): Media => {
     mimeType: media.mime_type,
     modelType: media.model_type,
     title: media.title,
-  }
-}
+  };
+};
 
-export function transformPaginationResponse<T>(
-  paginationResponse: ApiPaginationResponse<T>,
-) {
-  const { message, meta } = paginationResponse
-  const { current_page, per_page, total } = meta
+export function transformPaginationResponse<T>(paginationResponse: ApiPaginationResponse<T>) {
+  const { message, meta } = paginationResponse;
+  const { current_page, per_page, total } = meta;
   return {
     message: message,
     meta: {
@@ -29,5 +29,12 @@ export function transformPaginationResponse<T>(
       total: total,
       count: Math.ceil(total / per_page),
     },
-  }
+  };
 }
+
+export const decodeUpdateResponse = (response: UpdateResponseApi): UpdateResponse => {
+  return {
+    message: response.message,
+    data: transformSingleUser(response.data),
+  };
+};

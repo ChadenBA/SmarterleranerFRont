@@ -1,15 +1,12 @@
-import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse'
-import { UserApi } from '../user/usersApi.type'
-import { User } from 'types/models/User'
-import { transformSingleUser } from '../user/usersApi.transform'
-import { RegisterBody } from '@features/auth/signup/SignupForm.type'
-import {
-  LoginResponse,
-  LoginResponseApi,
-  RegisterBodyApi,
-} from './authApi.type'
-import { generatePictureSrc } from '@utils/helpers/string.helpers'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
+import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
+import { UserApi } from '../user/usersApi.type';
+import { User } from 'types/models/User';
+import { transformSingleUser } from '../user/usersApi.transform';
+import { RegisterBody } from '@features/auth/signup/SignupForm.type';
+import { LoginResponse, LoginResponseApi, RegisterBodyApi } from './authApi.type';
+import { generatePictureSrc } from '@utils/helpers/string.helpers';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { convertToUnixTimestamp } from '@utils/helpers/date.helpers';
 
 export const transformRegisterResponse = (
   response: ItemDetailsResponse<UserApi>,
@@ -17,28 +14,29 @@ export const transformRegisterResponse = (
   return {
     ...response,
     data: transformSingleUser(response.data),
-  }
-}
+  };
+};
 export function signupEncoder(user: RegisterBody): RegisterBodyApi {
-  const { firstName, lastName, email, password, passwordConfirmation, role } =
-    user
+  const { firstName, lastName, email, password, passwordConfirmation, role } = user;
   return {
     first_name: firstName,
     last_name: lastName,
     email: email,
+    birth_date: convertToUnixTimestamp(user.birthDate),
+    major: user.major,
     password: password,
     password_confirmation: passwordConfirmation,
     role: role,
-  }
+  };
 }
-export function setPasswordEncoder(data: {
-  password: string
-  passwordConfirmation: string
-}): { password: string; password_confirmation: string } {
+export function setPasswordEncoder(data: { password: string; passwordConfirmation: string }): {
+  password: string;
+  password_confirmation: string;
+} {
   return {
     password: data.password,
     password_confirmation: data.passwordConfirmation,
-  }
+  };
 }
 
 export function decodeLoginResponse(response: LoginResponseApi): LoginResponse {
@@ -49,20 +47,18 @@ export function decodeLoginResponse(response: LoginResponseApi): LoginResponse {
       refreshToken: response.data.refresh_token,
       user: {
         ...transformSingleUser(response.data.user),
-        media: response.data.media
-          ? [
-              {
-                modelId: response.data.media.model_id,
-                fileName: generatePictureSrc(response.data.media.file_name),
-              },
-            ]
-          : [
-              {
-                modelId: response.data.user.id,
-                fileName: GLOBAL_VARIABLES.EMPTY_STRING,
-              },
-            ],
       },
+      media: response.data.media
+        ? {
+            id: response.data.media.id,
+            modelId: response.data.user.id,
+            fileName: generatePictureSrc(response.data.media.file_name),
+          }
+        : {
+            id: 0,
+            modelId: response.data.user.id,
+            fileName: GLOBAL_VARIABLES.EMPTY_STRING,
+          },
     },
-  }
+  };
 }

@@ -1,43 +1,42 @@
-import { useNavigate } from 'react-router-dom'
-import UserRoleChip from '@features/users/userRoleChip/UserRoleChip'
-import { Delete, Edit } from '@mui/icons-material'
-import { Stack, TableCell, TableRow, Tooltip, Typography } from '@mui/material'
-import { AllUserRowProps } from './AllUsersRow.type'
-import { useTranslation } from 'react-i18next'
-import { useDeleteUserMutation } from '@redux/apis/user/usersApi'
-import { useState } from 'react'
-import { useAppDispatch } from '@redux/hooks'
-import { showError, showSuccess } from '@redux/slices/snackbarSlice'
-import CustomDialogActions from '@components/dialogs/customDialogActions/CustomDialogActions'
-import UserStatusChip from '@pages/dashboard/admin/users/allUsersTable/userStatusChip/userStatusChip'
-import { PATHS } from '@config/constants/paths'
-import { GREY } from '@config/colors/colors'
-import trash from '@assets/logo/icon-trash.svg'
-import { InstructorAvatar } from '@features/home/userAvatar/UserAvatar.style'
+import { useNavigate } from 'react-router-dom';
+import { Delete, Edit } from '@mui/icons-material';
+import { Stack, TableCell, TableRow, Tooltip, Typography } from '@mui/material';
+import { AllUserRowProps } from './AllUsersRow.type';
+import { useTranslation } from 'react-i18next';
+import { useDeleteUserMutation } from '@redux/apis/user/usersApi';
+import { useState } from 'react';
+import { useAppDispatch } from '@redux/hooks';
+import { showError, showSuccess } from '@redux/slices/snackbarSlice';
+import CustomDialogActions from '@components/dialogs/customDialogActions/CustomDialogActions';
+import UserStatusChip from '@pages/dashboard/admin/users/allUsersTable/userStatusChip/userStatusChip';
+import { PATHS } from '@config/constants/paths';
+import { GREY } from '@config/colors/colors';
+import trash from '@assets/logo/icon-trash.svg';
+import { InstructorAvatar } from '@features/home/userAvatar/UserAvatar.style';
 
 function AllUsersRow({ user }: AllUserRowProps) {
-  const [deleteUser] = useDeleteUserMutation()
+  const [deleteUser] = useDeleteUserMutation();
 
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-  const dispatch = useAppDispatch()
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const handleDeleteUser = async (id: number) => {
     try {
-      deleteUser(id).unwrap()
-      dispatch(showSuccess(t('users.delete_user_success')))
+      deleteUser(id).unwrap();
+      dispatch(showSuccess(t('users.delete_user_success')));
     } catch (error) {
-      dispatch(showError(t('errors.general_error')))
+      dispatch(showError(t('errors.general_error')));
     } finally {
-      setOpen(false)
+      setOpen(false);
     }
-  }
+  };
 
   const navigateToUserDetailPage = (id: number) => {
-    return navigate(`${PATHS.DASHBOARD.ADMIN.USERS.ROOT}/${id}`)
-  }
+    return navigate(`${PATHS.DASHBOARD.ADMIN.USERS.ROOT}/${id}`);
+  };
   return (
     <>
       <TableRow key={user.id}>
@@ -47,9 +46,8 @@ function AllUsersRow({ user }: AllUserRowProps) {
         <TableCell>{user.firstName}</TableCell>
         <TableCell>{user.lastName}</TableCell>
         <TableCell>{user.email}</TableCell>
-        <TableCell>
-          <UserRoleChip roleId={user.role} />
-        </TableCell>
+        <TableCell>{user.birthDate}</TableCell>
+        <TableCell>{user.major}</TableCell>
         <TableCell>
           <UserStatusChip status={user?.isValid} />
         </TableCell>
@@ -63,11 +61,7 @@ function AllUsersRow({ user }: AllUserRowProps) {
               />
             </Tooltip>
             <Tooltip title={t('common.delete')}>
-              <Delete
-                color="error"
-                cursor="pointer"
-                onClick={() => setOpen(true)}
-              />
+              <Delete color="error" cursor="pointer" onClick={() => setOpen(true)} />
             </Tooltip>
           </Stack>
         </TableCell>
@@ -76,7 +70,8 @@ function AllUsersRow({ user }: AllUserRowProps) {
         open={open}
         onAccept={() => handleDeleteUser(user.id)}
         onClose={() => setOpen(false)}
-        onCancel={() => setOpen(false)}>
+        onCancel={() => setOpen(false)}
+      >
         <Stack direction={'column'} spacing={1} alignItems={'center'}>
           <img src={trash} width={100} />
           <Typography color={GREY.main} variant="h1" fontWeight={'medium'}>
@@ -88,7 +83,7 @@ function AllUsersRow({ user }: AllUserRowProps) {
         </Stack>
       </CustomDialogActions>
     </>
-  )
+  );
 }
 
-export default AllUsersRow
+export default AllUsersRow;
