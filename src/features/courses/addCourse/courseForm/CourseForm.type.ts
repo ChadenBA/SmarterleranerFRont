@@ -1,16 +1,23 @@
 import { UseFormReturn } from 'react-hook-form';
-import { CourseForDesigner } from 'types/models/Course';
+import { Quiz } from 'types/models/Quiz';
 
 export interface CourseFormProps {
-  formMethods: UseFormReturn<CourseFormValues, any, undefined>;
+  formMethods: UseFormReturn<CourseFormValues, undefined>;
+  defaultValues?: CourseFormValues;
   isEditMode?: boolean;
-  defaultValues?: CourseForDesigner;
 }
 
 export interface CourseFormValues {
   title: string;
   description: string;
-  categoryId: number;
-  subscribers: number[];
-  courseMedia?: File;
+  category: number;
+  subCategory: number;
+  courseMedia: {
+    id: number;
+    modelId: number;
+    fileName: string;
+    title: string;
+    mimeType: string;
+  };
+  quiz: Quiz;
 }

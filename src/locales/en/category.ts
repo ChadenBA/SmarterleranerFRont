@@ -17,4 +17,10 @@ export const category = {
   sub_category: 'Ex: Web Development, Mobile Development, ...',
   children_title_required: 'Sub category title is required',
   update_category_success: 'Category updated successfully',
+  category_required: 'Category is required',
+  category_not_found: 'Category not found',
+  sub_category_required: 'Sub category is required',
+  sub_category_not_found: 'Sub category not found',
+  category_label: 'Category',
+  sub_category_label: 'Sub Category',
 };

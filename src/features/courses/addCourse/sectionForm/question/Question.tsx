@@ -29,6 +29,7 @@ function Question({
   handleRemoveAnswer,
 }: QuestionProps) {
   const { t } = useTranslation()
+
   // Question to be submitted to the api after the update
   const questionToUpdate = sectionFormMethods.watch(
     `sections.${sectionIndex}.quiz.questions.${questionIndex}`,

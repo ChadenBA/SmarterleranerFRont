@@ -43,7 +43,7 @@ function CustomTextField({ config }: CustomTextFieldProps) {
               fullWidth
               disabled={disabled}
               multiline={type === 'textarea'}
-              rows={6}
+              rows={4}
               {...(!hasLabel ? { label: t(label) } : {})}
             />
           </Stack>

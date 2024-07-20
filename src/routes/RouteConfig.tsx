@@ -9,12 +9,16 @@ import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
 import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
 import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
+
+import AddCoursePage from '@pages/dashboard/designer/courses/addCoursePage/AddCoursePage';
+
 // import { GuestGuard } from '@guards/GuestGuard'
 // import AuthLayout from '@layouts/authLayout/AuthLayout'
 // import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
 // import { AuthGuard } from '@guards/AuthGuard'
 // import { RoleBasedGuard } from '@guards/RoleBasedGuard'
 // import { UserRoleEnum } from '@config/enums/role.enum'
+
 
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
@@ -134,6 +138,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
+    
 
       {
         path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
@@ -160,14 +165,15 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <AddCoursePage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+     
+      {
+        path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <AddCoursePage />
+          </RoleBasedGuard>
+        ),
+      },
       // {
       //   path: PATHS.DASHBOARD.ADMIN.COURSES.EDIT_COURSE,
       //   element: (

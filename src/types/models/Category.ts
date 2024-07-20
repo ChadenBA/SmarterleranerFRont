@@ -1,11 +1,11 @@
 export interface Children {
-  id?: number;
+  id: number;
   title: string;
   index?: number;
 }
 
 export interface Category {
-  id?: number;
+  id: number;
   title: string;
   children: Children[];
 }

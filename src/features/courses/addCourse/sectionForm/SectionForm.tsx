@@ -1,13 +1,12 @@
-import { SectionFormProps } from './SectionForm.type'
-import { Button, Stack } from '@mui/material'
-import { Add } from '@mui/icons-material'
-import Module from './module/Module'
-import { t } from 'i18next'
-import { FormProvider } from 'react-hook-form'
-import useSectionForm from './useSectionForm'
-import FallbackLoader from '@components/fallback/FallbackLoader'
-import { useState } from 'react'
-import SectionTabs from './sectionTabs/SectionTabs'
+import { SectionFormProps } from './SectionForm.type';
+import { Button, Stack } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { t } from 'i18next';
+import { FormProvider } from 'react-hook-form';
+import useSectionForm from './useSectionForm';
+import FallbackLoader from '@components/fallback/FallbackLoader';
+import { useState } from 'react';
+import SectionTabs from './sectionTabs/SectionTabs';
 
 function SectionForm({
   files,
@@ -29,32 +28,33 @@ function SectionForm({
     handleRemoveExternalUrl,
     handleRemoveQuiz,
     onDrop,
-  } = useSectionForm({ sectionFormMethods })
+  } = useSectionForm({ sectionFormMethods });
 
-  const [activeTab, setActiveTab] = useState(0)
+  const [activeTab, setActiveTab] = useState(0);
 
   const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue)
-  }
+    setActiveTab(newValue);
+  };
 
   const addNewSection = () => {
-    setActiveTab(fields.length)
-    handleAddModule()
-  }
+    setActiveTab(fields.length);
+    handleAddModule();
+  };
 
   const handleRemoveSection = (index: number) => {
-    handleRemoveModule(index)
-    setActiveTab(fields.length - 2)
-  }
+    handleRemoveModule(index);
+    setActiveTab(fields.length - 2);
+  };
 
   if (isFetching) {
-    return <FallbackLoader />
+    return <FallbackLoader />;
   }
+
   return (
     <FormProvider {...sectionFormMethods}>
       {!isEditMode ? (
         <Stack p={2} spacing={3}>
-          {fields.map((field, index) => (
+          {/* {fields.map((field, index) => (
             <Module
               field={field}
               sectionFormMethods={sectionFormMethods}
@@ -73,13 +73,10 @@ function SectionForm({
               handleAddExternalUrl={handleAddExternalUrl}
               handleRemoveExternalUrl={handleRemoveExternalUrl}
             />
-          ))}
+          ))} */}
 
           <Stack justifyContent={'center'} alignItems={'center'} mt={2}>
-            <Button
-              variant="contained"
-              onClick={handleAddModule}
-              startIcon={<Add />}>
+            <Button variant="contained" onClick={handleAddModule} startIcon={<Add />}>
               {t('section.add_section')}
             </Button>
           </Stack>
@@ -92,7 +89,7 @@ function SectionForm({
             handleChange={handleChangeTab}
             onAddNewSection={addNewSection}
           />
-          <Module
+          {/* <Module
             field={fields[activeTab]}
             sectionFormMethods={sectionFormMethods}
             files={files}
@@ -111,11 +108,11 @@ function SectionForm({
             handleRemoveExternalUrl={handleRemoveExternalUrl}
             handleAddSectionApi={handleAddSection}
             handleRemoveQuiz={handleRemoveQuiz}
-          />
+          /> */}
         </Stack>
       )}
     </FormProvider>
-  )
+  );
 }
 
-export default SectionForm
+export default SectionForm;

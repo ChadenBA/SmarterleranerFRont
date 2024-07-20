@@ -18,4 +18,10 @@ export const category = {
   sub_category: 'Ex: Développement Web, Développement Mobile, ...',
   children_title_required: 'Le titre de la sous-catégorie est requis',
   update_category_success: 'Catégorie mise à jour avec succès',
+  category_required: 'La catégorie est requise',
+  category_not_found: 'Catégorie non trouvée',
+  sub_category_required: 'La sous-catégorie est requise',
+  sub_category_not_found: 'Sous-catégorie non trouvée',
+  category_label: 'Categoire',
+  sub_category_label: 'Sous-catégorie',
 };

@@ -74,6 +74,7 @@ export const course = {
   certificates: 'Certificates',
   enrolled_courses: 'Enrolled Courses',
   completed_courses: 'Completed Courses',
+  pretest: 'Add Pretest here',
   avert: 'Avert',
   avert_confirm: 'Are you sure you want to complete this course?',
   // number of educational units
@@ -82,4 +83,5 @@ export const course = {
   offline_course_success: 'Course set to offline successfully',
   online_course_success: 'Course set to online successfully',
   active_course_success: 'Course set to active successfully',
+
 };
