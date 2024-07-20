@@ -2,16 +2,15 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { AllCoursesListProps } from './AllCoursesList.type'
 import NoDataFound from '@components/noDataFound/NoDataFound'
-import CoursesListSkeleton from '@features/home/homeCourses/coursesList/coursesListSkeleton/CoursesListSkeleton'
-import CourseCard from '@features/home/homeCourses/coursesCard/CourseCard'
+import CoursesListSkeleton from '@features/courses/coursesList/coursesListSkeleton/CoursesListSkeleton'
+import CourseCard from '@features/courses/coursesCard/CourseCard'
 import { Stack } from '@mui/material'
 import { PATHS } from '@config/constants/paths'
 
 function AllCoursesList({
   courses,
   isLoading,
-  isDesigner,
-  isInstructor,
+  isAdmin,
 }: AllCoursesListProps) {
   const { t } = useTranslation()
   const navigate = useNavigate()
@@ -38,21 +37,13 @@ function AllCoursesList({
             id={course.id}
             isActive={course?.isActive}
             image={course.media[0]?.fileName}
-            instructorName={`${course.facilitator.firstName} ${course.facilitator.lastName}`}
-            instructorAvatar={
-              course?.facilitator?.media?.fileName as string
-            }
             isOffline={course.isOffline}
-            discount={course.discount}
             courseTitle={course.title}
-            coursePrice={course.price.toString()}
-            lessonsCount={course.lessonsCount}
-            duration={course.duration}
-            isPaid={course.isPaid}
+            educationaUnitsCount={course.educationalUnitsCount}
+            learningObjectsCount={course.learningObjectsCount}
             createdAt={course.createdAt}
-            isDesigner={isDesigner}
-            isInstructor={isInstructor}
-            isEnrolled={course.isSubscribed}
+            isAdmin={isAdmin}
+         //   isEnrolled={course.isSubscribed}
             navigateToEditCoursePage={navigateToEditCoursePage}
           />
         ))}

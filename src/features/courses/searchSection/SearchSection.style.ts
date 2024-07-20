@@ -1,4 +1,4 @@
-import { TextField, styled } from '@mui/material'
+import { TextField, styled } from '@mui/material';
 
 export const StyledTextField = styled(TextField)(({ theme }) => ({
   '& .MuiOutlinedInput-root': {
@@ -6,6 +6,7 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
     justifyContent: 'center',
     alignSelf: 'center',
     width: '100%',
+    border: `1px solid ${theme.palette.grey[400]}`,
     background: theme.palette.background.default,
 
     '& fieldset': {
@@ -27,4 +28,4 @@ export const StyledTextField = styled(TextField)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     width: '100%',
   },
-}))
+}));

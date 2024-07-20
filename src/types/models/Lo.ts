@@ -1,14 +1,11 @@
-import { LoTypeEnum } from '@config/enums/LoType.enum';
+import { LearningObjectType } from '@config/enums/learningObjectType.enum';
 import { Media } from './Media';
 import { Quiz } from './Quiz';
 
 export interface Lo {
   id?: number;
-  type: LoTypeEnum;
-
-  duration: string;
-
-  quiz?: Quiz;
-
+  title: string;
+  type: LearningObjectType;
   media: Media[];
+  quiz?: Quiz;
 }

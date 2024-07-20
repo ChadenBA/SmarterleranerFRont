@@ -7,6 +7,7 @@ import searchQueryReducer from './slices/appSlice';
 import { userApi } from './apis/user/usersApi';
 import authReducer from './slices/authSlice';
 import { dashboardApi } from './apis/dashboard/dashboardApi';
+import { courseApi } from './apis/courses/coursesApi';
 
 export const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ export const store = configureStore({
     [categoriesApi.reducerPath]: categoriesApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [courseApi.reducerPath]: courseApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -25,6 +27,7 @@ export const store = configureStore({
       userApi.middleware,
       authApi.middleware,
       dashboardApi.middleware,
+      courseApi.middleware,
     ),
 });
 

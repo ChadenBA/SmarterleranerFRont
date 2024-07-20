@@ -20,4 +20,11 @@ export const ENDPOINTS = {
   CREATE_CATEGORY: 'categories/create-category',
   UPDATE_CATEGORY: 'categories/update-category',
   REFRESH_TOKEN: 'refresh-token',
+  ADMIN_COURSES: 'admin/courses',
+  DELETE_COURSE: 'admin/delete-course',
+  CREATE_COURSE: 'admin/create-course',
+  UPDATE_COURSE: 'admin/update-course',
+  ACTIVE_COURSE: 'admin/active-course',
+  OFFLINE_COURSE: 'admin/offline-course',
+  ONLINE_COURSE: 'admin/online-course',
 };
