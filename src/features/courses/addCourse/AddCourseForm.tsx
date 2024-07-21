@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { Divider, Stack } from '@mui/material';
 import CustomStepper from '@components/CustomStepper/CustomStepper';
-import {  STEPS } from './AddCourseForm.constants';
+import { STEPS } from './AddCourseForm.constants';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
 import { GoBackButton } from './AddCourseForm.style';
 import { useForm } from 'react-hook-form';
@@ -11,8 +11,7 @@ import { useCreateCourseMutation, useUpdateCourseMutation } from '@redux/apis/co
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
-import SectionForm from './sectionForm/SectionForm';
-import { PATHS } from '@config/constants/paths';
+import EducationalUnit from './sectionForm/SectionForm';
 import { useNavigate } from 'react-router-dom';
 import { AddCourseFormProps } from './AddCourseForm.type';
 import { CourseFormValues } from './courseForm/CourseForm.type';
@@ -28,14 +27,13 @@ export default function AddCourseForm({
   const { t } = useTranslation();
 
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const [files, setFiles] = useState<Record<number, File[]>>(
     courseDefaultValues?.media ? courseDefaultValues.media : {},
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
 
   const StepperFormMethods = useForm<CourseFormValues>({
@@ -44,12 +42,12 @@ export default function AddCourseForm({
     defaultValues: generateCourseFormDefaultValues(courseDefaultValues),
   });
 
-  const SectionFormMethods = useForm<FormValues>({
+  const educationalUnitFormMethod = useForm<FormValues>({
     mode: 'onChange',
     shouldFocusError: true,
-    defaultValues: {
-      sections: courseDefaultValues ? courseDefaultValues.sections : [],
-    },
+    // defaultValues: {
+    //   sections: courseDefaultValues ? courseDefaultValues.sections : [],
+    // },
   });
 
   const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();
@@ -76,7 +74,7 @@ export default function AddCourseForm({
     }
   });
 
-  const handleAddSection = SectionFormMethods.handleSubmit(async (values) => {
+  const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
     // let addedSections: Section[] = [];
 
     if (isEditMode) {
@@ -111,10 +109,10 @@ export default function AddCourseForm({
         );
       case 1:
         return (
-          <SectionForm
+          <EducationalUnit
             setFiles={setFiles}
             files={files}
-            sectionFormMethods={SectionFormMethods}
+            educationalUnitFormMethod={educationalUnitFormMethod}
             isEditMode={isEditMode}
             defaultValues={courseDefaultValues}
             isFetching={isFetching}

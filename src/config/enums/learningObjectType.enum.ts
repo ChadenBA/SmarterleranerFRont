@@ -1,4 +1,4 @@
 export enum LearningObjectType {
-  ABSTRACT = 'abstract',
-  CONCRETE = 'concrete',
+  ABSTRACT = 'Abstract',
+  CONCRETE = 'Concrete',
 }

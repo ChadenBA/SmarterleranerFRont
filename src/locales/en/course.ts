@@ -83,5 +83,11 @@ export const course = {
   offline_course_success: 'Course set to offline successfully',
   online_course_success: 'Course set to online successfully',
   active_course_success: 'Course set to active successfully',
-
+  basic_educational_unit: 'Basic educational unit',
+  new_basic_educational_unit: 'New basic educational unit',
+  eu_title: 'Educational unit title',
+  new_learning_object: 'New learning object',
+  lo_object_type: 'Learning object type',
+  lo_object_type_abstract: 'Abstract',
+  lo_object_type_concrete: 'Concrete',
 };

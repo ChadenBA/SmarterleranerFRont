@@ -1,48 +1,46 @@
-import { UseFormReturn, useFieldArray } from 'react-hook-form'
-import { DragEvent } from 'react'
+import { UseFormReturn, useFieldArray } from 'react-hook-form';
+import { DragEvent } from 'react';
 import {
   DEFAULT_ANSWER_OBJECT,
   // DEFAULT_MODULE_OBJECT,
   DEFAULT_QUESTION_OBJECT,
-} from './SectionForm.constants'
-import { FormValues } from './module/Module.type'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
-import { QuestionTypeEnum } from '@config/enums/questionType.enum'
+} from './SectionForm.constants';
+import { FormValues } from './module/Module.type';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 
 interface UseSectionFormProps {
-  sectionFormMethods: UseFormReturn<FormValues, any, undefined>
+  educationalUnitFormMethod: UseFormReturn<FormValues, undefined>;
 }
-export default function useSectionForm({
-  sectionFormMethods,
-}: UseSectionFormProps) {
+export default function useSectionForm({ educationalUnitFormMethod }: UseSectionFormProps) {
   const { fields, append, move, remove, update } = useFieldArray({
-    control: sectionFormMethods.control,
+    control: educationalUnitFormMethod.control,
     name: 'sections',
-  })
+  });
 
   // Add a new module to the form
   const handleAddModule = () => {
-    append([])
-  }
+    append([]);
+  };
 
   // remove a module from the form
   const handleRemoveModule = (index: number) => {
-    remove(index)
-  }
+    remove(index);
+  };
 
   // drop module to a new index
   const onDrop = (event: DragEvent<HTMLDivElement>, dropIndex: number) => {
-    event.preventDefault()
-    const dragIndex = parseInt(event.dataTransfer.getData('text/plain'))
+    event.preventDefault();
+    const dragIndex = parseInt(event.dataTransfer.getData('text/plain'));
     if (dragIndex !== dropIndex) {
-      move(dragIndex, dropIndex)
+      move(dragIndex, dropIndex);
     }
-  }
+  };
 
   // Add a new question to the module
   const handleAddQuestion = (index: number) => {
     // Watch over the section object at the index
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${index}`)
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${index}`);
 
     // Update the Fields with the new object at the same index
     // With the new question added to the questions array
@@ -51,12 +49,12 @@ export default function useSectionForm({
       quiz: {
         questions: [...fieldToUpdate.quiz.questions, DEFAULT_QUESTION_OBJECT],
       },
-    })
-  }
+    });
+  };
 
   // Remove a quiz from the module
   const handleRemoveQuiz = (index: number) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${index}`)
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${index}`);
     update(index, {
       ...fieldToUpdate,
       quiz: {
@@ -78,19 +76,16 @@ export default function useSectionForm({
           },
         ],
       },
-    })
-  }
+    });
+  };
 
   // Remove a question from the module
-  const handleRemoveQuestion = (
-    sectionIndex: number,
-    questionIndex: number,
-  ) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${sectionIndex}`)
+  const handleRemoveQuestion = (sectionIndex: number, questionIndex: number) => {
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${sectionIndex}`);
     const updatedQuestions = [
       ...fieldToUpdate.quiz.questions.slice(0, questionIndex),
       ...fieldToUpdate.quiz.questions.slice(questionIndex + 1),
-    ]
+    ];
 
     update(sectionIndex, {
       ...fieldToUpdate,
@@ -98,25 +93,16 @@ export default function useSectionForm({
         ...fieldToUpdate.quiz,
         questions: updatedQuestions,
       },
-    })
-  }
+    });
+  };
 
   // Remove an answer from the question
-  const handleRemoveAnswer = (
-    sectionIndex: number,
-    questionIndex: number,
-    answerIndex: number,
-  ) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${sectionIndex}`)
+  const handleRemoveAnswer = (sectionIndex: number, questionIndex: number, answerIndex: number) => {
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${sectionIndex}`);
     const updatedAnswers = [
-      ...fieldToUpdate.quiz.questions[questionIndex].answers.slice(
-        0,
-        answerIndex,
-      ),
-      ...fieldToUpdate.quiz.questions[questionIndex].answers.slice(
-        answerIndex + 1,
-      ),
-    ]
+      ...fieldToUpdate.quiz.questions[questionIndex].answers.slice(0, answerIndex),
+      ...fieldToUpdate.quiz.questions[questionIndex].answers.slice(answerIndex + 1),
+    ];
 
     update(sectionIndex, {
       ...fieldToUpdate,
@@ -131,16 +117,16 @@ export default function useSectionForm({
           ...fieldToUpdate.quiz.questions.slice(questionIndex + 1),
         ],
       },
-    })
-  }
+    });
+  };
 
   // Add an answer to the question
   const handleAddAnswer = (sectionIndex: number, questionIndex: number) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${sectionIndex}`)
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${sectionIndex}`);
     const updatedAnswers = [
       ...fieldToUpdate.quiz.questions[questionIndex].answers,
       DEFAULT_ANSWER_OBJECT,
-    ]
+    ];
 
     update(sectionIndex, {
       ...fieldToUpdate,
@@ -150,20 +136,20 @@ export default function useSectionForm({
             return {
               ...question,
               answers: updatedAnswers,
-            }
+            };
           }
-          return question
+          return question;
         }),
       },
-    })
-  }
+    });
+  };
 
   // Add external URL to the module
   const handleAddExternalUrl = (index: number) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${index}`)
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${index}`);
     if (!fieldToUpdate.externalUrls) {
-      fieldToUpdate.externalUrls = []
-      return
+      fieldToUpdate.externalUrls = [];
+      return;
     }
     update(index, {
       ...fieldToUpdate,
@@ -175,25 +161,25 @@ export default function useSectionForm({
           title: GLOBAL_VARIABLES.EMPTY_STRING,
         },
       ],
-    })
-  }
+    });
+  };
 
   // remove external URL from the module
   const handleRemoveExternalUrl = (index: number, externalUrlIndex: number) => {
-    const fieldToUpdate = sectionFormMethods.watch(`sections.${index}`)
+    const fieldToUpdate = educationalUnitFormMethod.watch(`sections.${index}`);
     if (!fieldToUpdate.externalUrls) {
-      fieldToUpdate.externalUrls = []
+      fieldToUpdate.externalUrls = [];
     }
     const updatedExternalUrls = [
       ...fieldToUpdate.externalUrls.slice(0, externalUrlIndex),
       ...fieldToUpdate.externalUrls.slice(externalUrlIndex + 1),
-    ]
+    ];
 
     update(index, {
       ...fieldToUpdate,
       externalUrls: updatedExternalUrls,
-    })
-  }
+    });
+  };
 
   return {
     fields,
@@ -207,5 +193,5 @@ export default function useSectionForm({
     handleAddExternalUrl,
     handleRemoveExternalUrl,
     handleRemoveQuiz,
-  }
+  };
 }
