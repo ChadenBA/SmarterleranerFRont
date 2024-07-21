@@ -1,23 +1,15 @@
-import {
-  Collapse,
-  Divider,
-  Grid,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import CustomTextField from '@components/Inputs/customTextField/CustomTextField'
-import UploadMultipleFiles from '@components/Inputs/uploadMultipleFiles/UploadMultipleFiles'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import { CREATE_STEP_FORM_CONFIG } from '../../SectionForm.constants'
-import { ModuleBodyProps } from './ModuleBody.type'
-import AddToPhotosOutlinedIcon from '@mui/icons-material/AddToPhotosOutlined'
-import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton'
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import Question from '../../question/Question'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
+import { Collapse, Divider, Grid, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
+import UploadMultipleFiles from '@components/Inputs/uploadMultipleFiles/UploadMultipleFiles';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { CREATE_STEP_FORM_CONFIG } from '../../SectionForm.constants';
+import { ModuleBodyProps } from './ModuleBody.type';
+import AddToPhotosOutlinedIcon from '@mui/icons-material/AddToPhotosOutlined';
+import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import Question from '../../question/Question';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function ModuleBody({
   expanded,
@@ -38,7 +30,7 @@ function ModuleBody({
   handleRemoveAnswer,
   setDeletedMedia,
 }: ModuleBodyProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Collapse in={expanded} timeout={700}>
       <Grid container spacing={3}>
@@ -85,7 +77,8 @@ function ModuleBody({
               direction={'row'}
               alignItems={'center'}
               display={'flex'}
-              gap={4}>
+              gap={4}
+            >
               <Grid item xs={12} sm={6}>
                 <CustomTextField
                   config={{
@@ -115,7 +108,8 @@ function ModuleBody({
                     sx={{
                       color: externalUrls.length === 1 ? 'inherit' : 'red',
                     }}
-                    onClick={() => handleRemoveExternalUrl(index, indexUrl)}>
+                    onClick={() => handleRemoveExternalUrl(index, indexUrl)}
+                  >
                     <DeleteOutlineOutlinedIcon />
                   </IconButton>
                 </Tooltip>
@@ -144,9 +138,7 @@ function ModuleBody({
               </Typography>
 
               <Tooltip title={t('section.quiz.add_question')} placement="right">
-                <IconButton
-                  onClick={() => handleAddQuestion(index)}
-                  color="success">
+                <IconButton onClick={() => handleAddQuestion(index)} color="success">
                   <AddCircleOutlineOutlinedIcon fontSize="medium" />
                 </IconButton>
               </Tooltip>
@@ -157,27 +149,23 @@ function ModuleBody({
                 <Grid item xs={12} key={questionIndex} p={2}>
                   <Question
                     handleAddQuestion={handleAddQuestion}
-                    handleDeleteQuestion={() =>
-                      handleRemoveQuestion(index, questionIndex)
-                    }
+                    handleDeleteQuestion={() => handleRemoveQuestion(index, questionIndex)}
                     canDelete={questions.length > 1}
                     questionIndex={questionIndex}
                     field={field}
                     sectionIndex={index}
                     sectionFormMethods={sectionFormMethods}
                     handleRemoveAnswer={handleRemoveAnswer}
-                    handleAddAnswer={() =>
-                      handleAddAnswer(index, questionIndex)
-                    }
+                    handleAddAnswer={() => handleAddAnswer(index, questionIndex)}
                   />
                 </Grid>
-              )
+              );
             })}
           </Stack>
         )}
       </Grid>
     </Collapse>
-  )
+  );
 }
 
-export default ModuleBody
+export default ModuleBody;

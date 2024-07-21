@@ -1,6 +1,5 @@
 import { Media } from './Media';
 import { Eu } from './Eu';
-import { Lo } from './Lo';
 import { Quiz } from './Quiz';
 
 export interface Course {
@@ -22,12 +21,10 @@ export interface Course {
   isSubscribed?: 0 | 1;
   createdAt: string;
   media: Media[];
-
   learningObjectsCount: number;
   educationalUnitsCount: number;
   subscribedUsersCount: number;
   educationalUnits: Eu[];
-  learningObjects: Lo[];
   quiz: Quiz;
 }
 
@@ -37,10 +34,11 @@ export interface CourseForAdmin {
   description: string;
   categoryId: number;
   subCategoryId: number;
+  isOffline?: 1 | 0;
+  isActive?: 1 | 0;
   subscribers: number[];
-  educationaUnit: Eu[];
-  learningObjects: Lo[];
+  educationalUnits: Eu[];
   quiz: Quiz;
   courseMedia: File;
-  media?: Record<string, File[]>;
+  createdAt: string;
 }

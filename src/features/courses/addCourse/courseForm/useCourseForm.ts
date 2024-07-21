@@ -13,7 +13,6 @@ interface UseCourseForm {
 }
 
 export default function useCourseForm({ formMethods }: UseCourseForm) {
-
   const { watch, setValue } = formMethods;
 
   const {
@@ -43,7 +42,7 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
   });
 
   // Get the selected category from
-  const selectedCategory = watch('category');
+  const selectedCategory = watch('categoryId');
 
   // Set the subCategoriesOption based on the selected category
   useEffect(() => {

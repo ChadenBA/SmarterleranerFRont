@@ -2,7 +2,7 @@ import { UseFormReturn, useFieldArray } from 'react-hook-form'
 import { DragEvent } from 'react'
 import {
   DEFAULT_ANSWER_OBJECT,
-  DEFAULT_MODULE_OBJECT,
+  // DEFAULT_MODULE_OBJECT,
   DEFAULT_QUESTION_OBJECT,
 } from './SectionForm.constants'
 import { FormValues } from './module/Module.type'
@@ -22,7 +22,7 @@ export default function useSectionForm({
 
   // Add a new module to the form
   const handleAddModule = () => {
-    append(DEFAULT_MODULE_OBJECT)
+    append([])
   }
 
   // remove a module from the form

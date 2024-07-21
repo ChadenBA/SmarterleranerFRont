@@ -10,14 +10,9 @@ export interface CourseFormProps {
 export interface CourseFormValues {
   title: string;
   description: string;
-  category: number;
-  subCategory: number;
-  courseMedia: {
-    id: number;
-    modelId: number;
-    fileName: string;
-    title: string;
-    mimeType: string;
-  };
+  categoryId: number;
+  subcategoryId: number;
+  subscribers?: number[];
   quiz: Quiz;
+  courseMedia?: File;
 }

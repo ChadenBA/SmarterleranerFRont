@@ -34,8 +34,8 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
     rules: { required: 'course.description_required' },
   },
-  category: {
-    name: 'category',
+  categoryId: {
+    name: 'categoryId',
     placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
     label: 'category.category_label',
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
@@ -43,8 +43,8 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
       required: 'category.category_required',
     },
   },
-  subCategory: {
-    name: 'subCategory',
+  subcategoryId: {
+    name: 'subcategoryId',
     placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
     label: 'category.sub_category_label',
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,

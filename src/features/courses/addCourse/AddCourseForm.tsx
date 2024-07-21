@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { Divider, Stack } from '@mui/material';
 import CustomStepper from '@components/CustomStepper/CustomStepper';
-import { DEFAULT_SECTIONS, STEPS } from './AddCourseForm.constants';
+import {  STEPS } from './AddCourseForm.constants';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
 import { GoBackButton } from './AddCourseForm.style';
 import { useForm } from 'react-hook-form';
@@ -48,32 +48,32 @@ export default function AddCourseForm({
     mode: 'onChange',
     shouldFocusError: true,
     defaultValues: {
-      sections: courseDefaultValues ? courseDefaultValues.sections : DEFAULT_SECTIONS,
+      sections: courseDefaultValues ? courseDefaultValues.sections : [],
     },
   });
 
-  // const [createCourseActionApi, { isLoading }] = useCreateCourseMutation()
+  const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();
   // const [createSectionActionApi, { isLoading: isLoadingSection }] = useCreateModuleMutation()
-  // const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation()
+  const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation();
 
   const handleAddCourse = StepperFormMethods.handleSubmit(async (values) => {
-    // try {
-    //   if (isEditMode) {
-    //     await updateCourseActionApi({
-    //       id: Number(courseId),
-    //       course: values,
-    //     }).unwrap();
-    //     dispatch(showSuccess(t('course.update_course_success')));
-    //   } else {
-    //     const courseResponse = await createCourseActionApi(values).unwrap();
-    //     setCourseId(String(courseResponse.data.id));
-    //     dispatch(showSuccess(t('course.add_course_success')));
-    //   }
-    //   setCompleted({ ...completed, [activeStep]: true });
-    //   setActiveStep((prev) => prev + 1);
-    // } catch (error) {
-    //   dispatch(showError(t('course.api_course_failure')));
-    // }
+    try {
+      if (isEditMode) {
+        await updateCourseActionApi({
+          id: Number(courseId),
+          course: values,
+        }).unwrap();
+        dispatch(showSuccess(t('course.update_course_success')));
+      } else {
+        const courseResponse = await createCourseActionApi(values).unwrap();
+        setCourseId(String(courseResponse.data.id));
+        dispatch(showSuccess(t('course.add_course_success')));
+      }
+      setCompleted({ ...completed, [activeStep]: true });
+      setActiveStep((prev) => prev + 1);
+    } catch (error) {
+      dispatch(showError(t('course.api_course_failure')));
+    }
   });
 
   const handleAddSection = SectionFormMethods.handleSubmit(async (values) => {
@@ -145,7 +145,7 @@ export default function AddCourseForm({
         </GoBackButton>
         <Stack>
           <CustomLoadingButton
-            isLoading={/*isLoading || isLoadingSection || isLoadingUpdate*/ false}
+            isLoading={isLoading /* || isLoadingSection || isLoadingUpdate*/}
             onClick={activeStep === 0 ? handleAddCourse : handleAddSection}
           >
             {isEditMode ? t('common.update') : t('common.next')}

@@ -1,10 +1,10 @@
-import CustomTextField from '@components/Inputs/customTextField/CustomTextField'
-import { Grid, IconButton, Tooltip } from '@mui/material'
-import { AnswerProps } from './Answer.type'
-import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import { useTranslation } from 'react-i18next'
-import { CREATE_STEP_FORM_CONFIG } from '../SectionForm.constants'
+import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { AnswerProps } from './Answer.type';
+import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useTranslation } from 'react-i18next';
+import { CREATE_STEP_FORM_CONFIG } from '../SectionForm.constants';
 
 function Answer({
   sectionIndex,
@@ -13,7 +13,7 @@ function Answer({
   canDelete,
   handleRemoveAnswer,
 }: AnswerProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Grid container display={'flex'} alignItems={'center'}>
       <Grid item xs={12} lg={1}>
@@ -39,20 +39,17 @@ function Answer({
             disabled={!canDelete}
             sx={{
               color: (theme) =>
-                canDelete
-                  ? theme.palette.error.main
-                  : theme.palette.action.disabled,
+                canDelete ? theme.palette.error.main : theme.palette.action.disabled,
             }}
-            onClick={() =>
-              handleRemoveAnswer(sectionIndex, questionIndex, answerIndex)
-            }
-            color="error">
+            onClick={() => handleRemoveAnswer(sectionIndex, questionIndex, answerIndex)}
+            color="error"
+          >
             <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Tooltip>
       </Grid>
     </Grid>
-  )
+  );
 }
 
-export default Answer
+export default Answer;

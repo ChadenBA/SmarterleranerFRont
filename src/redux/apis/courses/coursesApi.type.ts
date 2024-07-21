@@ -51,19 +51,18 @@ export interface CourseForAdminApi {
   title: string;
   description: string;
   category_id: number;
-
+  subcategory_id: number;
   is_active?: 0 | 1;
   is_offline?: 0 | 1;
   subscribers: UserApi[];
   created_at: string;
   media: MediaApi[];
   educational_units: ApiEU[];
-  learning_objects: ApiLO[];
+  quiz: QuizApi;
 }
 
 export interface ApiEU {
-  id: number;
-
+  id?: number;
   title: string;
   type: EducationalUnitEnum;
   learning_objects: ApiLO[];

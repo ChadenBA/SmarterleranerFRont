@@ -10,6 +10,7 @@ import { injectPaginationParamsToUrl } from '@utils/helpers/queryParamInjector';
 import { ENDPOINTS } from '@config/constants/endpoints';
 import { ApiPaginationResponse } from '../type';
 import {
+  encodeCourse,
   transformFetchCourseForAdminResponse,
   transformFetchCoursesResponse,
 } from './coursesApi.transform';
@@ -39,22 +40,23 @@ export const courseApi = createApi({
       invalidatesTags: ['Courses'],
     }),
 
-    // createCourse: builder.mutation<CreateCourseResponse, FieldValues>({
-    //   query: (course) => ({
-    //     url: ENDPOINTS.CREATE_COURSE,
-    //     method: MethodsEnum.POST,
-    //     body: encodeCourse(course),
-    //   }),
-    //   invalidatesTags: ['Courses'],
-    // }),
-    // updateCourse: builder.mutation<CreateCourseResponse, { id: number; course: FieldValues }>({
-    //   query: ({ id, course }) => ({
-    //     url: ENDPOINTS.UPDATE_COURSE + `/${id}`,
-    //     method: MethodsEnum.POST,
-    //     body: encodeCourse(course),
-    //   }),
-    //   invalidatesTags: ['Courses', 'Course'],
-    // }),
+    createCourse: builder.mutation<CreateCourseResponse, FieldValues>({
+      query: (course) => ({
+        url: ENDPOINTS.CREATE_COURSE,
+        method: MethodsEnum.POST,
+        body: encodeCourse(course),
+      }),
+      invalidatesTags: ['Courses'],
+    }),
+
+    updateCourse: builder.mutation<CreateCourseResponse, { id: number; course: FieldValues }>({
+      query: ({ id, course }) => ({
+        url: ENDPOINTS.UPDATE_COURSE + `/${id}`,
+        method: MethodsEnum.POST,
+        body: encodeCourse(course),
+      }),
+      invalidatesTags: ['Courses', 'Course'],
+    }),
     getCourseForAdminById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
         url: ENDPOINTS.ADMIN_COURSES + `/${id}`,
@@ -92,9 +94,9 @@ export const courseApi = createApi({
 export const {
   useGetAdminCoursesQuery,
   useDeleteCourseMutation,
-  //useCreateCourseMutation,
+  useCreateCourseMutation,
   useGetCourseForAdminByIdQuery,
-  //useUpdateCourseMutation,
+  useUpdateCourseMutation,
 
   usePutCourseActiveMutation,
   useSetCourseOfflineMutation,
