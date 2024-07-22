@@ -1,20 +1,22 @@
-import { FieldArrayWithId, UseFormReturn } from 'react-hook-form'
-import { FormValues } from '../module/Module.type'
+import { FieldArrayWithId, UseFormReturn } from 'react-hook-form';
+import { FormValues } from '../module/Eu.type';
 
 export interface QuestionProps {
-  field: FieldArrayWithId<FormValues, 'sections', 'id'>
-  questionIndex: number
-  sectionIndex: number
+  field: FieldArrayWithId<FormValues, 'eu', 'id'>;
+  questionIndex: number;
+  euIndex: number;
+  loIndex: number;
 
-  canDelete: boolean
-  sectionFormMethods: UseFormReturn<FormValues, any, undefined>
+  canDelete: boolean;
+  euFormMethods: UseFormReturn<FormValues, any, undefined>;
 
-  handleDeleteQuestion: (index: number, questionIndex: number) => void
-  handleAddQuestion: (index: number) => void
-  handleAddAnswer: (index: number, questionIndex: number) => void
+  handleDeleteQuestion: (euIndex: number, loIndex: number, questionIndex: number) => void;
+  handleAddQuestion: (euIndex: number, loIndex: number) => void;
+  handleAddAnswer: (euIndex: number, loIndex: number, questionIndex: number) => void;
   handleRemoveAnswer: (
-    index: number,
+    euIndex: number,
+    loIndex: number,
     questionIndex: number,
     answerIndex: number,
-  ) => void
+  ) => void;
 }

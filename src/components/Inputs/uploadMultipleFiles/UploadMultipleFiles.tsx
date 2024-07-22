@@ -1,44 +1,47 @@
-import { Grid } from '@mui/material'
-import { UploadMultipleFilesProps } from './UplaodMultipleFiles.type'
-import UploadInput from '../uploadInput/UploadInput'
-import { ChangeEvent, MouseEvent } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Grid } from '@mui/material';
+import { UploadMultipleFilesProps } from './UplaodMultipleFiles.type';
+import UploadInput from '../uploadInput/UploadInput';
+import { ChangeEvent, MouseEvent } from 'react';
+import { useTranslation } from 'react-i18next';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function UploadMultipleFiles({
   files,
   index,
   isEditMode,
   setFiles,
+  setDeletedMedia,
 }: UploadMultipleFilesProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []);
     if (newFiles.length) {
-      setFiles(prev => ({
+      setFiles((prev) => ({
         ...prev,
         [index]: [...(prev[index] || []), ...newFiles],
       }));
     }
   };
 
-  const handleDeletePreview = (
-    event: MouseEvent<SVGSVGElement>,
-    fileIndex: number,
-  ) => {
-    event.stopPropagation()
+  const handleDeletePreview = (event: MouseEvent<SVGSVGElement>, fileIndex: number) => {
+    event.stopPropagation();
+    if (files[fileIndex].name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)) {
+      setDeletedMedia((prev) => [...prev, files[fileIndex].name]);
+    }
     setFiles((prev) => {
-      const files = prev[index] || []
+      const files = prev[index] || [];
       return {
         ...prev,
         [index]: files.filter((f) => f !== file),
-      }
-    })
+      };
+    });
 
-    const file = files[fileIndex]
+    const file = files[fileIndex];
     if (file) {
-      URL.revokeObjectURL(URL.createObjectURL(file))
+      URL.revokeObjectURL(URL.createObjectURL(file));
     }
-  }
+  };
 
   return (
     <>
@@ -66,6 +69,6 @@ function UploadMultipleFiles({
       </Grid>
     </>
   );
-};
+}
 
-export default UploadMultipleFiles
+export default UploadMultipleFiles;

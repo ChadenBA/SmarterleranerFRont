@@ -1,6 +1,6 @@
-import { Section } from '@features/courses/addCourse/sectionForm/module/Module.type'
+import { Section } from '@features/courses/addCourse/sectionForm/module/Eu.type';
 
 export interface CourseContentProps {
-  steps: Section[]
-  isEnrolled?: boolean
+  steps: Section[];
+  isEnrolled?: boolean;
 }

@@ -11,12 +11,15 @@ import { useCreateCourseMutation, useUpdateCourseMutation } from '@redux/apis/co
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
-import EducationalUnit from './sectionForm/SectionForm';
+import EducationalUnit from './sectionForm/EuForm';
 import { useNavigate } from 'react-router-dom';
 import { AddCourseFormProps } from './AddCourseForm.type';
 import { CourseFormValues } from './courseForm/CourseForm.type';
 import { generateCourseFormDefaultValues } from './AddCourseForm.helpers';
-import { FormValues } from './sectionForm/module/Module.type';
+import { FormValues } from './sectionForm/module/Eu.type';
+import EducationalUnitForm from './sectionForm/EuForm';
+import { Eu } from 'types/models/Eu';
+import { DEFAULT_BASIC_EDUCATIONAL_UNIT } from './sectionForm/EuForm.constants';
 
 export default function AddCourseForm({
   isEditMode,
@@ -45,9 +48,23 @@ export default function AddCourseForm({
   const educationalUnitFormMethod = useForm<FormValues>({
     mode: 'onChange',
     shouldFocusError: true,
-    // defaultValues: {
-    //   sections: courseDefaultValues ? courseDefaultValues.sections : [],
-    // },
+    defaultValues: {
+      eu: courseDefaultValues
+        ? courseDefaultValues.educationalUnits.map((eu: Eu) => ({
+            ...eu,
+            learningObjects: eu.learningObjects.map((lo) => ({
+              ...lo,
+              questions: lo.quiz.questions.map((question) => ({
+                ...question,
+                answers: question.answers.map((answer) => ({
+                  ...answer,
+                  isValid: answer.isValid ? answer.isValid : false,
+                })),
+              })),
+            })),
+          }))
+        : [DEFAULT_BASIC_EDUCATIONAL_UNIT],
+    },
   });
 
   const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();
@@ -75,10 +92,10 @@ export default function AddCourseForm({
   });
 
   const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
-    // let addedSections: Section[] = [];
+    let addedEus: Eu[] = [];
 
     if (isEditMode) {
-      // const defaultLength = courseDefaultValues?.sections.length;
+      const defaultLength = courseDefaultValues?.educationalUnits.length;
       // addedSections = values.sections.slice(Number(defaultLength) + 1);
     }
 
@@ -109,14 +126,13 @@ export default function AddCourseForm({
         );
       case 1:
         return (
-          <EducationalUnit
-            setFiles={setFiles}
-            files={files}
-            educationalUnitFormMethod={educationalUnitFormMethod}
+          <EducationalUnitForm
+            euFormMethods={educationalUnitFormMethod}
             isEditMode={isEditMode}
-            defaultValues={courseDefaultValues}
             isFetching={isFetching}
-            handleAddSection={handleAddSection}
+            handleAddEU={handleAddSection}
+            files={files}
+            setFiles={setFiles}
           />
         );
       default:

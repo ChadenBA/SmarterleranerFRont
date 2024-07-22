@@ -7,5 +7,5 @@ export interface Lo {
   title: string;
   type: LearningObjectType;
   media?: Media[];
-  quiz?: Quiz;
+  quiz: Quiz;
 }

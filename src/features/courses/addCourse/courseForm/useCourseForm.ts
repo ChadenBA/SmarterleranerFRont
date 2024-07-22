@@ -3,10 +3,7 @@ import { useGetCategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { CourseFormValues } from './CourseForm.type';
 import { useState, useEffect } from 'react';
-import {
-  DEFAULT_ANSWER_OBJECT,
-  DEFAULT_QUESTION_OBJECT,
-} from '../sectionForm/SectionForm.constants';
+import { DEFAULT_ANSWER_OBJECT, DEFAULT_QUESTION_OBJECT } from '../sectionForm/EuForm.constants';
 
 interface UseCourseForm {
   formMethods: UseFormReturn<CourseFormValues, undefined>;

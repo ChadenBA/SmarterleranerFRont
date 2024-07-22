@@ -33,7 +33,7 @@ export interface CourseForAdmin {
   title: string;
   description: string;
   categoryId: number;
-  subCategoryId: number;
+  subcategoryId: number;
   isOffline?: 1 | 0;
   isActive?: 1 | 0;
   subscribers: number[];
@@ -41,4 +41,5 @@ export interface CourseForAdmin {
   quiz: Quiz;
   courseMedia: File;
   createdAt: string;
+  media?: Record<string, File[]>
 }

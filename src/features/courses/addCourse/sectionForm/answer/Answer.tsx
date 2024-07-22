@@ -4,10 +4,11 @@ import { AnswerProps } from './Answer.type';
 import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useTranslation } from 'react-i18next';
-import { CREATE_STEP_FORM_CONFIG } from '../SectionForm.constants';
+import { CREATE_EDUCATIONAL_UNIT_FORM_CONFIG } from '../EuForm.constants';
 
 function Answer({
-  sectionIndex,
+  euIndex,
+  loIndex,
   questionIndex,
   answerIndex,
   canDelete,
@@ -19,8 +20,8 @@ function Answer({
       <Grid item xs={12} lg={1}>
         <CustomCheckboxButton
           config={{
-            ...CREATE_STEP_FORM_CONFIG.answerIsValid,
-            name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.isValid`,
+            ...CREATE_EDUCATIONAL_UNIT_FORM_CONFIG.answerIsValid,
+            name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.isValid`,
           }}
         />
       </Grid>
@@ -28,8 +29,8 @@ function Answer({
       <Grid item xs={12} lg={10}>
         <CustomTextField
           config={{
-            ...CREATE_STEP_FORM_CONFIG.answerTitle,
-            name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.answer`,
+            ...CREATE_EDUCATIONAL_UNIT_FORM_CONFIG.answerTitle,
+            name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.answer`,
           }}
         />
       </Grid>
@@ -41,7 +42,7 @@ function Answer({
               color: (theme) =>
                 canDelete ? theme.palette.error.main : theme.palette.action.disabled,
             }}
-            onClick={() => handleRemoveAnswer(sectionIndex, questionIndex, answerIndex)}
+            onClick={() => handleRemoveAnswer(euIndex, loIndex, questionIndex, answerIndex)}
             color="error"
           >
             <DeleteOutlineOutlinedIcon />

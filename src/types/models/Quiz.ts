@@ -4,7 +4,6 @@ import { ApiQuestion } from '@redux/apis/courses/coursesApi.type';
 export interface Quiz {
   id?: number;
   questions: Question[];
-  timeLeft?: number;
 }
 
 export interface Question {

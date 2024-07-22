@@ -1,12 +1,13 @@
 export interface AnswerProps {
-  sectionIndex: number
-
-  questionIndex: number
-  answerIndex: number
-  canDelete?: boolean
+  euIndex: number;
+  loIndex: number;
+  questionIndex: number;
+  answerIndex: number;
+  canDelete?: boolean;
   handleRemoveAnswer: (
-    index: number,
+    euIndex: number,
+    loIndex: number,
     questionIndex: number,
     answerIndex: number,
-  ) => void
+  ) => void;
 }
