@@ -41,5 +41,5 @@ export interface CourseForAdmin {
   quiz: Quiz;
   courseMedia: File;
   createdAt: string;
-  media?: Record<string, File[]>
+  media?: Record<string, Record<number, File[]>>;
 }

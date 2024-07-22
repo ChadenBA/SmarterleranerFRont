@@ -35,8 +35,9 @@ export default function AddCourseForm({
 
   const dispatch = useAppDispatch();
 
-  const [files, setFiles] = useState<Record<number, File[]>>(
-    courseDefaultValues?.media ? courseDefaultValues.media : [],
+  const [files, setFiles] = useState<Record<number, Record<number, File[]>>>(
+    //  with record inside record
+    courseDefaultValues?.media ? courseDefaultValues.media : {},
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);
@@ -76,7 +77,7 @@ export default function AddCourseForm({
   });
 
   const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();
-  // const [createSectionActionApi, { isLoading: isLoadingSection }] = useCreateModuleMutation()
+  // const [createEuApi, { isLoading: isLoadingEu }] = useCreateEuMutation()
   const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation();
 
   const handleAddCourse = StepperFormMethods.handleSubmit(async (values) => {
@@ -100,10 +101,10 @@ export default function AddCourseForm({
   });
 
   const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
-    let addedEus: Eu[] = [];
+    // let addedEus: Eu[] = [];
 
     if (isEditMode) {
-      const defaultLength = courseDefaultValues?.educationalUnits.length;
+      // const defaultLength = courseDefaultValues?.educationalUnits.length;
       // addedSections = values.sections.slice(Number(defaultLength) + 1);
     }
 

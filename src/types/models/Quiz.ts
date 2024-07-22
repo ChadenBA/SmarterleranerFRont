@@ -7,7 +7,7 @@ export interface Quiz {
 }
 
 export interface Question {
-  id?: string;
+  id?: number;
   question: string;
   type: QuestionTypeEnum;
   isValid: 0 | 1;

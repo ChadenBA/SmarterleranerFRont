@@ -12,4 +12,5 @@ export const eu = {
   basic_eu: 'Unité éducative de base',
   intermediate_eu: 'Unité éducative intermédiaire',
   advanced_eu: 'Unité éducative avancée',
+  supplementary_materials: 'Matériaux supplémentaires',
 };

@@ -8,12 +8,12 @@ export interface EuBodyProps {
   questions: Question[];
   euIndex: number;
   loIndex: number;
-  files: Record<number, File[]>;
+  files: Record<number, Record<number, File[]>>;
   isEditMode?: boolean;
   field: FieldArrayWithId<FormValues, 'eu', 'id'>;
   sectionFormMethods: UseFormReturn<FormValues, any, undefined>;
 
-  setFiles: Dispatch<SetStateAction<Record<number, File[]>>>;
+  setFiles: Dispatch<SetStateAction<Record<number, Record<number, File[]>>>>;
   handleAddQuestion: (euIndex: number, loIndex: number) => void;
   handleRemoveQuestion: (euIndex: number, loIndex: number, questionIndex: number) => void;
   handleAddAnswer: (euIndex: number, loIndex: number, questionIndex: number) => void;

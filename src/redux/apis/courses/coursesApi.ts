@@ -88,6 +88,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+
   }),
 });
 

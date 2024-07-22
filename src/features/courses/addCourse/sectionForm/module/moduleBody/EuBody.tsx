@@ -85,8 +85,9 @@ function EuBody({
 
               <Grid item xs={12}>
                 <UploadMultipleFiles
-                  files={files[loIndex] || []}
-                  index={loIndex}
+                  files={files[euIndex]?.[loIndex] || []}
+                  euIndex={euIndex}
+                  loIndex={loIndex}
                   setFiles={setFiles}
                   isEditMode={isEditMode}
                   setDeletedMedia={setDeletedMedia}
@@ -127,6 +128,17 @@ function EuBody({
                 ))}
               </Stack>
             )}
+            {/* Add supplementary materials if the user wants to */}
+            {/* TODO: index of supp material here or add is_supplementary */}
+            {/* <Typography variant="h3">{t('eu.supplementary_materials')}</Typography>
+            <UploadMultipleFiles
+              files={files[euIndex]?.[loIndex] || []}
+              euIndex={euIndex}
+              loIndex={loIndex}
+              setFiles={setFiles}
+              isEditMode={isEditMode}
+              setDeletedMedia={setDeletedMedia}
+            /> */}
           </Stack>
         ))}
 

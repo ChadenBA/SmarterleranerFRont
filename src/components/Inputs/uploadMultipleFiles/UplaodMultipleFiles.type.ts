@@ -7,8 +7,9 @@ export interface IFileState {
 }
 export interface UploadMultipleFilesProps {
   files: File[];
-  index: number;
+  euIndex: number;
+  loIndex: number;
   isEditMode?: boolean;
-  setFiles: Dispatch<SetStateAction<Record<number, File[]>>>;
+  setFiles: Dispatch<SetStateAction<Record<number, Record<number, File[]>>>>;
   setDeletedMedia: Dispatch<SetStateAction<string[]>>;
 }

@@ -8,14 +8,14 @@ export interface FormValues {
 
 export interface EuProps {
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
-  files: Record<number, File[]>;
+  files: Record<number, Record<number, File[]>>;
   euIndex: number;
   type?: string;
   loIndex: number;
   canDelete: boolean;
   field: FieldArrayWithId<FormValues, 'eu', 'id'>;
   isEditMode?: boolean;
-  setFiles: Dispatch<SetStateAction<Record<number, File[]>>>;
+  setFiles: Dispatch<SetStateAction<Record<number, Record<number, File[]>>>>;
   handleAddQuestion: (euIndex: number, loIndex: number) => void;
   handleRemoveQuestion: (euIndex: number, loIndex: number, questionIndex: number) => void;
   handleAddAnswer: (euIndex: number, loIndex: number, questionIndex: number) => void;

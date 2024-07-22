@@ -80,19 +80,17 @@ export const transformSingleCourse = (course: CourseApi): Course => {
     quiz: course.quiz
       ? {
           id: course.quiz.id,
-          questions: course.quiz.questions
-            ? course?.quiz?.questions.map((question) => ({
-                id: question.id,
-                question: question.question,
-                type: question.type,
-                isValid: question.is_valid,
-                answers: question.answers.map((answer) => ({
-                  id: answer.id,
-                  answer: answer.answer,
-                  isValid: answer.is_valid,
-                })),
-              }))
-            : [],
+          questions: course.quiz.questions.map((question) => ({
+            id: question.id,
+            question: question.question,
+            type: question.type,
+            isValid: question.is_valid,
+            answers: question.answers.map((answer) => ({
+              id: answer.id,
+              answer: answer.answer,
+              isValid: answer.is_valid,
+            })),
+          })),
         }
       : {
           id: 0,
@@ -181,7 +179,7 @@ export const transformFetchCourseForAdminResponse = (
       title: data.title,
       description: data.description,
       categoryId: data.category_id,
-      subCategoryId: data.subcategory_id,
+      subcategoryId: data.subcategory_id,
       isOffline: data.is_offline,
       isActive: data.is_active,
       quiz: {
@@ -331,6 +329,64 @@ export const encodeCourse = (values: FieldValues): FormData => {
       }
     });
   }
+
+  return formData;
+};
+
+export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>): FormData => {
+  const formData = new FormData();
+
+  eu.forEach((unit, euIndex) => {
+    formData.append(`eu[${euIndex}][title]`, unit.title);
+    formData.append(`eu[${euIndex}][type]`, unit.type);
+
+    unit.learningObjects.forEach((lo, loIndex) => {
+      formData.append(`eu[${euIndex}][learningObjects][${loIndex}][title]`, lo.title);
+      formData.append(`eu[${euIndex}][learningObjects][${loIndex}][type]`, lo.type);
+
+      if (lo.quiz.questions.length > 0) {
+        lo.quiz.questions.forEach((question, questionIndex) => {
+          formData.append(
+            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
+            question.question,
+          );
+          formData.append(
+            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+            getQuestionTypeFilter(question.type as number),
+          );
+          if (Number(question.type) === QuestionTypeEnum.BINARY) {
+            formData.append(
+              `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
+              String(question.isValid),
+            );
+          }
+
+          if (question.answers.length > 0 && question.type === QuestionTypeEnum.QCM) {
+            question.answers.forEach((answer, answerIndex) => {
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
+                answer.answer,
+              );
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
+                String(answer.isValid ? '1' : '0'),
+              );
+            });
+          }
+        });
+      }
+
+      if (files[euIndex] && files[euIndex][loIndex]) {
+        files[euIndex][loIndex].forEach((file, fileIndex) => {
+          formData.append(
+            `eu[${euIndex}][learningObjects][${loIndex}][media_files][${fileIndex}]`,
+            file,
+          );
+        });
+      }
+      // supplementary materials as files
+    });
+  });
 
   return formData;
 };

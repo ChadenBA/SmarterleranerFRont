@@ -7,7 +7,8 @@ import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function UploadMultipleFiles({
   files,
-  index,
+  euIndex,
+  loIndex,
   isEditMode,
   setFiles,
   setDeletedMedia,
@@ -19,25 +20,27 @@ function UploadMultipleFiles({
     if (newFiles.length) {
       setFiles((prev) => ({
         ...prev,
-        [index]: [...(prev[index] || []), ...newFiles],
+        [euIndex]: {
+          ...prev[euIndex],
+          [loIndex]: [...(prev[euIndex]?.[loIndex] || []), ...newFiles],
+        },
       }));
     }
   };
 
   const handleDeletePreview = (event: MouseEvent<SVGSVGElement>, fileIndex: number) => {
     event.stopPropagation();
-    if (files[fileIndex].name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)) {
-      setDeletedMedia((prev) => [...prev, files[fileIndex].name]);
-    }
-    setFiles((prev) => {
-      const files = prev[index] || [];
-      return {
-        ...prev,
-        [index]: files.filter((f) => f !== file),
-      };
-    });
-
     const file = files[fileIndex];
+    if (file.name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)) {
+      setDeletedMedia((prev) => [...prev, file.name]);
+    }
+    setFiles((prev) => ({
+      ...prev,
+      [euIndex]: {
+        ...prev[euIndex],
+        [loIndex]: (prev[euIndex]?.[loIndex] || []).filter((f) => f !== file),
+      },
+    }));
     if (file) {
       URL.revokeObjectURL(URL.createObjectURL(file));
     }
