@@ -19,6 +19,7 @@ export interface EuProps {
   handleAddQuestion: (euIndex: number, loIndex: number) => void;
   handleRemoveQuestion: (euIndex: number, loIndex: number, questionIndex: number) => void;
   handleAddAnswer: (euIndex: number, loIndex: number, questionIndex: number) => void;
+  handleAddLearningObject: (euIndex: number) => void;
   handleRemoveAnswer: (
     euIndex: number,
     loIndex: number,

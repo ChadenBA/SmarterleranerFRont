@@ -23,6 +23,8 @@ function EUnit({
   euFormMethods,
   isEditMode,
   type,
+  loIndex,
+  onAddEu,
   setFiles,
   handleAddAnswer,
   handleAddQuestion,
@@ -30,11 +32,11 @@ function EUnit({
   handleRemoveQuestion,
   handleRemoveEu,
   handleAddEuApi,
-  onAddEu,
-  loIndex,
+  handleAddLearningObject,
 }: EuProps) {
+  console.log('aaaaaaaaaaaaaaaaaaaa', field);
   // Destructing the questions from the form methods
-  const { questions } = field.learningObjects[loIndex].quiz as Quiz;
+  const { questions } = field.learningObjects[0].quiz as Quiz;
 
   // State Declaration
   const [expanded, setExpanded] = useState(false);
@@ -48,15 +50,18 @@ function EUnit({
 
   const isNewSection = !field.id || !field.title;
   const isNewQuiz =
-    field.learningObjects[loIndex].quiz?.id ||
-    field.learningObjects[loIndex].quiz?.questions[0].question;
+    field.learningObjects[0].quiz?.id || field.learningObjects[0].quiz?.questions[0]?.question;
   const handleChangeExpand = () => setExpanded((prev) => !prev);
 
   const handleDeleteOrRemoveSection = () => {
     isEditMode && !isNewSection ? setOpen(true) : handleRemoveEu(euIndex);
   };
 
+  //watch the field title
+  const title = euFormMethods.watch(`eu.${euIndex}.title`);
+
   const handleUpdateEuApi = euFormMethods.handleSubmit(async (values) => {
+    console.log('values', values);
     // const sectionId = values.sections[index].databaseId
     // const sectionData = values.sections[index]
     // try {
@@ -86,7 +91,7 @@ function EUnit({
           expanded={expanded}
           index={euIndex}
           isNewEu={isNewSection}
-          title={field.title}
+          title={title}
           onCreateEu={handleAddEuApi}
           onChangeExpanded={handleChangeExpand}
           onDeleteEu={handleDeleteOrRemoveSection}
@@ -106,6 +111,7 @@ function EUnit({
           handleRemoveAnswer={handleRemoveAnswer}
           handleRemoveEu={handleRemoveEu}
           handleRemoveQuestion={handleRemoveQuestion}
+          handleAddLearningObject={handleAddLearningObject}
           loIndex={loIndex}
           questions={questions}
           sectionFormMethods={euFormMethods}
@@ -184,7 +190,7 @@ function EUnit({
                       questionIndex={questionIndex}
                       field={field}
                       euIndex={euIndex}
-                      loIndex={loIndex}
+                      loIndex={0}
                       euFormMethods={euFormMethods}
                       handleRemoveAnswer={() => {
                         isEditMode &&

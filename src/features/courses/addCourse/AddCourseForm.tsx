@@ -19,7 +19,11 @@ import { generateCourseFormDefaultValues } from './AddCourseForm.helpers';
 import { FormValues } from './sectionForm/module/Eu.type';
 import EducationalUnitForm from './sectionForm/EuForm';
 import { Eu } from 'types/models/Eu';
-import { DEFAULT_BASIC_EDUCATIONAL_UNIT } from './sectionForm/EuForm.constants';
+import {
+  DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
+  DEFAULT_BASIC_EDUCATIONAL_UNIT,
+  DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
+} from './sectionForm/EuForm.constants';
 
 export default function AddCourseForm({
   isEditMode,
@@ -63,7 +67,11 @@ export default function AddCourseForm({
               })),
             })),
           }))
-        : [DEFAULT_BASIC_EDUCATIONAL_UNIT],
+        : [
+            DEFAULT_BASIC_EDUCATIONAL_UNIT,
+            DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
+            DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
+          ],
     },
   });
 

@@ -25,4 +25,5 @@ export interface EuBodyProps {
   ) => void;
   setDeletedMedia: Dispatch<SetStateAction<string[]>>;
   handleRemoveEu: (euIndex: number) => void;
+  handleAddLearningObject: (euIndex: number) => void;
 }

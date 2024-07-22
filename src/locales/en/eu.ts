@@ -4,7 +4,7 @@ export const eu = {
   title_placeholder: 'Enter title',
   type_placeholder: 'Enter type',
   title_required: 'Title is required',
-  learning_objects: 'Learning Objects',
+  learning_objects: 'Learning objects',
   basic: 'Basic Educational Unit',
   add_basic_eu: 'Add Basic Educational Unit',
   eu: 'Educational Unit',
