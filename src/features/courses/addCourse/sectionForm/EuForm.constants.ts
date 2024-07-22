@@ -112,86 +112,7 @@ export const CREATE_LEARNING_OBJECT_FORM_CONFIG: Record<string, InputConfig> = {
     ],
   },
 };
-
-export const DEFAULT_BASIC_EDUCATIONAL_UNIT: Eu = {
-  title: GLOBAL_VARIABLES.EMPTY_STRING,
-  type: EducationalUnitEnum.BASIC,
-  learningObjects: [
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.ABSTRACT,
-      quiz: {
-        questions: [],
-      },
-      id: 0,
-    },
-  ],
-};
-
-export const DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT: Eu = {
-  title: GLOBAL_VARIABLES.EMPTY_STRING,
-  type: EducationalUnitEnum.INTERMEDIATE,
-  learningObjects: [
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.ABSTRACT,
-      quiz: {
-        questions: [
-          // {
-          //   question: GLOBAL_VARIABLES.EMPTY_STRING,
-          //   type: QuestionTypeEnum.BINARY,
-          //   isValid: 0,
-          //   answers: [
-          //     {
-          //       answer: GLOBAL_VARIABLES.EMPTY_STRING,
-          //       isValid: 0,
-          //     },
-          //     {
-          //       answer: GLOBAL_VARIABLES.EMPTY_STRING,
-          //       isValid: 0,
-          //     },
-          //   ],
-          // },
-        ],
-      },
-      id: 0,
-    },
-  ],
-};
-
-export const DEFAULT_ADVANCED_EDUCATIONAL_UNIT: Eu = {
-  title: GLOBAL_VARIABLES.EMPTY_STRING,
-  type: EducationalUnitEnum.ADVANCED,
-  id: 0,
-  learningObjects: [
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.ABSTRACT,
-      quiz: {
-        questions: [
-          // {
-          //   question: GLOBAL_VARIABLES.EMPTY_STRING,
-          //   type: QuestionTypeEnum.BINARY,
-          //   isValid: 0,
-          //   answers: [
-          //     {
-          //       answer: GLOBAL_VARIABLES.EMPTY_STRING,
-          //       isValid: 0,
-          //     },
-          //     {
-          //       answer: GLOBAL_VARIABLES.EMPTY_STRING,
-          //       isValid: 0,
-          //     },
-          //   ],
-          // },
-        ],
-      },
-      id: 0,
-    },
-  ],
-};
-
-export const DEFAULT_LEARNING_OBJECT: Lo = {
+export const DEFAULT_LEARNING_OBJECT_ABSTRACT: Lo = {
   title: GLOBAL_VARIABLES.EMPTY_STRING,
   type: LearningObjectType.ABSTRACT,
   quiz: {
@@ -215,8 +136,50 @@ export const DEFAULT_LEARNING_OBJECT: Lo = {
   },
   id: 0,
 };
+export const DEFAULT_LEARNING_OBJECT_CONCRETE: Lo = {
+  title: GLOBAL_VARIABLES.EMPTY_STRING,
+  type: LearningObjectType.CONCRETE,
+  quiz: {
+    questions: [
+      {
+        question: GLOBAL_VARIABLES.EMPTY_STRING,
+        type: QuestionTypeEnum.BINARY,
+        isValid: 0,
+        answers: [
+          {
+            answer: GLOBAL_VARIABLES.EMPTY_STRING,
+            isValid: 0,
+          },
+          {
+            answer: GLOBAL_VARIABLES.EMPTY_STRING,
+            isValid: 0,
+          },
+        ],
+      },
+    ],
+  },
+  id: 0,
+};
+export const DEFAULT_BASIC_EDUCATIONAL_UNIT: Eu = {
+  title: GLOBAL_VARIABLES.EMPTY_STRING,
+  type: EducationalUnitEnum.BASIC,
+  learningObjects: [DEFAULT_LEARNING_OBJECT_ABSTRACT, DEFAULT_LEARNING_OBJECT_CONCRETE],
+};
 
-export const DEFAULT_LEARNING_OBJECTS: Lo[] = [DEFAULT_LEARNING_OBJECT];
+export const DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT: Eu = {
+  title: GLOBAL_VARIABLES.EMPTY_STRING,
+  type: EducationalUnitEnum.INTERMEDIATE,
+  learningObjects: [DEFAULT_LEARNING_OBJECT_ABSTRACT, DEFAULT_LEARNING_OBJECT_CONCRETE],
+};
+
+export const DEFAULT_ADVANCED_EDUCATIONAL_UNIT: Eu = {
+  title: GLOBAL_VARIABLES.EMPTY_STRING,
+  type: EducationalUnitEnum.ADVANCED,
+  id: 0,
+  learningObjects: [DEFAULT_LEARNING_OBJECT_ABSTRACT, DEFAULT_LEARNING_OBJECT_CONCRETE],
+};
+
+export const DEFAULT_LEARNING_OBJECTS: Lo[] = [DEFAULT_LEARNING_OBJECT_CONCRETE];
 export const DEFAULT_BASIC_EU_OBJECT: Eu = {
   title: GLOBAL_VARIABLES.EMPTY_STRING,
   type: EducationalUnitEnum.BASIC,

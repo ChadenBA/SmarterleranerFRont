@@ -9,6 +9,7 @@ import useEducationalUnitForm from './useEducationalUnitForm';
 import { EUFormProps } from './EuForm.type';
 import { Add } from '@mui/icons-material';
 import EUnit from './module/EUnit';
+import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 
 function EducationalUnitForm({
   files,
@@ -26,11 +27,8 @@ function EducationalUnitForm({
     handleRemoveAnswer,
     handleRemoveEducationalUnit,
     handleRemoveQuestion,
-    handleRemoveQuiz,
     handleAddLearningObject,
   } = useEducationalUnitForm({ euFormMethods });
-
-  console.log('fields', fields);
 
   const [activeTab, setActiveTab] = useState(0);
 
@@ -38,23 +36,8 @@ function EducationalUnitForm({
     setActiveTab(newValue);
   };
 
-  const addNewBasicEducationalUnit = () => {
-    handleAddEducationalUnit('basic');
-    setActiveTab(fields.length - 1);
-  };
-
-  const addNewEducationalUnit = (type: 'basic' | 'intermediate' | 'advanced', index: number) => {
-    console.log('type', type, 'index', index);
+  const addNewEducationalUnit = (type: EducationalUnitEnum, index: number) => {
     handleAddEducationalUnit(type, index);
-    setActiveTab(fields.length - 1);
-  };
-
-  const addNewIntermediateEducationalUnit = () => {
-    handleAddEducationalUnit('intermediate');
-    setActiveTab(fields.length - 1);
-  };
-  const addNewAdvancedEducationalUnit = () => {
-    handleAddEducationalUnit('advanced');
     setActiveTab(fields.length - 1);
   };
 
@@ -69,11 +52,11 @@ function EducationalUnitForm({
 
   const handleEuType = (type: string) => {
     switch (type) {
-      case 'BASIC':
+      case EducationalUnitEnum.BASIC:
         return t('eu.basic_eu');
-      case 'INTERMEDIATE':
+      case EducationalUnitEnum.INTERMEDIATE:
         return t('eu.intermediate_eu');
-      case 'ADVANCED':
+      case EducationalUnitEnum.ADVANCED:
         return t('eu.advanced_eu');
       default:
         return t('eu.basic_eu');
@@ -93,45 +76,14 @@ function EducationalUnitForm({
   return (
     <FormProvider {...euFormMethods}>
       {!isEditMode ? (
-        // Basic Educational Unit
         <>
           <Stack p={2} spacing={3}>
-            {fields.map(
-              (field, index) => (
-                console.log('fiedddld', field),
-                (
-                  <EUnit
-                    field={field}
-                    euFormMethods={euFormMethods}
-                    files={files}
-                    canDelete={canDeleteEu(field.type)}
-                    key={field.id}
-                    euIndex={index}
-                    loIndex={index}
-                    isEditMode={isEditMode}
-                    setFiles={setFiles}
-                    handleAddQuestion={handleAddQuestion}
-                    handleRemoveQuestion={handleRemoveQuestion}
-                    handleAddAnswer={handleAddAnswer}
-                    handleRemoveAnswer={handleRemoveAnswer}
-                    handleRemoveEu={() => handleRemoveSection(index)}
-                    handleRemoveQuiz={handleRemoveQuiz}
-                    handleAddEuApi={handleAddEU}
-                    handleAddLearningObject={() => handleAddLearningObject(index)}
-                    type={handleEuType(field.type)}
-                    onAddEu={() => addNewEducationalUnit(field.type, index)}
-                  />
-                )
-              ),
-            )}
-          </Stack>
-          {/* <Stack p={2} spacing={3}>
             {fields.map((field, index) => (
               <EUnit
                 field={field}
                 euFormMethods={euFormMethods}
                 files={files}
-                canDelete={fields.length > 1}
+                canDelete={canDeleteEu(field.type)}
                 key={index}
                 euIndex={index}
                 loIndex={index}
@@ -141,46 +93,22 @@ function EducationalUnitForm({
                 handleRemoveQuestion={handleRemoveQuestion}
                 handleAddAnswer={handleAddAnswer}
                 handleRemoveAnswer={handleRemoveAnswer}
-                handleRemoveEu={handleRemoveSection}
-                handleRemoveQuiz={handleRemoveQuiz}
+                handleRemoveEu={() => handleRemoveSection(index)}
                 handleAddEuApi={handleAddEU}
-                type={t('eu.intermediate_eu')}
-                onAddEu={addNewIntermediateEducationalUnit}
+                handleAddLearningObject={() => handleAddLearningObject(index)}
+                type={handleEuType(field.type)}
+                onAddEu={() => addNewEducationalUnit(field.type as any, index)}
               />
             ))}
           </Stack>
-          <Stack p={2} spacing={3}>
-            {fields.map((field, index) => (
-              <EUnit
-                field={field}
-                euFormMethods={euFormMethods}
-                files={files}
-                canDelete={fields.length > 1}
-                key={index}
-                euIndex={index}
-                loIndex={index}
-                isEditMode={isEditMode}
-                setFiles={setFiles}
-                handleAddQuestion={handleAddQuestion}
-                handleRemoveQuestion={handleRemoveQuestion}
-                handleAddAnswer={handleAddAnswer}
-                handleRemoveAnswer={handleRemoveAnswer}
-                handleRemoveEu={handleRemoveSection}
-                handleRemoveQuiz={handleRemoveQuiz}
-                handleAddEuApi={handleAddEU}
-                type={t('eu.advanced_eu')}
-                onAddEu={addNewAdvancedEducationalUnit}
-              />
-            ))}
-          </Stack> */}
         </>
       ) : (
         <Stack p={2} spacing={3}>
-          <SectionTabs
+          {/* <SectionTabs
             sections={fields}
             activeTab={activeTab}
             handleChange={handleChangeTab}
-            onAddNewSection={addNewBasicEducationalUnit}
+            onAddNewSection={handleAddLearningObject}
           />
           <EUnit
             field={fields[activeTab]}
@@ -199,7 +127,7 @@ function EducationalUnitForm({
             handleRemoveEu={handleRemoveSection}
             handleRemoveQuiz={handleRemoveQuiz}
             handleAddEuApi={handleAddEU}
-          />
+          /> */}
         </Stack>
       )}
     </FormProvider>

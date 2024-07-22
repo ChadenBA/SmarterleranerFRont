@@ -9,7 +9,9 @@ import {
   DEFAULT_QUESTION_OBJECT,
 } from './EuForm.constants';
 import { Eu } from 'types/models/Eu';
-import { v4 as uuidv4 } from 'uuid';
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
+import { LearningObjectType } from '@config/enums/learningObjectType.enum';
+import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 
 interface UseSectionFormProps {
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
@@ -21,10 +23,7 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
   });
 
   // Add a new educational unit to the form
-  const handleAddEducationalUnit = (
-    unitType: 'basic' | 'intermediate' | 'advanced',
-    index: number,
-  ) => {
+  const handleAddEducationalUnit = (unitType: EducationalUnitEnum, index: number) => {
     const unitDefaults: { [key: string]: Eu } = {
       basic: DEFAULT_BASIC_EDUCATIONAL_UNIT,
       intermediate: DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
@@ -36,7 +35,6 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
 
   // remove an educational unit from the form
   const handleRemoveEducationalUnit = (index: number) => {
-    console.log('fiedddld', index);
     remove(index);
   };
 
@@ -51,7 +49,7 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
               ...lo,
               quiz: {
                 ...lo.quiz,
-                questions: [...lo.quiz.questions, { ...questionDefaults, id: uuidv4() }],
+                questions: [...lo.quiz.questions, questionDefaults],
               },
             }
           : lo,
@@ -59,14 +57,7 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     });
   };
 
-  const handleRemoveQuestion = (
-    euIndex: number,
-    loIndex: number,
-    questionIndex: number,
-    id: string,
-  ) => {
-    console.log(euIndex, loIndex, questionIndex, fields);
-    console.log('111111111111111111', fields[euIndex].learningObjects[0]);
+  const handleRemoveQuestion = (euIndex: number, loIndex: number, questionIndex: number) => {
     update(euIndex, {
       ...fields[euIndex],
       learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
@@ -75,37 +66,13 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
               ...lo,
               quiz: {
                 ...lo.quiz,
-                questions: lo.quiz.questions.filter((q) => q.id !== id),
+                questions: lo.quiz.questions.filter((_, i) => i !== questionIndex),
               },
             }
           : lo,
       ),
     });
-
-    console.log('22222222222222', fields[euIndex].learningObjects[0]);
   };
-
-  // const handleRemoveQuestion = (euIndex: number, loIndex: number, questionIndex: number) => {
-  //   console.log(euIndex, loIndex, questionIndex, fields);
-  //   update(euIndex, {
-  //     ...fields[euIndex],
-  //     learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
-  //       index === loIndex
-  //         ? {
-  //             ...lo,
-  //             quiz: {
-  //               ...lo.quiz,
-  //               questions: lo.quiz.questions.filter((q, i) => {
-  //                 const isRemoved = i !== questionIndex;
-  //                 console.log(i, questionIndex, isRemoved, q);
-  //                 return i !== questionIndex;
-  //               }),
-  //             },
-  //           }
-  //         : lo,
-  //     ),
-  //   });
-  // };
 
   // Add an answer to a question within a learning object
   const handleAddAnswer = (euIndex: number, loIndex: number, questionIndex: number) => {
@@ -163,8 +130,6 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     });
   };
 
-  // Remove a quiz from a learning object
-  const handleRemoveQuiz = (euIndex: number, loIndex: number) => {};
 
   const handleAddLearningObject = (euIndex: number) => {
     update(euIndex, {
@@ -173,12 +138,12 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
         ...fields[euIndex].learningObjects,
         {
           title: '',
-          type: 'abstract',
+          type: LearningObjectType.ABSTRACT,
           quiz: {
             questions: [
               {
                 question: '',
-                type: 'binary',
+                type: QuestionTypeEnum.BINARY,
                 isValid: 0,
                 answers: [
                   {
@@ -207,7 +172,6 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     handleRemoveQuestion,
     handleRemoveAnswer,
     handleAddAnswer,
-    handleRemoveQuiz,
     handleAddLearningObject,
   };
 }

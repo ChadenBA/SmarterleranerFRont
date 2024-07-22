@@ -36,7 +36,7 @@ export default function AddCourseForm({
   const dispatch = useAppDispatch();
 
   const [files, setFiles] = useState<Record<number, File[]>>(
-    courseDefaultValues?.media ? courseDefaultValues.media : {},
+    courseDefaultValues?.media ? courseDefaultValues.media : [],
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);

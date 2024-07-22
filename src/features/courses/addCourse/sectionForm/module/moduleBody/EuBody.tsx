@@ -28,7 +28,6 @@ function EuBody({
   handleAddLearningObject,
 }: EuBodyProps) {
   const { t } = useTranslation();
-
   return (
     <Collapse in={expanded} timeout={700}>
       <Grid container spacing={3}>
@@ -79,6 +78,7 @@ function EuBody({
                   config={{
                     ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
                     name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
+                    disabled: loIndex === 0 || loIndex === 1,
                   }}
                 />
               </Grid>
@@ -106,29 +106,25 @@ function EuBody({
                   </Tooltip>
                 </Stack>
                 <Divider />
-                {lo.quiz.questions?.map(
-                  (q, questionIndex) => (
-                    console.log(q.id),
-                    (
-                      <Grid item xs={12} key={q.id} p={0}>
-                        <Question
-                          handleAddQuestion={handleAddQuestion}
-                          handleDeleteQuestion={() =>
-                            handleRemoveQuestion(euIndex, loIndex, questionIndex, q.id)
-                          }
-                          canDelete={lo.quiz.questions?.length > 1}
-                          questionIndex={questionIndex}
-                          field={field}
-                          euIndex={euIndex}
-                          loIndex={loIndex}
-                          euFormMethods={sectionFormMethods}
-                          handleRemoveAnswer={handleRemoveAnswer}
-                          handleAddAnswer={() => handleAddAnswer(euIndex, loIndex, questionIndex)}
-                        />
-                      </Grid>
-                    )
-                  ),
-                )}
+                {lo.quiz.questions?.map((q, questionIndex) => (
+                  <Grid item xs={12} key={q.id} p={0}>
+                    <Question
+                      key={field.id}
+                      handleAddQuestion={handleAddQuestion}
+                      handleDeleteQuestion={() =>
+                        handleRemoveQuestion(euIndex, loIndex, questionIndex)
+                      }
+                      canDelete={lo.quiz.questions?.length > 1}
+                      questionIndex={questionIndex}
+                      field={field}
+                      euIndex={euIndex}
+                      loIndex={loIndex}
+                      euFormMethods={sectionFormMethods}
+                      handleRemoveAnswer={handleRemoveAnswer}
+                      handleAddAnswer={() => handleAddAnswer(euIndex, loIndex, questionIndex)}
+                    />
+                  </Grid>
+                ))}
               </Stack>
             )}
           </Stack>

@@ -9,7 +9,6 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 
 function EuHead({
   expanded,
-  index,
   title,
   canDelete,
   isNewEu,

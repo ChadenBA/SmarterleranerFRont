@@ -34,7 +34,6 @@ function EUnit({
   handleAddEuApi,
   handleAddLearningObject,
 }: EuProps) {
-  console.log('aaaaaaaaaaaaaaaaaaaa', field);
   // Destructing the questions from the form methods
   const { questions } = field.learningObjects[0].quiz as Quiz;
 
@@ -61,7 +60,6 @@ function EUnit({
   const title = euFormMethods.watch(`eu.${euIndex}.title`);
 
   const handleUpdateEuApi = euFormMethods.handleSubmit(async (values) => {
-    console.log('values', values);
     // const sectionId = values.sections[index].databaseId
     // const sectionData = values.sections[index]
     // try {
