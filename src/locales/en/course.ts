@@ -90,4 +90,5 @@ export const course = {
   lo_object_type: 'Learning object type',
   lo_object_type_abstract: 'Abstract',
   lo_object_type_concrete: 'Concrete',
+  create_eu: 'Create Educational Units',
 };

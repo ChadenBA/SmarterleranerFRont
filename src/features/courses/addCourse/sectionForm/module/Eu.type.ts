@@ -10,6 +10,7 @@ export interface EuProps {
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
   files: Record<number, File[]>;
   euIndex: number;
+  type?: string;
   loIndex: number;
   canDelete: boolean;
   field: FieldArrayWithId<FormValues, 'eu', 'id'>;
@@ -27,4 +28,5 @@ export interface EuProps {
   handleRemoveEu: (euIndex: number) => void;
   handleAddEuApi?: () => void;
   handleRemoveQuiz?: (euIndex: number, loIndex: number) => void;
+  onAddEu?: () => void;
 }

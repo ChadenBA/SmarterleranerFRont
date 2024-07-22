@@ -75,4 +75,5 @@ export const course = {
   active_course_success: 'Cours activé avec succès',
   offline_course_success: 'Cours désactivé avec succès',
   online_course_success: 'Cours en ligne avec succès',
+  create_eu: 'Créer des unités éducatives',
 };

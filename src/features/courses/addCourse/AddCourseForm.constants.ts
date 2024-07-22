@@ -9,7 +9,7 @@ export const STEPS: Step[] = [
     icon: null,
   },
   {
-    label: 'course.create_section',
+    label: 'course.create_eu',
     icon: null,
   },
 ];

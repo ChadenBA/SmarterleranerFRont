@@ -24,6 +24,11 @@ export const QUESTION_TYPES = [
   { label: 'section.quiz.question_qcm', value: QuestionTypeEnum.QCM },
   { label: 'section.quiz.question_binary', value: QuestionTypeEnum.BINARY },
 ];
+
+export const LEARNING_OBJECTS_TYPES = [
+  { label: 'lo.abstract', value: LearningObjectType.ABSTRACT },
+  { label: 'lo.concrete', value: LearningObjectType.CONCRETE },
+];
 export const CREATE_EDUCATIONAL_UNIT_FORM_CONFIG: Record<string, InputConfig> = {
   title: {
     name: 'title',
@@ -54,6 +59,7 @@ export const CREATE_LEARNING_OBJECT_FORM_CONFIG: Record<string, InputConfig> = {
     name: 'type',
     placeholder: 'lo.type_placeholder',
     label: 'lo.type',
+    options: LEARNING_OBJECTS_TYPES,
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
     rules: { required: 'lo.type_required' },
   },
@@ -136,30 +142,6 @@ export const DEFAULT_BASIC_EDUCATIONAL_UNIT: Eu = {
       },
       id: 0,
     },
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.CONCRETE,
-      quiz: {
-        questions: [
-          {
-            question: GLOBAL_VARIABLES.EMPTY_STRING,
-            type: QuestionTypeEnum.BINARY,
-            isValid: 0,
-            answers: [
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-            ],
-          },
-        ],
-      },
-      id: 0,
-    },
   ],
 };
 
@@ -192,30 +174,6 @@ export const DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT: Eu = {
       },
       id: 0,
     },
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.CONCRETE,
-      quiz: {
-        questions: [
-          {
-            question: GLOBAL_VARIABLES.EMPTY_STRING,
-            type: QuestionTypeEnum.BINARY,
-            isValid: 0,
-            answers: [
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-            ],
-          },
-        ],
-      },
-      id: 0,
-    },
   ],
 };
 
@@ -227,30 +185,6 @@ export const DEFAULT_ADVANCED_EDUCATIONAL_UNIT: Eu = {
     {
       title: GLOBAL_VARIABLES.EMPTY_STRING,
       type: LearningObjectType.ABSTRACT,
-      quiz: {
-        questions: [
-          {
-            question: GLOBAL_VARIABLES.EMPTY_STRING,
-            type: QuestionTypeEnum.BINARY,
-            isValid: 0,
-            answers: [
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-              {
-                answer: GLOBAL_VARIABLES.EMPTY_STRING,
-                isValid: 0,
-              },
-            ],
-          },
-        ],
-      },
-      id: 0,
-    },
-    {
-      title: GLOBAL_VARIABLES.EMPTY_STRING,
-      type: LearningObjectType.CONCRETE,
       quiz: {
         questions: [
           {

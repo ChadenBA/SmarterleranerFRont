@@ -4,7 +4,7 @@ import { AnswerProps } from './Answer.type';
 import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useTranslation } from 'react-i18next';
-import { CREATE_EDUCATIONAL_UNIT_FORM_CONFIG } from '../EuForm.constants';
+import { CREATE_LEARNING_OBJECT_FORM_CONFIG } from '../EuForm.constants';
 
 function Answer({
   euIndex,
@@ -20,7 +20,7 @@ function Answer({
       <Grid item xs={12} lg={1}>
         <CustomCheckboxButton
           config={{
-            ...CREATE_EDUCATIONAL_UNIT_FORM_CONFIG.answerIsValid,
+            ...CREATE_LEARNING_OBJECT_FORM_CONFIG.answerIsValid,
             name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.isValid`,
           }}
         />
@@ -29,7 +29,7 @@ function Answer({
       <Grid item xs={12} lg={10}>
         <CustomTextField
           config={{
-            ...CREATE_EDUCATIONAL_UNIT_FORM_CONFIG.answerTitle,
+            ...CREATE_LEARNING_OBJECT_FORM_CONFIG.answerTitle,
             name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.answer`,
           }}
         />

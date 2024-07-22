@@ -4,8 +4,10 @@ export interface EuHeadProps {
   title: string;
   canDelete: boolean;
   isNewEu: boolean;
+  type?: string;
   onChangeExpanded: () => void;
   onCreateEu?: () => void;
   onDeleteEu?: () => void;
   onUpdateEu?: () => void;
+  onAddEu?: () => void;
 }

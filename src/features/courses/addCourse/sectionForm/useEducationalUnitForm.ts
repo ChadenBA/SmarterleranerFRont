@@ -34,12 +34,66 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
   };
 
   // Add a new question to the learning object's quiz
-  const handleAddQuestion = (euIndex: number, loIndex: number) => {};
+  const handleAddQuestion = (euIndex: number, loIndex: number) => {
+    const questionDefaults = DEFAULT_QUESTION_OBJECT;
+    update(euIndex, {
+      ...fields[euIndex],
+      learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
+        index === loIndex
+          ? {
+              ...lo,
+              quiz: {
+                ...lo.quiz,
+                questions: [...lo.quiz.questions, questionDefaults],
+              },
+            }
+          : lo,
+      ),
+    });
+  };
 
-  const handleRemoveQuestion = (euIndex: number, loIndex: number, questionIndex: number) => {};
+  const handleRemoveQuestion = (euIndex: number, loIndex: number, questionIndex: number) => {
+    update(euIndex, {
+      ...fields[euIndex],
+      learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
+        index === loIndex
+          ? {
+              ...lo,
+              quiz: {
+                ...lo.quiz,
+                questions: lo.quiz.questions.filter((_, i) => i !== questionIndex),
+              },
+            }
+          : lo,
+      ),
+    });
+  };
 
   // Add an answer to a question within a learning object
-  const handleAddAnswer = (euIndex: number, loIndex: number, questionIndex: number) => {};
+  const handleAddAnswer = (euIndex: number, loIndex: number, questionIndex: number) => {
+    const answerDefaults = DEFAULT_ANSWER_OBJECT;
+    update(euIndex, {
+      ...fields[euIndex],
+      learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
+        index === loIndex
+          ? {
+              ...lo,
+              quiz: {
+                ...lo.quiz,
+                questions: lo.quiz.questions.map((question, qIndex) =>
+                  qIndex === questionIndex
+                    ? {
+                        ...question,
+                        answers: [...question.answers, answerDefaults],
+                      }
+                    : question,
+                ),
+              },
+            }
+          : lo,
+      ),
+    });
+  };
 
   // Remove an answer from a question within a learning object's quiz
   const handleRemoveAnswer = (
@@ -47,7 +101,29 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     loIndex: number,
     questionIndex: number,
     answerIndex: number,
-  ) => {};
+  ) => {
+    update(euIndex, {
+      ...fields[euIndex],
+      learningObjects: fields[euIndex].learningObjects.map((lo, index) =>
+        index === loIndex
+          ? {
+              ...lo,
+              quiz: {
+                ...lo.quiz,
+                questions: lo.quiz.questions.map((question, qIndex) =>
+                  qIndex === questionIndex
+                    ? {
+                        ...question,
+                        answers: question.answers.filter((_, i) => i !== answerIndex),
+                      }
+                    : question,
+                ),
+              },
+            }
+          : lo,
+      ),
+    });
+  };
 
   // Remove a quiz from a learning object
   const handleRemoveQuiz = (euIndex: number, loIndex: number) => {};

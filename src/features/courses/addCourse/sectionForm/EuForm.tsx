@@ -177,14 +177,58 @@ function EducationalUnitForm({
                 handleRemoveEu={handleRemoveSection}
                 handleRemoveQuiz={handleRemoveQuiz}
                 handleAddEuApi={handleAddEU}
+                type={t('eu.basic_eu')}
+                onAddEu={addNewBasicEducationalUnit}
               />
             ))}
-
-            <Stack justifyContent={'center'} alignItems={'center'} mt={2}>
-              <Button variant="contained" onClick={handleAddEU} startIcon={<Add />}>
-                {t('section.add_section')}
-              </Button>
-            </Stack>
+          </Stack>
+          <Stack p={2} spacing={3}>
+            {fields.map((field, index) => (
+              <EUnit
+                field={field}
+                euFormMethods={euFormMethods}
+                files={files}
+                canDelete={fields.length > 1}
+                key={index}
+                euIndex={index}
+                loIndex={index}
+                isEditMode={isEditMode}
+                setFiles={setFiles}
+                handleAddQuestion={handleAddQuestion}
+                handleRemoveQuestion={handleRemoveQuestion}
+                handleAddAnswer={handleAddAnswer}
+                handleRemoveAnswer={handleRemoveAnswer}
+                handleRemoveEu={handleRemoveSection}
+                handleRemoveQuiz={handleRemoveQuiz}
+                handleAddEuApi={handleAddEU}
+                type={t('eu.intermediate_eu')}
+                onAddEu={addNewIntermediateEducationalUnit}
+              />
+            ))}
+          </Stack>
+          <Stack p={2} spacing={3}>
+            {fields.map((field, index) => (
+              <EUnit
+                field={field}
+                euFormMethods={euFormMethods}
+                files={files}
+                canDelete={fields.length > 1}
+                key={index}
+                euIndex={index}
+                loIndex={index}
+                isEditMode={isEditMode}
+                setFiles={setFiles}
+                handleAddQuestion={handleAddQuestion}
+                handleRemoveQuestion={handleRemoveQuestion}
+                handleAddAnswer={handleAddAnswer}
+                handleRemoveAnswer={handleRemoveAnswer}
+                handleRemoveEu={handleRemoveSection}
+                handleRemoveQuiz={handleRemoveQuiz}
+                handleAddEuApi={handleAddEU}
+                type={t('eu.advanced_eu')}
+                onAddEu={addNewAdvancedEducationalUnit}
+              />
+            ))}
           </Stack>
         </>
       ) : (

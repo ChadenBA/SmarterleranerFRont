@@ -22,6 +22,7 @@ function EUnit({
   canDelete,
   euFormMethods,
   isEditMode,
+  type,
   setFiles,
   handleAddAnswer,
   handleAddQuestion,
@@ -29,13 +30,14 @@ function EUnit({
   handleRemoveQuestion,
   handleRemoveEu,
   handleAddEuApi,
+  onAddEu,
   loIndex,
 }: EuProps) {
   // Destructing the questions from the form methods
   const { questions } = field.learningObjects[loIndex].quiz as Quiz;
 
   // State Declaration
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [expandedQuiz, setExpandedQuiz] = useState(true);
   const [open, setOpen] = useState(false);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
@@ -89,6 +91,8 @@ function EUnit({
           onChangeExpanded={handleChangeExpand}
           onDeleteEu={handleDeleteOrRemoveSection}
           onUpdateEu={handleUpdateEuApi}
+          type={type}
+          onAddEu={onAddEu}
         />
         <Divider />
         <EuBody
