@@ -339,7 +339,6 @@ export const encodeEu = (
   files: Record<number, Record<number, FileWithMetadata[]>>,
 ): FormData => {
   const formData = new FormData();
-  console.log(files);
   eu.forEach((unit, euIndex) => {
     formData.append(`eu[${euIndex}][title]`, unit.title);
     formData.append(`eu[${euIndex}][type]`, unit.type);

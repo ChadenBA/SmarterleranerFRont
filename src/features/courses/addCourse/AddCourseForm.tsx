@@ -45,7 +45,7 @@ export default function AddCourseForm({
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);
-  const [activeStep, setActiveStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
 
   const StepperFormMethods = useForm<CourseFormValues>({
@@ -74,8 +74,8 @@ export default function AddCourseForm({
           }))
         : [
             DEFAULT_BASIC_EDUCATIONAL_UNIT,
-            // DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
-            // DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
+            DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
+            DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
           ],
     },
   });
@@ -107,7 +107,7 @@ export default function AddCourseForm({
   const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
     try {
       await createEuApi({
-        id: Number(3),
+        id: Number(courseId),
         eu: values.eu as unknown as Eu[],
         files: files as any,
       }).unwrap();
