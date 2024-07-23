@@ -10,11 +10,15 @@ import { injectPaginationParamsToUrl } from '@utils/helpers/queryParamInjector';
 import { ENDPOINTS } from '@config/constants/endpoints';
 import { ApiPaginationResponse } from '../type';
 import {
+  encodeCourse,
+  encodeEu,
   transformFetchCourseForAdminResponse,
   transformFetchCoursesResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
+import { Eu } from 'types/models/Eu';
+import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -39,22 +43,35 @@ export const courseApi = createApi({
       invalidatesTags: ['Courses'],
     }),
 
-    // createCourse: builder.mutation<CreateCourseResponse, FieldValues>({
-    //   query: (course) => ({
-    //     url: ENDPOINTS.CREATE_COURSE,
-    //     method: MethodsEnum.POST,
-    //     body: encodeCourse(course),
-    //   }),
-    //   invalidatesTags: ['Courses'],
-    // }),
-    // updateCourse: builder.mutation<CreateCourseResponse, { id: number; course: FieldValues }>({
-    //   query: ({ id, course }) => ({
-    //     url: ENDPOINTS.UPDATE_COURSE + `/${id}`,
-    //     method: MethodsEnum.POST,
-    //     body: encodeCourse(course),
-    //   }),
-    //   invalidatesTags: ['Courses', 'Course'],
-    // }),
+    createCourse: builder.mutation<CreateCourseResponse, FieldValues>({
+      query: (course) => ({
+        url: ENDPOINTS.CREATE_COURSE,
+        method: MethodsEnum.POST,
+        body: encodeCourse(course),
+      }),
+      invalidatesTags: ['Courses'],
+    }),
+
+    createEu: builder.mutation<
+      void,
+      { id: number; eu: Eu[]; files: Record<number, Record<number, FileWithMetadata[]>> }
+    >({
+      query: ({ id, eu, files }) => ({
+        url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
+        method: MethodsEnum.POST,
+        body: encodeEu(eu, files),
+      }),
+      invalidatesTags: ['Courses'],
+    }),
+
+    updateCourse: builder.mutation<CreateCourseResponse, { id: number; course: FieldValues }>({
+      query: ({ id, course }) => ({
+        url: ENDPOINTS.UPDATE_COURSE + `/${id}`,
+        method: MethodsEnum.POST,
+        body: encodeCourse(course),
+      }),
+      invalidatesTags: ['Courses', 'Course'],
+    }),
     getCourseForAdminById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
         url: ENDPOINTS.ADMIN_COURSES + `/${id}`,
@@ -92,10 +109,10 @@ export const courseApi = createApi({
 export const {
   useGetAdminCoursesQuery,
   useDeleteCourseMutation,
-  //useCreateCourseMutation,
+  useCreateCourseMutation,
   useGetCourseForAdminByIdQuery,
-  //useUpdateCourseMutation,
-
+  useUpdateCourseMutation,
+  useCreateEuMutation,
   usePutCourseActiveMutation,
   useSetCourseOfflineMutation,
   useSetCourseOnlineMutation,

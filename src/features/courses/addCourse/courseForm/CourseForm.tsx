@@ -34,11 +34,10 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
   const { preview, handleOnChange, handleResetPreview } = useUploadFile({
     formMethods,
     fieldName: 'courseMedia',
-    initPreview: generatePictureSrc(defaultValues?.courseMedia.fileName) || null,
+    initPreview: generatePictureSrc(defaultValues?.courseMedia?.name) || null,
     index: 0,
+    id: 0,
   });
-
-  //TODO: const isEditMode = !!defaultValues;
 
   if (isLoadingData) return <FallbackLoader />;
 
@@ -53,13 +52,13 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
             <Stack mb={2} direction="row" gap={2}>
               <CustomSelectField
                 config={{
-                  ...CREATE_COURSE_FORM_CONFIG.category,
+                  ...CREATE_COURSE_FORM_CONFIG.categoryId,
                   options: categoryOptions,
                 }}
               />
               <CustomSelectField
                 config={{
-                  ...CREATE_COURSE_FORM_CONFIG.subCategory,
+                  ...CREATE_COURSE_FORM_CONFIG.subcategoryId,
                   disabled: !selectedCategory,
                   options: subCategoriesOption,
                 }}

@@ -1,31 +1,21 @@
-import { CourseForDesigner } from 'types/models/Course'
-import { CourseFormValues } from './courseForm/CourseForm.type'
-import { DEFAULT_COURSE } from './AddCourseForm.constants'
+import { CourseForAdmin } from 'types/models/Course';
+import { CourseFormValues } from './courseForm/CourseForm.type';
+import { DEFAULT_COURSE } from './AddCourseForm.constants';
 
 export const generateCourseFormDefaultValues = (
-  valuesFromApi?: CourseForDesigner,
+  valuesFromApi?: CourseForAdmin,
 ): CourseFormValues => {
   if (valuesFromApi) {
     return {
       title: valuesFromApi.title,
       description: valuesFromApi.description,
       categoryId: valuesFromApi.categoryId,
-      languageId: valuesFromApi.languageId,
-      isPaid: valuesFromApi.isPaid,
-      price: valuesFromApi.price,
-      discount: valuesFromApi.discount,
-      facilitatorId: valuesFromApi.facilitatorId,
-      isPublic: valuesFromApi.isPublic,
-      latitude: valuesFromApi.latitude,
-      longitude: valuesFromApi.longitude,
-      link: valuesFromApi.link,
-      teachingType: valuesFromApi.teachingType,
+      subcategoryId: valuesFromApi.subcategoryId,
+      quiz: valuesFromApi.quiz,
+      courseMedia: valuesFromApi.courseMedia,
       subscribers: valuesFromApi.subscribers,
-      hasForum: valuesFromApi.hasForum,
-      startTime: valuesFromApi.startTime,
-      endTime: valuesFromApi.endTime,
-    }
+    };
   }
 
-  return DEFAULT_COURSE
-}
+  return DEFAULT_COURSE;
+};

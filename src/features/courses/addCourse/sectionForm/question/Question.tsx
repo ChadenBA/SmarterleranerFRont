@@ -1,44 +1,39 @@
-import CustomTextField from '@components/Inputs/customTextField/CustomTextField'
-import {
-  Divider,
-  Grid,
-  IconButton,
-  Stack,
-  Tooltip,
-  Typography,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { QuestionProps } from './Question.type'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton'
-import CustomSelectField from '@components/Inputs/customSelectField/CustomSelectField'
-import Answer from '../answer/Answer'
-import { CREATE_STEP_FORM_CONFIG } from '../SectionForm.constants'
-import { QuestionTypeEnum } from '@config/enums/questionType.enum'
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined'
-import { CustomLabel } from '@components/Inputs/customRadioButton/CustomRadioButton.style'
+import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
+import { Divider, Grid, IconButton, Stack, Tooltip, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { QuestionProps } from './Question.type';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton';
+import CustomSelectField from '@components/Inputs/customSelectField/CustomSelectField';
+import Answer from '../answer/Answer';
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
+import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
+import { CustomLabel } from '@components/Inputs/customRadioButton/CustomRadioButton.style';
+import { CREATE_LEARNING_OBJECT_FORM_CONFIG } from '../EuForm.constants';
 
 function Question({
   questionIndex,
-  sectionIndex,
+  euIndex,
+  loIndex,
   canDelete,
   field,
-  sectionFormMethods,
+  euFormMethods,
   handleDeleteQuestion,
   handleAddAnswer,
   handleRemoveAnswer,
 }: QuestionProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   // Question to be submitted to the api after the update
-  const questionToUpdate = sectionFormMethods.watch(
-    `sections.${sectionIndex}.quiz.questions.${questionIndex}`,
-  )
 
-  const isBinary = questionToUpdate
-    ? questionToUpdate.type === QuestionTypeEnum.BINARY
-    : false
-  const answers = field.quiz ? field.quiz.questions[questionIndex].answers : []
+  const questionToUpdate = euFormMethods.watch(
+    `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}`,
+  );
+
+  const isBinary = questionToUpdate ? questionToUpdate.type === QuestionTypeEnum.BINARY : false;
+  const answers = field.learningObjects[loIndex].quiz
+    ? field.learningObjects[loIndex].quiz.questions[questionIndex].answers
+    : [];
 
   return (
     <Stack spacing={1} sx={{ boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.2)' }}>
@@ -48,11 +43,10 @@ function Question({
             disabled={!canDelete}
             sx={{
               color: (theme) =>
-                canDelete
-                  ? theme.palette.error.main
-                  : theme.palette.action.disabled,
+                canDelete ? theme.palette.error.main : theme.palette.action.disabled,
             }}
-            onClick={() => handleDeleteQuestion(sectionIndex, questionIndex)}>
+            onClick={() => handleDeleteQuestion(euIndex, loIndex, questionIndex)}
+          >
             <DeleteOutlineOutlinedIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
@@ -67,8 +61,8 @@ function Question({
         <Grid item xs={12} lg={8}>
           <CustomTextField
             config={{
-              ...CREATE_STEP_FORM_CONFIG.questionTitle,
-              name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.question`,
+              ...CREATE_LEARNING_OBJECT_FORM_CONFIG.questionTitle,
+              name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.question`,
             }}
           />
         </Grid>
@@ -83,8 +77,8 @@ function Question({
         <Grid item xs={12} lg={8}>
           <CustomSelectField
             config={{
-              ...CREATE_STEP_FORM_CONFIG.questionType,
-              name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.type`,
+              ...CREATE_LEARNING_OBJECT_FORM_CONFIG.questionType,
+              name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.type`,
             }}
           />
         </Grid>
@@ -98,8 +92,9 @@ function Question({
               </Typography>
               <Tooltip title={t('section.quiz.add_answer')}>
                 <IconButton
-                  onClick={() => handleAddAnswer(sectionIndex, questionIndex)}
-                  color="success">
+                  onClick={() => handleAddAnswer(euIndex, loIndex, questionIndex)}
+                  color="success"
+                >
                   <AddCircleOutlineOutlinedIcon />
                 </IconButton>
               </Tooltip>
@@ -109,7 +104,8 @@ function Question({
             <Grid item xs={12} key={field.id}>
               <Answer
                 canDelete={answers.length > 2}
-                sectionIndex={sectionIndex}
+                euIndex={euIndex}
+                loIndex={loIndex}
                 questionIndex={questionIndex}
                 answerIndex={answerIndex}
                 handleRemoveAnswer={handleRemoveAnswer}
@@ -127,8 +123,8 @@ function Question({
           <Grid item xs={12} lg={7}>
             <CustomRadioButton
               config={{
-                ...CREATE_STEP_FORM_CONFIG.questionIsValid,
-                name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.isValid`,
+                ...CREATE_LEARNING_OBJECT_FORM_CONFIG.questionIsValid,
+                name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.isValid`,
               }}
             />
           </Grid>
@@ -136,7 +132,7 @@ function Question({
       )}
       <Divider />
     </Stack>
-  )
+  );
 }
 
-export default Question
+export default Question;

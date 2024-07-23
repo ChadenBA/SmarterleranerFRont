@@ -1,4 +1,5 @@
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { LearningObjectType } from '@config/enums/learningObjectType.enum';
 import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import { InputConfig, InputOption } from 'types/interfaces/InputConfig';
 
@@ -34,8 +35,8 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
     rules: { required: 'course.description_required' },
   },
-  category: {
-    name: 'category',
+  categoryId: {
+    name: 'categoryId',
     placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
     label: 'category.category_label',
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
@@ -43,8 +44,8 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
       required: 'category.category_required',
     },
   },
-  subCategory: {
-    name: 'subCategory',
+  subcategoryId: {
+    name: 'subcategoryId',
     placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
     label: 'category.sub_category_label',
     defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
@@ -95,6 +96,30 @@ export const CREATE_COURSE_FORM_CONFIG: Record<string, InputConfig> = {
       {
         label: GLOBAL_VARIABLES.EMPTY_STRING,
         value: 0,
+      },
+    ],
+  },
+  euTitle: {
+    name: 'euTitle',
+    placeholder: 'course.eu_title_placeholder',
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    type: 'text',
+    defaultValue: GLOBAL_VARIABLES.EMPTY_STRING,
+    rules: { required: 'course.eu_title_required' },
+  },
+  loType: {
+    name: 'loType',
+    defaultValue: 0,
+    label: GLOBAL_VARIABLES.EMPTY_STRING,
+    placeholder: GLOBAL_VARIABLES.EMPTY_STRING,
+    options: [
+      {
+        label: 'course.lo_object_type_abstract',
+        value: LearningObjectType.ABSTRACT,
+      },
+      {
+        label: 'course.lo_object_type_concrete',
+        value: LearningObjectType.CONCRETE,
       },
     ],
   },

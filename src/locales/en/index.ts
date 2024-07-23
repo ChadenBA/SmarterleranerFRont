@@ -13,6 +13,8 @@ import { dashboard } from './dashboard'
 import { section } from './section'
 import { language } from './language'
 import { category } from './category'
+import { lo } from './lo'
+import { eu } from './eu'
 
 const en = {
   topbar,
@@ -30,5 +32,7 @@ const en = {
   section,
   language,
   category,
+  lo,
+  eu,
 }
 export default en

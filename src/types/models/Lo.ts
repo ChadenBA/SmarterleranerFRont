@@ -6,6 +6,6 @@ export interface Lo {
   id?: number;
   title: string;
   type: LearningObjectType;
-  media: Media[];
-  quiz?: Quiz;
+  media?: Media[];
+  quiz: Quiz;
 }

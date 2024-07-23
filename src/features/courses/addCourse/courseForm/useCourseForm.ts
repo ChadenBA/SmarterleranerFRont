@@ -3,17 +3,13 @@ import { useGetCategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 import { CourseFormValues } from './CourseForm.type';
 import { useState, useEffect } from 'react';
-import {
-  DEFAULT_ANSWER_OBJECT,
-  DEFAULT_QUESTION_OBJECT,
-} from '../sectionForm/SectionForm.constants';
+import { DEFAULT_ANSWER_OBJECT, DEFAULT_QUESTION_OBJECT } from '../sectionForm/EuForm.constants';
 
 interface UseCourseForm {
   formMethods: UseFormReturn<CourseFormValues, undefined>;
 }
 
 export default function useCourseForm({ formMethods }: UseCourseForm) {
-
   const { watch, setValue } = formMethods;
 
   const {
@@ -43,7 +39,7 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
   });
 
   // Get the selected category from
-  const selectedCategory = watch('category');
+  const selectedCategory = watch('categoryId');
 
   // Set the subCategoriesOption based on the selected category
   useEffect(() => {

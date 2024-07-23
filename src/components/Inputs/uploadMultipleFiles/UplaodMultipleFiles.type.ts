@@ -1,13 +1,17 @@
-import { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react';
 
-export interface IFileState {
-  name: string
-  file: File
-  id: string
-}
 export interface UploadMultipleFilesProps {
-  files: File[]
-  index: number
-  isEditMode?: boolean
-  setFiles: Dispatch<SetStateAction<Record<number, File[]>>>
+  files: FileWithMetadata[];
+  euIndex: number;
+  loIndex: number;
+  isSupplementary: boolean;
+  isEditMode?: boolean;
+  setFiles: Dispatch<SetStateAction<Record<number, Record<number, FileWithMetadata[]>>>>;
+  setDeletedMedia: Dispatch<SetStateAction<string[]>>;
+}
+export interface FileWithMetadata {
+  file: File;
+  metadata: {
+    isSupplementary: boolean;
+  };
 }

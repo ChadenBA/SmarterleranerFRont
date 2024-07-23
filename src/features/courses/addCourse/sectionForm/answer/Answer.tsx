@@ -1,26 +1,27 @@
-import CustomTextField from '@components/Inputs/customTextField/CustomTextField'
-import { Grid, IconButton, Tooltip } from '@mui/material'
-import { AnswerProps } from './Answer.type'
-import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton'
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'
-import { useTranslation } from 'react-i18next'
-import { CREATE_STEP_FORM_CONFIG } from '../SectionForm.constants'
+import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
+import { Grid, IconButton, Tooltip } from '@mui/material';
+import { AnswerProps } from './Answer.type';
+import CustomCheckboxButton from '@components/Inputs/customCheckboxButton/CustomCheckboxButton';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useTranslation } from 'react-i18next';
+import { CREATE_LEARNING_OBJECT_FORM_CONFIG } from '../EuForm.constants';
 
 function Answer({
-  sectionIndex,
+  euIndex,
+  loIndex,
   questionIndex,
   answerIndex,
   canDelete,
   handleRemoveAnswer,
 }: AnswerProps) {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <Grid container display={'flex'} alignItems={'center'}>
       <Grid item xs={12} lg={1}>
         <CustomCheckboxButton
           config={{
-            ...CREATE_STEP_FORM_CONFIG.answerIsValid,
-            name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.isValid`,
+            ...CREATE_LEARNING_OBJECT_FORM_CONFIG.answerIsValid,
+            name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.isValid`,
           }}
         />
       </Grid>
@@ -28,8 +29,8 @@ function Answer({
       <Grid item xs={12} lg={10}>
         <CustomTextField
           config={{
-            ...CREATE_STEP_FORM_CONFIG.answerTitle,
-            name: `sections.${sectionIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.answer`,
+            ...CREATE_LEARNING_OBJECT_FORM_CONFIG.answerTitle,
+            name: `eu.${euIndex}.learningObjects.${loIndex}.quiz.questions.${questionIndex}.answers.${answerIndex}.answer`,
           }}
         />
       </Grid>
@@ -39,20 +40,17 @@ function Answer({
             disabled={!canDelete}
             sx={{
               color: (theme) =>
-                canDelete
-                  ? theme.palette.error.main
-                  : theme.palette.action.disabled,
+                canDelete ? theme.palette.error.main : theme.palette.action.disabled,
             }}
-            onClick={() =>
-              handleRemoveAnswer(sectionIndex, questionIndex, answerIndex)
-            }
-            color="error">
+            onClick={() => handleRemoveAnswer(euIndex, loIndex, questionIndex, answerIndex)}
+            color="error"
+          >
             <DeleteOutlineOutlinedIcon />
           </IconButton>
         </Tooltip>
       </Grid>
     </Grid>
-  )
+  );
 }
 
-export default Answer
+export default Answer;

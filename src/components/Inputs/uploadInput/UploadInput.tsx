@@ -23,7 +23,7 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
   };
 
   const FilePreview = (file: File) => {
-    const fileURL = file.name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
+    const fileURL = file.name?.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
       ? file.name
       : URL.createObjectURL(file);
     if (file.type.startsWith('image/')) {
@@ -38,6 +38,23 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
       return (
         <StyledPreviewPdf data={fileURL}>
           <embed src={fileURL} type="application/pdf" />
+        </StyledPreviewPdf>
+      );
+    } else if (file.type.startsWith('audio/')) {
+      return (
+        <audio controls>
+          <source src={fileURL || ''} type={file.type} />
+        </audio>
+      );
+    } else if (
+      file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
+    ) {
+      return (
+        <StyledPreviewPdf data={fileURL}>
+          <embed
+            src={fileURL}
+            type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+          />
         </StyledPreviewPdf>
       );
     }
