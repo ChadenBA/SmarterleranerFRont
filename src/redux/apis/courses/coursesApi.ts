@@ -18,6 +18,7 @@ import {
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
 import { Eu } from 'types/models/Eu';
+import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -53,7 +54,7 @@ export const courseApi = createApi({
 
     createEu: builder.mutation<
       void,
-      { id: number; eu: Eu[]; files: Record<number, Record<number, File[]>> }
+      { id: number; eu: Eu[]; files: Record<number, Record<number, FileWithMetadata[]>> }
     >({
       query: ({ id, eu, files }) => ({
         url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,

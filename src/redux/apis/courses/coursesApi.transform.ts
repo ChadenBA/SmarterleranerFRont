@@ -27,6 +27,7 @@ import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import { Eu } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
+import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const transformFetchCoursesResponse = (
   response: ApiPaginationResponse<CourseApi>,
@@ -333,10 +334,12 @@ export const encodeCourse = (values: FieldValues): FormData => {
   return formData;
 };
 
-export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>): FormData => {
-  console.log(eu);
+export const encodeEu = (
+  eu: Eu[],
+  files: Record<number, Record<number, FileWithMetadata[]>>,
+): FormData => {
   const formData = new FormData();
-
+  console.log(files);
   eu.forEach((unit, euIndex) => {
     formData.append(`eu[${euIndex}][title]`, unit.title);
     formData.append(`eu[${euIndex}][type]`, unit.type);
@@ -351,10 +354,12 @@ export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>
             `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
             question.question,
           );
+
           formData.append(
             `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
             getQuestionTypeFilter(question.type as number),
           );
+
           if (Number(question.type) === QuestionTypeEnum.BINARY) {
             formData.append(
               `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
@@ -379,10 +384,16 @@ export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>
 
       if (files[euIndex] && files[euIndex][loIndex]) {
         files[euIndex][loIndex].forEach((file, fileIndex) => {
-          formData.append(
-            `eu[${euIndex}][learningObjects][${loIndex}][media_files][${fileIndex}]`,
-            file,
-          );
+          if (!file['metadata']['isSupplementary'])
+            formData.append(
+              `eu[${euIndex}][learningObjects][${loIndex}][media_files][${fileIndex}]`,
+              file['file'],
+            );
+          else
+            formData.append(
+              `eu[${euIndex}][learningObjects][${loIndex}][supplementary_files][${fileIndex}]`,
+              file['file'],
+            );
         });
       }
     });

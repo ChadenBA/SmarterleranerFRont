@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { t } from 'i18next';
 import useEducationalUnitForm from './useEducationalUnitForm';
 import { EUFormProps } from './EuForm.type';
-// import { Add } from '@mui/icons-material';
 import EUnit from './module/EUnit';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 

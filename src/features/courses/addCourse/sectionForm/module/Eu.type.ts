@@ -1,3 +1,4 @@
+import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 import { Dispatch, SetStateAction } from 'react';
 import { FieldArrayWithId, UseFormReturn } from 'react-hook-form';
 import { Eu } from 'types/models/Eu';
@@ -8,14 +9,14 @@ export interface FormValues {
 
 export interface EuProps {
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
-  files: Record<number, Record<number, File[]>>;
+  files: Record<number, Record<number, FileWithMetadata[]>>;
   euIndex: number;
   type?: string;
   loIndex: number;
   canDelete: boolean;
   field: FieldArrayWithId<FormValues, 'eu', 'id'>;
   isEditMode?: boolean;
-  setFiles: Dispatch<SetStateAction<Record<number, Record<number, File[]>>>>;
+  setFiles: Dispatch<SetStateAction<Record<number, Record<number, FileWithMetadata[]>>>>;
   handleAddQuestion: (euIndex: number, loIndex: number) => void;
   handleRemoveQuestion: (euIndex: number, loIndex: number, questionIndex: number) => void;
   handleAddAnswer: (euIndex: number, loIndex: number, questionIndex: number) => void;

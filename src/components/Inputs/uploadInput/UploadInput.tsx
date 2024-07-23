@@ -23,7 +23,7 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
   };
 
   const FilePreview = (file: File) => {
-    const fileURL = file.name.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
+    const fileURL = file.name?.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
       ? file.name
       : URL.createObjectURL(file);
     if (file.type.startsWith('image/')) {

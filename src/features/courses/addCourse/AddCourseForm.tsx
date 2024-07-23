@@ -15,7 +15,6 @@ import {
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
-import EducationalUnit from './sectionForm/EuForm';
 import { useNavigate } from 'react-router-dom';
 import { AddCourseFormProps } from './AddCourseForm.type';
 import { CourseFormValues } from './courseForm/CourseForm.type';
@@ -28,6 +27,7 @@ import {
   DEFAULT_BASIC_EDUCATIONAL_UNIT,
   DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
 } from './sectionForm/EuForm.constants';
+import { PATHS } from '@config/constants/paths';
 
 export default function AddCourseForm({
   isEditMode,
@@ -36,11 +36,11 @@ export default function AddCourseForm({
   isFetching,
 }: AddCourseFormProps) {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
   const [files, setFiles] = useState<Record<number, Record<number, File[]>>>(
-    //  with record inside record
     courseDefaultValues?.media ? courseDefaultValues.media : {},
   );
 
@@ -85,7 +85,6 @@ export default function AddCourseForm({
   const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation();
 
   const handleAddCourse = StepperFormMethods.handleSubmit(async (values) => {
-    console.log('values', values);
     try {
       if (isEditMode) {
         await updateCourseActionApi({
@@ -108,13 +107,12 @@ export default function AddCourseForm({
   const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
     try {
       await createEuApi({
-        //!!!!!! id: Number(courseId),
-        id: Number(2),
+        id: Number(3),
         eu: values.eu as unknown as Eu[],
-        files,
+        files: files as any,
       }).unwrap();
       dispatch(showSuccess(t('section.add_section_success')));
-      //navigate(PATHS.DASHBOARD.DESIGNER.MY_COURSES.ROOT);
+      navigate(PATHS.DASHBOARD.ADMIN.COURSES.ROOT);
     } catch (error) {
       dispatch(showError(t('section.add_section_failure')));
     }
@@ -139,8 +137,8 @@ export default function AddCourseForm({
             isEditMode={isEditMode}
             isFetching={isFetching}
             handleAddEU={handleAddSection}
-            files={files}
-            setFiles={setFiles}
+            files={files as any}
+            setFiles={setFiles as any}
           />
         );
       default:
@@ -167,7 +165,7 @@ export default function AddCourseForm({
         </GoBackButton>
         <Stack>
           <CustomLoadingButton
-            isLoading={isLoading /* || isLoadingSection || isLoadingUpdate*/}
+            isLoading={isLoading || isLoadingEu || isLoadingUpdate}
             onClick={activeStep === 0 ? handleAddCourse : handleAddSection}
           >
             {isEditMode ? t('common.update') : t('common.next')}

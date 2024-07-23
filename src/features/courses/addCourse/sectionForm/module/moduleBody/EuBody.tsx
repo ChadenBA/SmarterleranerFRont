@@ -54,7 +54,7 @@ function EuBody({
               borderRadius: 2,
             }}
           >
-            <Stack direction="row" spacing={0} p={0} m={0} alignItems="center">
+            <Stack direction="row" spacing={2} p={0} m={0} alignItems="center">
               <Typography variant="h3" pt={0.2}>
                 {t('eu.learning_objects')}
               </Typography>
@@ -82,18 +82,18 @@ function EuBody({
                   }}
                 />
               </Grid>
-
-              <Grid item xs={12}>
-                <UploadMultipleFiles
-                  files={files[euIndex]?.[loIndex] || []}
-                  euIndex={euIndex}
-                  loIndex={loIndex}
-                  setFiles={setFiles}
-                  isEditMode={isEditMode}
-                  setDeletedMedia={setDeletedMedia}
-                />
-              </Grid>
             </Grid>
+            <UploadMultipleFiles
+              files={
+                files[euIndex]?.[loIndex]?.filter(({ metadata }) => !metadata.isSupplementary) || []
+              }
+              isSupplementary={false}
+              euIndex={euIndex}
+              loIndex={loIndex}
+              setFiles={setFiles}
+              isEditMode={isEditMode}
+              setDeletedMedia={setDeletedMedia}
+            />
             {!isEditMode && (
               <Stack spacing={2} width="100%" p={8}>
                 <Stack direction="row" spacing={2} alignItems="center">
@@ -128,108 +128,20 @@ function EuBody({
                 ))}
               </Stack>
             )}
-            {/* Add supplementary materials if the user wants to */}
-            {/* TODO: index of supp material here or add is_supplementary */}
-            {/* <Typography variant="h3">{t('eu.supplementary_materials')}</Typography>
+            <Typography variant="h3">{t('eu.supplementary_materials')}</Typography>
             <UploadMultipleFiles
-              files={files[euIndex]?.[loIndex] || []}
+              files={
+                files[euIndex]?.[loIndex]?.filter(({ metadata }) => metadata.isSupplementary) || []
+              }
+              isSupplementary={true}
               euIndex={euIndex}
               loIndex={loIndex}
               setFiles={setFiles}
               isEditMode={isEditMode}
               setDeletedMedia={setDeletedMedia}
-            /> */}
+            />
           </Stack>
         ))}
-
-        {/* <Stack
-          spacing={2}
-          sx={{
-            width: '100%',
-            margin: 4,
-            padding: 2,
-            border: `1px solid ${GREY.light}`,
-            borderRadius: 8,
-          }}
-        >
-          <Grid item xs={12}>
-            <Stack direction={'row'} spacing={2} alignItems={'center'}>
-              <Typography variant="h5">{t('eu.learning_objects')}</Typography>
-              <IconButton onClick={() => handleAddLearningObject(euIndex, loIndex)} color="success">
-                <AddCircleOutlineOutlinedIcon fontSize="medium" />
-              </IconButton>
-            </Stack>
-          </Grid>
-          <Grid item xs={12}>
-            <Divider />
-          </Grid>
-          <Grid item xs={6}>
-            <CustomTextField
-              config={{
-                ...CREATE_LEARNING_OBJECT_FORM_CONFIG.title,
-                name: `eu.${euIndex}.learningObjects.${loIndex}.title`,
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <CustomRadioButton
-              config={{
-                ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
-                name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
-              }}
-            />
-          </Grid>
-
-          <UploadMultipleFiles
-            files={files[loIndex] || []}
-            index={loIndex}
-            setFiles={setFiles}
-            isEditMode={isEditMode}
-            setDeletedMedia={setDeletedMedia}
-          />
-
-          {!isEditMode && (
-            <Grid item xs={12}>
-              <Divider />
-            </Grid>
-          )}
-          {!isEditMode && (
-            <Stack spacing={2} width="100%" p={8}>
-              <Stack direction={'row'} spacing={2} alignItems={'center'}>
-                <Typography color="primary" fontWeight={'medium'} variant="h2">
-                  {t('section.quiz.questions')}
-                </Typography>
-
-                <Tooltip title={t('section.quiz.add_question')} placement="right">
-                  <IconButton onClick={() => handleAddQuestion(euIndex, loIndex)} color="success">
-                    <AddCircleOutlineOutlinedIcon fontSize="medium" />
-                  </IconButton>
-                </Tooltip>
-              </Stack>
-              <Divider />
-              {questions?.map((_, questionIndex) => {
-                return (
-                  <Grid item xs={12} key={questionIndex} p={2}>
-                    <Question
-                      handleAddQuestion={handleAddQuestion}
-                      handleDeleteQuestion={() =>
-                        handleRemoveQuestion(euIndex, loIndex, questionIndex)
-                      }
-                      canDelete={questions.length > 1}
-                      questionIndex={questionIndex}
-                      field={field}
-                      euIndex={euIndex}
-                      loIndex={0}
-                      euFormMethods={sectionFormMethods}
-                      handleRemoveAnswer={handleRemoveAnswer}
-                      handleAddAnswer={() => handleAddAnswer(euIndex, loIndex, questionIndex)}
-                    />
-                  </Grid>
-                );
-              })}
-            </Stack>
-          )}
-        </Stack> */}
       </Grid>
     </Collapse>
   );
