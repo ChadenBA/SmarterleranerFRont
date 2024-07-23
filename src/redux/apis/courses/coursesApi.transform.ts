@@ -334,6 +334,7 @@ export const encodeCourse = (values: FieldValues): FormData => {
 };
 
 export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>): FormData => {
+  console.log(eu);
   const formData = new FormData();
 
   eu.forEach((unit, euIndex) => {
@@ -384,7 +385,6 @@ export const encodeEu = (eu: Eu[], files: Record<number, Record<number, File[]>>
           );
         });
       }
-      // supplementary materials as files
     });
   });
 

@@ -130,7 +130,6 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     });
   };
 
-
   const handleAddLearningObject = (euIndex: number) => {
     update(euIndex, {
       ...fields[euIndex],

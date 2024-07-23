@@ -7,7 +7,11 @@ import { STEPS } from './AddCourseForm.constants';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
 import { GoBackButton } from './AddCourseForm.style';
 import { useForm } from 'react-hook-form';
-import { useCreateCourseMutation, useUpdateCourseMutation } from '@redux/apis/courses/coursesApi';
+import {
+  useCreateCourseMutation,
+  useCreateEuMutation,
+  useUpdateCourseMutation,
+} from '@redux/apis/courses/coursesApi';
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
@@ -70,17 +74,18 @@ export default function AddCourseForm({
           }))
         : [
             DEFAULT_BASIC_EDUCATIONAL_UNIT,
-            DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
-            DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
+            // DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
+            // DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
           ],
     },
   });
 
   const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();
-  // const [createEuApi, { isLoading: isLoadingEu }] = useCreateEuMutation()
+  const [createEuApi, { isLoading: isLoadingEu }] = useCreateEuMutation();
   const [updateCourseActionApi, { isLoading: isLoadingUpdate }] = useUpdateCourseMutation();
 
   const handleAddCourse = StepperFormMethods.handleSubmit(async (values) => {
+    console.log('values', values);
     try {
       if (isEditMode) {
         await updateCourseActionApi({
@@ -101,21 +106,15 @@ export default function AddCourseForm({
   });
 
   const handleAddSection = educationalUnitFormMethod.handleSubmit(async (values) => {
-    // let addedEus: Eu[] = [];
-
-    if (isEditMode) {
-      // const defaultLength = courseDefaultValues?.educationalUnits.length;
-      // addedSections = values.sections.slice(Number(defaultLength) + 1);
-    }
-
     try {
-      // await createSectionActionApi({
-      //   courseId: String(courseId),
-      //   sections: isEditMode ? addedSections : values.sections,
-      //   files,
-      // }).unwrap();
-      // dispatch(showSuccess(t('section.add_section_success')));
-      // navigate(PATHS.DASHBOARD.DESIGNER.MY_COURSES.ROOT);
+      await createEuApi({
+        //!!!!!! id: Number(courseId),
+        id: Number(2),
+        eu: values.eu as unknown as Eu[],
+        files,
+      }).unwrap();
+      dispatch(showSuccess(t('section.add_section_success')));
+      //navigate(PATHS.DASHBOARD.DESIGNER.MY_COURSES.ROOT);
     } catch (error) {
       dispatch(showError(t('section.add_section_failure')));
     }

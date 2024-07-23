@@ -11,11 +11,13 @@ import { ENDPOINTS } from '@config/constants/endpoints';
 import { ApiPaginationResponse } from '../type';
 import {
   encodeCourse,
+  encodeEu,
   transformFetchCourseForAdminResponse,
   transformFetchCoursesResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
+import { Eu } from 'types/models/Eu';
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -45,6 +47,18 @@ export const courseApi = createApi({
         url: ENDPOINTS.CREATE_COURSE,
         method: MethodsEnum.POST,
         body: encodeCourse(course),
+      }),
+      invalidatesTags: ['Courses'],
+    }),
+
+    createEu: builder.mutation<
+      void,
+      { id: number; eu: Eu[]; files: Record<number, Record<number, File[]>> }
+    >({
+      query: ({ id, eu, files }) => ({
+        url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
+        method: MethodsEnum.POST,
+        body: encodeEu(eu, files),
       }),
       invalidatesTags: ['Courses'],
     }),
@@ -88,7 +102,6 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
-
   }),
 });
 
@@ -98,7 +111,7 @@ export const {
   useCreateCourseMutation,
   useGetCourseForAdminByIdQuery,
   useUpdateCourseMutation,
-
+  useCreateEuMutation,
   usePutCourseActiveMutation,
   useSetCourseOfflineMutation,
   useSetCourseOnlineMutation,
