@@ -2,8 +2,7 @@ import { Stack } from '@mui/material';
 import { FormProvider } from 'react-hook-form';
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import { useState } from 'react';
-// import SectionTabs from './sectionTabs/SectionTabs';
-// import { Button } from '@mui/material';
+import SectionTabs from './sectionTabs/SectionTabs';
 import { t } from 'i18next';
 import useEducationalUnitForm from './useEducationalUnitForm';
 import { EUFormProps } from './EuForm.type';
@@ -103,30 +102,34 @@ function EducationalUnitForm({
         </>
       ) : (
         <Stack p={2} spacing={3}>
-          {/* <SectionTabs
+          <SectionTabs
             sections={fields}
             activeTab={activeTab}
             handleChange={handleChangeTab}
             onAddNewSection={handleAddLearningObject}
           />
-          <EUnit
-            field={fields[activeTab]}
-            euFormMethods={euFormMethods}
-            files={files}
-            canDelete={fields.length > 1}
-            key={fields[activeTab].id}
-            euIndex={activeTab}
-            loIndex={activeTab}
-            isEditMode={isEditMode}
-            setFiles={setFiles}
-            handleAddQuestion={handleAddQuestion}
-            handleRemoveQuestion={handleRemoveQuestion}
-            handleAddAnswer={handleAddAnswer}
-            handleRemoveAnswer={handleRemoveAnswer}
-            handleRemoveEu={handleRemoveSection}
-            handleRemoveQuiz={handleRemoveQuiz}
-            handleAddEuApi={handleAddEU}
-          /> */}
+          {fields.map((field, index) => (
+            <EUnit
+              field={fields[activeTab]}
+              euFormMethods={euFormMethods}
+              files={files}
+              canDelete={canDeleteEu(field.type)}
+              key={fields[activeTab].id}
+              euIndex={activeTab}
+              loIndex={activeTab}
+              isEditMode={isEditMode}
+              setFiles={setFiles}
+              handleAddQuestion={handleAddQuestion}
+              handleRemoveQuestion={handleRemoveQuestion}
+              handleAddAnswer={handleAddAnswer}
+              handleRemoveAnswer={handleRemoveAnswer}
+              handleRemoveEu={handleRemoveSection}
+              handleAddEuApi={handleAddEU}
+              handleAddLearningObject={() => handleAddLearningObject(index)}
+              type={handleEuType(field.type)}
+              onAddEu={() => addNewEducationalUnit(field.type as any, index)}
+            />
+          ))}
         </Stack>
       )}
     </FormProvider>

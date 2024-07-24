@@ -36,10 +36,14 @@ export interface CourseForAdmin {
   subcategoryId: number;
   isOffline?: 1 | 0;
   isActive?: 1 | 0;
-  subscribers: number[];
+  subscribers?: number[];
   educationalUnits: Eu[];
+  educationalUnitsCount?: number;
+  learningObjectsCount?: number;
+  subscribedUsersCount?: number;
   quiz: Quiz;
-  courseMedia: File;
+  courseMedia?: File;
   createdAt: string;
   media?: Record<string, Record<number, File[]>>;
+  coverMedia: Media;
 }

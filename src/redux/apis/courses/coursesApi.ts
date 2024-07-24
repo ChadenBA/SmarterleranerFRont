@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { PaginationResponse } from 'types/interfaces/Pagination';
-import { CourseApi, CourseForAdminApi, CreateCourseResponse } from './coursesApi.type';
+import { CourseApi, CreateCourseResponse, SingleCourseResponseData } from './coursesApi.type';
 import { baseQueryConfigWithRefresh } from '@redux/baseQueryConfig';
-import { Course, CourseForAdmin } from 'types/models/Course';
+import { CourseForAdmin } from 'types/models/Course';
 import { QueryParams } from 'types/interfaces/QueryParams';
 import { MethodsEnum } from '@config/enums/method.enum';
 import { injectPaginationParamsToUrl } from '@utils/helpers/queryParamInjector';
@@ -12,7 +12,7 @@ import { ApiPaginationResponse } from '../type';
 import {
   encodeCourse,
   encodeEu,
-  transformFetchCourseForAdminResponse,
+  transformFetchCourseResponse,
   transformFetchCoursesResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
@@ -25,7 +25,7 @@ export const courseApi = createApi({
   baseQuery: baseQueryConfigWithRefresh,
   tagTypes: ['Courses', 'CoursesForAdmin', 'Course'],
   endpoints: (builder) => ({
-    getAdminCourses: builder.query<PaginationResponse<Course>, QueryParams>({
+    getAdminCourses: builder.query<PaginationResponse<CourseForAdmin>, QueryParams>({
       query: (params) => ({
         url: injectPaginationParamsToUrl(ENDPOINTS.ADMIN_COURSES, params),
         method: MethodsEnum.GET,
@@ -72,13 +72,14 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course'],
     }),
+
     getCourseForAdminById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
         url: ENDPOINTS.ADMIN_COURSES + `/${id}`,
         method: MethodsEnum.GET,
       }),
-      transformResponse: (response: ItemDetailsResponse<CourseForAdminApi>) =>
-        transformFetchCourseForAdminResponse(response),
+      transformResponse: (response: SingleCourseResponseData) =>
+        transformFetchCourseResponse(response),
       providesTags: ['CoursesForAdmin'],
     }),
 
@@ -89,6 +90,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+
     setCourseOffline: builder.mutation<void, number>({
       query: (id) => ({
         url: `${ENDPOINTS.OFFLINE_COURSE}/${id}`,
@@ -96,6 +98,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+
     setCourseOnline: builder.mutation<void, number>({
       query: (id) => ({
         url: `${ENDPOINTS.ONLINE_COURSE}/${id}`,

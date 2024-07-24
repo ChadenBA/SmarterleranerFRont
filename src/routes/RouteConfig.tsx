@@ -49,6 +49,14 @@ const AddUserPages = lazy(() => import('src/pages/dashboard/admin/users/addUser/
 const AdminDashboard = lazy(() => import('src/pages/dashboard/admin/AdminDashboard'));
 
 const CoursesPage = lazy(() => import('src/pages/dashboard/admin/courses/CoursesPage'));
+
+const EditCoursePage = lazy(
+  () =>
+    import(
+      'src/pages/dashboard/designer/courses/updateCoursePage/UpdateCoursePage'
+    ),
+)
+
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -174,14 +182,14 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.COURSES.EDIT_COURSE,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <EditCoursePage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+      {
+        path: PATHS.DASHBOARD.ADMIN.COURSES.EDIT_COURSE,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <EditCoursePage />
+          </RoleBasedGuard>
+        ),
+      },
       // {
       //   path: PATHS.DASHBOARD.STUDENT.MY_QUIZZES,
       //   element: (

@@ -1,6 +1,6 @@
-import { transformPaginationResponse } from '@redux/apis/transform';
+import { transformPaginationResponse, transformSingleMedia } from '@redux/apis/transform';
 import { PaginationResponse } from 'types/interfaces/Pagination';
-import { Course, CourseForAdmin } from 'types/models/Course';
+import { CourseForAdmin } from 'types/models/Course';
 import { ApiPaginationResponse } from '../type';
 import {
   ApiEU,
@@ -24,14 +24,14 @@ import { FieldValues } from 'react-hook-form';
 import { Question, Quiz } from 'types/models/Quiz';
 import { decodeQuestionType, getQuestionTypeFilter } from '@utils/helpers/course.helpers';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
-import { QuestionTypeEnum } from '@config/enums/questionType.enum';
+import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionType.enum';
 import { Eu } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const transformFetchCoursesResponse = (
   response: ApiPaginationResponse<CourseApi>,
-): PaginationResponse<Course> => {
+): PaginationResponse<CourseForAdmin> => {
   if (response.meta) {
     return {
       ...transformPaginationResponse(response),
@@ -52,41 +52,33 @@ export const transformFetchCoursesResponse = (
 
 export const transformFetchCourseResponse = (
   response: SingleCourseResponseData,
-): ItemDetailsResponse<Course> => {
+): ItemDetailsResponse<CourseForAdmin> => {
   return {
     message: response.message,
     data: transformSingleCourse(response.data),
   };
 };
 
-export const transformCourses = (data: CourseApi[]): Course[] => {
+export const transformCourses = (data: CourseApi[]): CourseForAdmin[] => {
   return data.map((course) => transformSingleCourse(course));
 };
 
-export const transformSingleCourse = (course: CourseApi): Course => {
+export const transformSingleCourse = (course: CourseApi): CourseForAdmin => {
   return {
     id: course.id,
     title: course.title,
     description: course.description,
-    categoryId: course.category_id,
-    category: {
-      id: course.category.id,
-      category: course.category.category,
-    },
-    subcategoryId: course.subcategory_id,
-    subcategory: {
-      id: course.subcategory.id,
-      subcategory: course.subcategory.subcategory,
-    },
+    categoryId: course.category.id,
+    subcategoryId: course.subcategory.id,
     quiz: course.quiz
       ? {
           id: course.quiz.id,
-          questions: course.quiz.questions.map((question) => ({
+          questions: course.quiz?.questions?.map((question) => ({
             id: question.id,
             question: question.question,
             type: question.type,
             isValid: question.is_valid,
-            answers: question.answers.map((answer) => ({
+            answers: question?.answers?.map((answer) => ({
               id: answer.id,
               answer: answer.answer,
               isValid: answer.is_valid,
@@ -105,13 +97,13 @@ export const transformSingleCourse = (course: CourseApi): Course => {
           ],
         },
     educationalUnits: transformEducationalUnits(course.educational_units),
-    isActive: course?.is_active === 1,
-    isOffline: course?.is_offline === 1,
+    isActive: course?.is_active ? 1 : 0,
+    isOffline: course?.is_offline ? 1 : 0,
     createdAt: transformDateFormat(course.created_at),
     educationalUnitsCount: course.educational_units_count,
     learningObjectsCount: course.learning_objects_count,
     subscribedUsersCount: course.subscribed_users_count,
-    media: transformMedia(course.media),
+    coverMedia: transformSingleMedia(course.media[0]),
   };
 };
 
@@ -172,7 +164,6 @@ export const transformFetchCourseForAdminResponse = (
   response: ItemDetailsResponse<CourseForAdminApi>,
 ): ItemDetailsResponse<CourseForAdmin> => {
   const { data } = response;
-
   return {
     message: response.message,
     data: {
@@ -198,6 +189,7 @@ export const transformFetchCourseForAdminResponse = (
         },
       ),
       educationalUnits: data.educational_units.map((eu) => transformEducationalUnit(eu)),
+      coverMedia: transformSingleMedia(data.media[0]),
     },
   };
 };
@@ -242,6 +234,7 @@ export const transformFetchCourseForAdminResponse = (
 
 export const transformQuestionSection = (questionApi: ApiQuestion): Question => {
   const { id, is_valid, question, type, answers } = questionApi;
+
   return {
     id: id,
     type: decodeQuestionType(type.toString()),
@@ -291,6 +284,7 @@ export const transformQuestionSection = (questionApi: ApiQuestion): Question => 
 export const encodeCourse = (values: FieldValues): FormData => {
   const formData = new FormData();
   const { quiz, courseMedia } = values;
+  console.log('valuesss', values);
 
   Object.keys(values).forEach((key) => {
     if (key !== 'courseMedia' && key !== 'quiz') {
@@ -304,11 +298,21 @@ export const encodeCourse = (values: FieldValues): FormData => {
   if (quiz?.questions?.length > 0) {
     (quiz as Quiz).questions.forEach((question, questionIndex) => {
       formData.append(`quiz[questions][${questionIndex}][question]`, question.question);
+
+      if (question.type === QuestionTypeEnum.QCM) {
+        formData.append(`quiz[questions][${questionIndex}][type]`, QuestionTypeLabelEnum.QCM);
+      } else {
+        formData.append(`quiz[questions][${questionIndex}][type]`, QuestionTypeLabelEnum.BINARY);
+      }
+
       formData.append(
-        `quiz[questions][${questionIndex}][type]`,
-        getQuestionTypeFilter(question.type as number),
+        `quiz[questions][${questionIndex}][id]`,
+        question.id ? String(question.id) : '0',
       );
+
       if (question.type === QuestionTypeEnum.BINARY) {
+        formData.append(`quiz[questions][${questionIndex}][is_valid]`, String(question.isValid));
+      } else {
         formData.append(`quiz[questions][${questionIndex}][is_valid]`, String(question.isValid));
       }
 
@@ -322,12 +326,24 @@ export const encodeCourse = (values: FieldValues): FormData => {
             `quiz[questions][${questionIndex}][answers][${answerIndex}][answer]`,
             answer.answer,
           );
+
           formData.append(
             `quiz[questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
             String(answer.isValid ? '1' : '0'),
           );
+
+          formData.append(
+            `quiz[questions][${questionIndex}][answers][${answerIndex}][id]`,
+            String(answer.id),
+          );
         });
       }
+    });
+  }
+
+  if (quiz?.deletedQuestions?.forEach) {
+    quiz.deletedQuestions.forEach((questionId: number, questionIndex: number) => {
+      formData.append(`quiz[deleted_questions][${questionIndex}]`, String(questionId));
     });
   }
 
@@ -372,10 +388,16 @@ export const encodeEu = (
                 `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
                 answer.answer,
               );
+
               formData.append(
                 `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
                 String(answer.isValid ? '1' : '0'),
               );
+
+              // formData.append(
+              //   `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][id]`,
+              //   String(answer.id),
+              // );
             });
           }
         });

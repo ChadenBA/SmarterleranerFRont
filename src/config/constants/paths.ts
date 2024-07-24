@@ -40,11 +40,11 @@ export const PATHS = {
         ADD_CATEGORY: '/dashboard/admin/categories/add-category',
         EDIT_CATEGORY: '/dashboard/admin/categories/:categoryId',
       },
-      COURSES : {
+      COURSES: {
         ROOT: '/dashboard/admin/courses',
         ADD_COURSE: '/dashboard/admin/courses/add-course',
-        EDIT_COURSE: '/dashboard/admin/courses/:course',
-      }
+        EDIT_COURSE: '/dashboard/admin/courses/:courseId',
+      },
     },
     STUDENT: {
       ROOT: '/dashboard/student',
@@ -55,7 +55,6 @@ export const PATHS = {
       MY_QUIZZES: '/dashboard/student/my-quizzes',
       MY_SUPPORT: '/dashboard/student/my-support',
     },
-
   },
 
   MAIN: {
@@ -67,4 +66,4 @@ export const PATHS = {
     },
   },
   ANY: '*',
-}
+};

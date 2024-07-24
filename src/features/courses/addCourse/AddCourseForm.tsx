@@ -36,6 +36,7 @@ export default function AddCourseForm({
   isFetching,
 }: AddCourseFormProps) {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -53,6 +54,8 @@ export default function AddCourseForm({
     shouldFocusError: true,
     defaultValues: generateCourseFormDefaultValues(courseDefaultValues),
   });
+
+  console.log('courseDefaultValues', courseDefaultValues);
 
   const educationalUnitFormMethod = useForm<FormValues>({
     mode: 'onChange',
@@ -98,7 +101,7 @@ export default function AddCourseForm({
         dispatch(showSuccess(t('course.add_course_success')));
       }
       setCompleted({ ...completed, [activeStep]: true });
-      setActiveStep((prev) => prev + 1);
+      //setActiveStep((prev) => prev + 1);
     } catch (error) {
       dispatch(showError(t('course.api_course_failure')));
     }
