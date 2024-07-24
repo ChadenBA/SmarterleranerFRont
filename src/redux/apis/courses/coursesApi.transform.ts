@@ -284,7 +284,6 @@ export const transformQuestionSection = (questionApi: ApiQuestion): Question => 
 export const encodeCourse = (values: FieldValues): FormData => {
   const formData = new FormData();
   const { quiz, courseMedia } = values;
-  console.log('valuesss', values);
 
   Object.keys(values).forEach((key) => {
     if (key !== 'courseMedia' && key !== 'quiz') {

@@ -30,7 +30,7 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
   });
 
   const { t } = useTranslation();
-  console.log('defaultValues', defaultValues);
+
   const { preview, handleOnChange, handleResetPreview } = useUploadFile({
     formMethods,
     fieldName: 'courseMedia',
@@ -38,8 +38,6 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
     index: 0,
     id: 0,
   });
-
-  console.log('questions', preview);
 
   if (isLoadingData) return <FallbackLoader />;
 

@@ -18,7 +18,6 @@ function UpdateCoursePage() {
   if (isLoading) return <FallbackLoader />;
 
   if (isError) return <Error />;
-  console.log('data', data);
 
   return (
     <BodyCard title={t('course.update_course')}>

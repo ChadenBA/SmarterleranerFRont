@@ -5,12 +5,11 @@ import { QuestionPretestProps } from './QuestionPretest.type';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton';
 import CustomSelectField from '@components/Inputs/customSelectField/CustomSelectField';
-import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionType.enum';
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import AnswerExam from '../answerPretest/AnswerPretest';
 import { CustomLabel } from '@components/Inputs/customRadioButton/CustomRadioButton.style';
 import { CREATE_COURSE_FORM_CONFIG } from '../../CourseForm.constants';
-import { useEffect } from 'react';
 
 function QuestionPretest({
   questionIndex,
@@ -33,14 +32,7 @@ function QuestionPretest({
 
   const isBinary = questionToUpdate ? questionToUpdate.type === QuestionTypeEnum.BINARY : false;
 
-  console.log('questionToUpdate', questionToUpdate, isBinary);
-
   const answers = formMethods.watch(`quiz.questions.${questionIndex}.answers`);
-
-  useEffect(() => {
-    // Perform actions based on question type change
-    console.log(`Question type changed to: ${questionToUpdate.type}`);
-  }, [questionToUpdate.type]);
 
   return (
     <Stack spacing={1} sx={{ boxShadow: '2px 2px 2px 1px rgba(0, 0, 0, 0.2)' }}>

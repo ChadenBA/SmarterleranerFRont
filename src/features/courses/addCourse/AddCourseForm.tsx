@@ -55,8 +55,6 @@ export default function AddCourseForm({
     defaultValues: generateCourseFormDefaultValues(courseDefaultValues),
   });
 
-  console.log('courseDefaultValues', courseDefaultValues);
-
   const educationalUnitFormMethod = useForm<FormValues>({
     mode: 'onChange',
     shouldFocusError: true,

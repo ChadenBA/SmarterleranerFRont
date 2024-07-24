@@ -21,8 +21,6 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     name: 'quiz.questions',
   });
 
-  console.log('fieldsfields', questions);
-
   // Initialize the usePagination hook
   const { queryParams } = usePagination();
 

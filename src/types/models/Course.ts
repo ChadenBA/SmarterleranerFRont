@@ -3,6 +3,7 @@ import { Eu } from './Eu';
 import { Quiz } from './Quiz';
 
 export interface Course {
+  coverMedia: Media;
   id: number;
   title: string;
   categoryId: number;
