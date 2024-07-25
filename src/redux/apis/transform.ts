@@ -9,12 +9,12 @@ export const transformMedia = (medias: MediaApi[]): Media[] => {
 
 export const transformSingleMedia = (media: MediaApi): Media => {
   return {
-    id: media.id,
-    fileName: generatePictureSrc(media.file_name),
-    modelId: media.model_id,
-    mimeType: media.mime_type,
-    modelType: media.model_type,
-    title: media.title,
+    id: media?.id,
+    fileName: generatePictureSrc(media?.file_name),
+    modelId: media?.model_id,
+    mimeType: media?.mime_type,
+    modelType: media?.model_type,
+    title: media?.title,
   };
 };
 

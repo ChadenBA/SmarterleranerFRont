@@ -10,16 +10,6 @@ import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
 import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
 
-import AddCoursePage from '@pages/dashboard/designer/courses/addCoursePage/AddCoursePage';
-
-// import { GuestGuard } from '@guards/GuestGuard'
-// import AuthLayout from '@layouts/authLayout/AuthLayout'
-// import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
-// import { AuthGuard } from '@guards/AuthGuard'
-// import { RoleBasedGuard } from '@guards/RoleBasedGuard'
-// import { UserRoleEnum } from '@config/enums/role.enum'
-
-
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
 const SignUpPage = lazy(() => import('src/pages/auth/signup/signupPage'));
@@ -51,11 +41,11 @@ const AdminDashboard = lazy(() => import('src/pages/dashboard/admin/AdminDashboa
 const CoursesPage = lazy(() => import('src/pages/dashboard/admin/courses/CoursesPage'));
 
 const EditCoursePage = lazy(
-  () =>
-    import(
-      'src/pages/dashboard/designer/courses/updateCoursePage/UpdateCoursePage'
-    ),
-)
+  () => import('src/pages/dashboard/admin/courses/updateCoursePage/UpdateCoursePage'),
+);
+const AddCoursePage = lazy(
+  () => import('src/pages/dashboard/admin/courses/addCoursePage/AddCoursePage'),
+);
 
 export const ROUTE_CONFIG: RouteObject[] = [
   {
@@ -146,7 +136,6 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-    
 
       {
         path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
@@ -173,7 +162,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-     
+
       {
         path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
         element: (

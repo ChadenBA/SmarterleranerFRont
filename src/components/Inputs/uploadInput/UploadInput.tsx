@@ -22,10 +22,21 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
     ref.current?.click();
   };
 
+  const AudioPreview = ({ fileURL }: { fileURL: string }) => {
+    return (
+      <audio
+        controls
+        src={fileURL}
+        style={{ width: '100%', height: '100%', border: 'none', background: 'none' }}
+      />
+    );
+  };
+
   const FilePreview = (file: File) => {
     const fileURL = file.name?.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
       ? file.name
       : URL.createObjectURL(file);
+
     if (file.type.startsWith('image/')) {
       return <StyledPreviewImage src={fileURL} alt="File preview" />;
     } else if (file.type.startsWith('video/')) {
@@ -37,26 +48,13 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
     } else if (file.type === 'application/pdf') {
       return (
         <StyledPreviewPdf data={fileURL}>
-          <embed src={fileURL} type="application/pdf" />
+          <embed src={fileURL} type="application/pdf" width="100%" height="100%" />
         </StyledPreviewPdf>
       );
     } else if (file.type.startsWith('audio/')) {
-      return (
-        <audio controls>
-          <source src={fileURL || ''} type={file.type} />
-        </audio>
-      );
-    } else if (
-      file.type === 'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-    ) {
-      return (
-        <StyledPreviewPdf data={fileURL}>
-          <embed
-            src={fileURL}
-            type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
-          />
-        </StyledPreviewPdf>
-      );
+      return <AudioPreview fileURL={fileURL} />;
+    } else {
+      return <div>Unsupported file type</div>;
     }
   };
 

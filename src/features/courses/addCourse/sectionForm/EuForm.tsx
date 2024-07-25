@@ -114,7 +114,7 @@ function EducationalUnitForm({
               euFormMethods={euFormMethods}
               files={files}
               canDelete={canDeleteEu(field.type)}
-              key={fields[activeTab].id}
+                key={fields[activeTab].id}
               euIndex={activeTab}
               loIndex={activeTab}
               isEditMode={isEditMode}
