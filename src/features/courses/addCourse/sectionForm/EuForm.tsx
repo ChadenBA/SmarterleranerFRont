@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { FormProvider } from 'react-hook-form';
+import { FieldArrayWithId, FormProvider } from 'react-hook-form';
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import { useState } from 'react';
 import SectionTabs from './sectionTabs/SectionTabs';
@@ -8,6 +8,8 @@ import useEducationalUnitForm from './useEducationalUnitForm';
 import { EUFormProps } from './EuForm.type';
 import EUnit from './module/EUnit';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
+import MainTabs from './mainTabs/MainTabs';
+import { FormValues } from './module/Eu.type';
 
 function EducationalUnitForm({
   files,
@@ -29,10 +31,44 @@ function EducationalUnitForm({
   } = useEducationalUnitForm({ euFormMethods });
 
   const [activeTab, setActiveTab] = useState(0);
+  const [euList, setEuList] = useState<FieldArrayWithId<FormValues, 'eu', 'id'>[]>(
+    fields.filter((field) => field.type.toLocaleUpperCase() === EducationalUnitEnum.BASIC),
+  );
+  const [oldValues, setOldValues] = useState(0);
 
+  const handleIndexChange = (index: number): string => {
+    switch (index) {
+      case 0:
+        return 'BASIC';
+      case 1:
+        return 'INTERMEDIATE';
+      case 2:
+        return 'ADVANCED';
+      default:
+        return 'BASIC';
+    }
+  };
+
+  const [selectedEu, setSelectedEu] = useState(0);
   const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {
     setActiveTab(newValue);
+
+    if (newValue !== oldValues) {
+      setEuList([]);
+      setOldValues(newValue);
+    }
+
+    fields.forEach((field) => {
+      if (field.type.toUpperCase() === handleIndexChange(newValue)) {
+        setEuList((prev) => [...prev, field]);
+      }
+    });
   };
+
+  const currentId =
+    fields.findIndex((field) => field.id === euList[0]?.id) === -1
+      ? 0
+      : fields.findIndex((field) => field.id === euList[0]?.id);
 
   const addNewEducationalUnit = (type: EducationalUnitEnum, index: number) => {
     handleAddEducationalUnit(type, index);
@@ -47,7 +83,6 @@ function EducationalUnitForm({
   if (isFetching) {
     return <FallbackLoader />;
   }
-
   const handleEuType = (type: string) => {
     switch (type) {
       case EducationalUnitEnum.BASIC:
@@ -69,6 +104,12 @@ function EducationalUnitForm({
       }
     });
     return count > 1;
+  };
+
+  const [activeEu, setActiveEu] = useState(0);
+
+  const handleChangeSectionTabs = (_: React.SyntheticEvent, newValue: number) => {
+    setActiveEu(newValue);
   };
 
   return (
@@ -102,34 +143,36 @@ function EducationalUnitForm({
         </>
       ) : (
         <Stack p={2} spacing={3}>
+          <MainTabs activeTab={activeTab} handleChange={handleChangeTab} />
+
           <SectionTabs
-            sections={fields}
-            activeTab={activeTab}
-            handleChange={handleChangeTab}
-            onAddNewSection={handleAddLearningObject}
+            eu={euList}
+            activeEu={activeEu}
+            handleChange={handleChangeSectionTabs}
+            onAddNewEu={handleAddLearningObject}
+            setSelectedEu={setSelectedEu}
           />
-          {fields.map((field, index) => (
-            <EUnit
-              field={fields[activeTab]}
-              euFormMethods={euFormMethods}
-              files={files}
-              canDelete={canDeleteEu(field.type)}
-                key={fields[activeTab].id}
-              euIndex={activeTab}
-              loIndex={activeTab}
-              isEditMode={isEditMode}
-              setFiles={setFiles}
-              handleAddQuestion={handleAddQuestion}
-              handleRemoveQuestion={handleRemoveQuestion}
-              handleAddAnswer={handleAddAnswer}
-              handleRemoveAnswer={handleRemoveAnswer}
-              handleRemoveEu={handleRemoveSection}
-              handleAddEuApi={handleAddEU}
-              handleAddLearningObject={() => handleAddLearningObject(index)}
-              type={handleEuType(field.type)}
-              onAddEu={() => addNewEducationalUnit(field.type as any, index)}
-            />
-          ))}
+
+          <EUnit
+            key={fields[currentId].id}
+            field={fields[currentId]}
+            euFormMethods={euFormMethods}
+            files={files}
+            canDelete={canDeleteEu(fields[activeEu].type)}
+            euIndex={currentId}
+            loIndex={currentId}
+            isEditMode={isEditMode}
+            setFiles={setFiles}
+            handleAddQuestion={handleAddQuestion}
+            handleRemoveQuestion={handleRemoveQuestion}
+            handleAddAnswer={handleAddAnswer}
+            handleRemoveAnswer={handleRemoveAnswer}
+            handleRemoveEu={() => handleRemoveEducationalUnit(activeEu)}
+            handleAddEuApi={handleAddEU}
+            handleAddLearningObject={() => handleAddLearningObject(activeEu)}
+            type={handleEuType(fields[activeEu].type)}
+            onAddEu={() => addNewEducationalUnit(fields[activeEu].type, activeEu)}
+          />
         </Stack>
       )}
     </FormProvider>

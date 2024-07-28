@@ -1,9 +1,9 @@
-import { Item } from './topBarMenu'
+import { Item } from './topBarMenu';
 
 export interface TopBarProps {
-  items: Item[]
+  items: Item[];
 }
 export interface TopBarContainerProps {
-  isscrolled: string
-  ishomepage?: string
+  isscrolled: string;
+  ishomepage?: string;
 }

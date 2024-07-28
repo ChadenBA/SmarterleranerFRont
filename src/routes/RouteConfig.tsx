@@ -8,7 +8,7 @@ import { AuthGuard } from '@guards/AuthGuard';
 import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
 import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
-import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
+import SecondStepLayout from '@layouts/secondStepLayout/SecondStepLayout';
 
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
@@ -45,6 +45,14 @@ const EditCoursePage = lazy(
 );
 const AddCoursePage = lazy(
   () => import('src/pages/dashboard/admin/courses/addCoursePage/AddCoursePage'),
+);
+const CategoriesPage = lazy(() => import('src/pages/dashboard/admin/categories/CategoriesPage'));
+const CategoriesChoicePage = lazy(
+  () => import('src/pages/secondStep/categories/CategoriesChoicePage'),
+);
+const CoursesChoicePage = lazy(() => import('src/pages/secondStep/courses/CoursesChoicePage'));
+const SubcategoriesChoicePage = lazy(
+  () => import('src/pages/secondStep/subcategories/SubcategoriesChoicePage'),
 );
 
 export const ROUTE_CONFIG: RouteObject[] = [
@@ -207,9 +215,44 @@ export const ROUTE_CONFIG: RouteObject[] = [
       // },
     ],
   },
-  { path: PATHS.MAIN.ERROR.P_404, element: <NotFound /> },
+
   {
-    path: PATHS.ANY,
-    element: <Navigate to={PATHS.MAIN.ERROR.P_404} replace />,
+    path: PATHS.SECOND_STEP.ROOT,
+    element: (
+      <AuthGuard>
+        <SecondStepLayout />
+      </AuthGuard>
+    ),
+    children: [
+      {
+        path: PATHS.SECOND_STEP.CATEGORIES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <CategoriesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.SUBCATEGORIES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <SubcategoriesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.COURSES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <CoursesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+    ],
   },
+  // { path: PATHS.MAIN.ERROR.P_404, element: <NotFound /> },
+  // {
+  //   path: PATHS.ANY,
+  //   element: <Navigate to={PATHS.MAIN.ERROR.P_404} replace />,
+  // },
 ];

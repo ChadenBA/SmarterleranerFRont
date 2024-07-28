@@ -60,6 +60,8 @@ export const TopBar = ({ items }: TopBarProps) => {
     }
   };
 
+  const disabled = user?.coursesCount === 0;
+
   const toggleDrawer = (open: boolean) => {
     setOpen(open);
   };
@@ -78,6 +80,7 @@ export const TopBar = ({ items }: TopBarProps) => {
   const { isDarkMode } = useAppSelector((state) => state.theme);
   const chnageThemeHandler = () =>
     dispatch(changeTheme(isDarkMode ? ThemeModeEnum.LIGHT : ThemeModeEnum.DARK));
+
 
   return (
     <TopBarContainer
@@ -104,6 +107,7 @@ export const TopBar = ({ items }: TopBarProps) => {
               label={t(item.label)}
               to={item.path}
               isActive={item.path === location.pathname}
+              disabled={disabled}
             />
           ))}
         </Stack>

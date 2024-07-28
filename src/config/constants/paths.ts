@@ -54,7 +54,17 @@ export const PATHS = {
       },
       MY_QUIZZES: '/dashboard/student/my-quizzes',
       MY_SUPPORT: '/dashboard/student/my-support',
+      CATEGORIES: '/dashboard/student/categories',
+      SUBCATEGORIES: '/dashboard/student/categories/:categoryId',
+      COURSES: '/dashboard/student/courses',
     },
+  },
+
+  SECOND_STEP: {
+    ROOT: '/second-step',
+    CATEGORIES: '/second-step/categories',
+    SUBCATEGORIES: '/second-step/categories/:categoryId',
+    COURSES: '/second-step/courses',
   },
 
   MAIN: {

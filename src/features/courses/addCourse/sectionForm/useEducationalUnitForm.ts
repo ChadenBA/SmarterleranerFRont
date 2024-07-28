@@ -22,6 +22,8 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     name: 'eu',
   });
 
+  console.log(fields, "aaaaaaaaaaaaaaaaaa")
+
   // Add a new educational unit to the form
   const handleAddEducationalUnit = (unitType: EducationalUnitEnum, index: number) => {
     const unitDefaults: { [key: string]: Eu } = {

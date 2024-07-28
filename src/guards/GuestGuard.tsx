@@ -8,7 +8,6 @@ import { UserRoleEnum } from '@config/enums/role.enum';
 interface GuestGuardProps {
   children: ReactNode;
 }
-
 export function GuestGuard({ children }: GuestGuardProps) {
   const { isAuthenticated, user } = useSelector(selectAuth);
 
@@ -19,7 +18,9 @@ export function GuestGuard({ children }: GuestGuardProps) {
           user?.role === UserRoleEnum.ADMIN
             ? PATHS.DASHBOARD.ADMIN.ROOT
             : user?.role === UserRoleEnum.USER
-            ? PATHS.DASHBOARD.STUDENT.ROOT
+            ? user?.coursesCount == 0
+              ? PATHS.SECOND_STEP.CATEGORIES
+              : PATHS.DASHBOARD.STUDENT.ROOT
             : PATHS.ROOT
         }
         replace

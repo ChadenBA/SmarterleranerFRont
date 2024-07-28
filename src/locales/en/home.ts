@@ -1,5 +1,6 @@
 export const home = {
-  description: 'Achieve your goals with our personalized e-learning platform, tailored to your unique style and needs.',
+  description:
+    'Achieve your goals with our personalized e-learning platform, tailored to your unique style and needs.',
   title: 'A FRESH TAKE ON DIGITAL LITERACY',
   search_for_courses: 'Search for courses...',
   cerified_courses: 'Ceritified Courses',
@@ -38,5 +39,9 @@ export const home = {
   join: 'Join us Now',
   login: 'Login',
   sign_up: 'Sign Up',
-
-}
+  get_started_title: 'Learning shouldn’t be complicated',
+  get_started_description:
+    'Achieve your goals with our personalized e-learning platform, tailored to your unique style and needs.',
+  choose_category: 'Choose a category',
+  choose_subcategory: 'Choose a subcategory',
+};

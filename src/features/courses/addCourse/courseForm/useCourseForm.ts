@@ -38,10 +38,8 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     pagination: false,
   });
 
-  // Get the selected category from
   const selectedCategory = watch('categoryId');
 
-  // Set the subCategoriesOption based on the selected category
   useEffect(() => {
     if (selectedCategory) {
       const selectedCategoryData = categoriesData?.data.find((cat) => cat.id === selectedCategory);
@@ -57,7 +55,6 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     }
   }, [selectedCategory, categoriesData]);
 
-  // Map the data to the options
   const categoryOptions = categoriesData?.data.map((cat) => ({
     label: cat.title,
     value: cat.id,

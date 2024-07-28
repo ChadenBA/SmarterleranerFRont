@@ -73,6 +73,20 @@ export const categoriesApi = createApi({
       }),
       invalidatesTags: ['Categories'],
     }),
+    getUserCategories: builder.query<PaginationResponse<Category>, QueryParams>({
+      query: (params) => {
+        return {
+          url: injectPaginationParamsToUrl(ENDPOINTS.USER_CATEGORIES, params),
+          method: MethodsEnum.GET,
+        };
+      },
+      transformResponse: (
+        response: ApiPaginationResponse<Category>,
+      ): PaginationResponse<Category> => {
+        return transformFetchCategoryResponse(response);
+      },
+      providesTags: ['Categories'],
+    }),
   }),
 });
 
@@ -82,4 +96,5 @@ export const {
   useGetCategoryByIdQuery,
   useCreateCategoryMutation,
   useUpdateCategoryMutation,
+  useGetUserCategoriesQuery,
 } = categoriesApi;

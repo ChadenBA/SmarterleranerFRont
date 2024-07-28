@@ -3,8 +3,10 @@ import { FormValues } from '../module/Eu.type';
 import { SyntheticEvent } from 'react';
 
 export interface SectionTabsProps {
-  activeTab: number;
-  sections: FieldArrayWithId<FormValues, 'sections', 'id'>[];
+  activeEu: number;
+  eu: FieldArrayWithId<FormValues, 'eu', 'id'>[];
   handleChange: (_: SyntheticEvent, newValue: number) => void;
-  onAddNewSection: () => void;
+  onAddNewEu: (index: number) => void;
+  setActiveEu?: (_: number) => void;
+  setSelectedEu: (id: number) => void;
 }

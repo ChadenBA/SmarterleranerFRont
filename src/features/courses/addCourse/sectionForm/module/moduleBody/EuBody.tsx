@@ -42,7 +42,7 @@ function EuBody({
 
         {/*  Learning objects for the educational unit */}
 
-        {field.learningObjects.map((lo, loIndex) => (
+        {field?.learningObjects.map((lo, loIndex) => (
           <Stack
             key={loIndex}
             spacing={2}
