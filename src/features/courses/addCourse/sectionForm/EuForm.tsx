@@ -69,7 +69,7 @@ function EducationalUnitForm({
     if (isEditMode) {
       setActiveEu(0);
     }
-  }, [activeTab]);
+  }, [activeTab, isEditMode]);
   //-- Set the current index of the educational unit
   useEffect(() => {
     if (newEuAdded || deletedEu) {
