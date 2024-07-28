@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 function SectionTabs({ eu, activeEu, handleChange, onAddNewEu, setSelectedEu }: SectionTabsProps) {
   const { t } = useTranslation();
-  console.log('activeEuactiveEu', activeEu);
+
   return (
     <Stack direction={'row'} alignItems={'center'} spacing={3}>
       <SectionTabsRoot
