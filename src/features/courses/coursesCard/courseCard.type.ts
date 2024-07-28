@@ -1,5 +1,5 @@
 export interface CourseCardProps {
-  id?: number;
+  id: number;
   image: string;
   courseTitle: string;
   isActive?: 0 | 1;
@@ -9,6 +9,6 @@ export interface CourseCardProps {
   createdAt: string;
   isAdmin?: boolean;
   width?: string;
-  isEnrolled?: boolean;
+  isEnrolled?: 0 | 1;
   navigateToEditCoursePage?: (id: number) => void;
 }

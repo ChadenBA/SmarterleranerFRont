@@ -81,7 +81,6 @@ export const TopBar = ({ items }: TopBarProps) => {
   const chnageThemeHandler = () =>
     dispatch(changeTheme(isDarkMode ? ThemeModeEnum.LIGHT : ThemeModeEnum.DARK));
 
-
   return (
     <TopBarContainer
       isscrolled={isScrolled ? GLOBAL_VARIABLES.TRUE_STRING : GLOBAL_VARIABLES.FALSE_STRING}
@@ -89,7 +88,12 @@ export const TopBar = ({ items }: TopBarProps) => {
     >
       <LogoAvatar
         sx={{ cursor: 'pointer' }}
-        onClick={() => navigate(PATHS.ROOT)}
+        onClick={
+          user?.role === UserRoleEnum.ADMIN ||
+          (user?.role === UserRoleEnum.USER && user?.coursesCount != 0)
+            ? () => navigate(PATHS.ROOT)
+            : () => navigate(PATHS.SECOND_STEP.CATEGORIES)
+        }
         alt={GLOBAL_VARIABLES.APP_NAME}
         src={theme.palette.mode === ThemeModeEnum.LIGHT ? lernado : lernado_dark}
         variant="square"
@@ -140,6 +144,7 @@ export const TopBar = ({ items }: TopBarProps) => {
               <Divider />
 
               <StyledMenuItem
+                disabled={user?.role === UserRoleEnum.USER && user?.coursesCount === 0}
                 onClick={() => {
                   navigate(
                     user?.role === UserRoleEnum.ADMIN
@@ -173,7 +178,7 @@ export const TopBar = ({ items }: TopBarProps) => {
               <>
                 <Button
                   variant="contained"
-                  sx={{color: 'white'}}
+                  sx={{ color: 'white' }}
                   onClick={() =>
                     navigate(`/${PATHS.AUTH.ROOT}/${PATHS.AUTH.SIGNUP}`, {
                       replace: true,

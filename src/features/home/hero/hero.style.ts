@@ -1,7 +1,7 @@
-import { styled } from '@mui/material/styles'
-import {  Stack } from '@mui/material'
+import { styled } from '@mui/material/styles';
+import { Stack } from '@mui/material';
 
-import { BLUE, GREY } from '@config/colors/colors'
+import { BLUE, GREY } from '@config/colors/colors';
 export const HeaderContainer = styled(Stack)(({ theme }) => ({
   flexDirection: 'row',
   padding: theme.spacing(16),
@@ -14,14 +14,14 @@ export const HeaderContainer = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     display: 'block',
     padding: theme.spacing(4),
-    height: '100vh',
+    height: 'auto',
   },
   [theme.breakpoints.down('md')]: {
     width: 'auto',
     display: 'block',
-    height: '130vh',
+    height: 'auto',
   },
-}))
+}));
 
 export const HeaderContent = styled(Stack)(({ theme }) => ({
   gap: '20px',
@@ -36,7 +36,7 @@ export const HeaderContent = styled(Stack)(({ theme }) => ({
     },
     [theme.breakpoints.between('sm', 'md')]: {
       fontSize: '2.5rem',
-      with: 'auto',
+      width: 'auto',
     },
   },
   '& > h2': {
@@ -45,12 +45,14 @@ export const HeaderContent = styled(Stack)(({ theme }) => ({
     width: '70vh',
     [theme.breakpoints.down('sm')]: {
       fontSize: '0.875rem',
+      width: 'auto',
     },
     [theme.breakpoints.between('sm', 'md')]: {
       fontSize: '0.875rem',
+      width: 'auto',
     },
   },
-  '& > h3' : {
+  '& > h3': {
     color: BLUE.light,
     fontSize: '0.7rem',
     width: '70vh',
@@ -64,6 +66,17 @@ export const HeaderContent = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     marginTop: '35px',
   },
-}))
+}));
 
-
+export const StyledHeaderImage = styled('img')(({ theme }) => ({
+  width: '400px',
+  height: '700px',
+  [theme.breakpoints.down('sm')]: {
+    width: 'auto',
+    height: 'auto',
+  },
+  [theme.breakpoints.down('md')]: {
+    width: 'auto',
+    height: 'auto',
+  },
+}));

@@ -1,5 +1,6 @@
 import { StyledCategoriesButton } from '@components/buttons/customCategoriesButton/CustomCategoriesButton.style';
 import FallbackLoader from '@components/fallback/FallbackLoader';
+import { PATHS } from '@config/constants/paths';
 import { Button, Stack, Typography } from '@mui/material';
 import { useGetUserSubcategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +20,7 @@ function SubcategoriesChoicePage() {
     return <FallbackLoader />;
   }
   const handleSubcategoryClick = (subcategoryId: number) => {
-    navigate(`/courses/${subcategoryId}`);
+    navigate(`${PATHS.SECOND_STEP.COURSES_USER}/${subcategoryId}`);
   };
 
   return (

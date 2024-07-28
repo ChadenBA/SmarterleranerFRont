@@ -30,7 +30,7 @@ export interface Course {
 }
 
 export interface CourseForAdmin {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   categoryId: number;
@@ -47,4 +47,5 @@ export interface CourseForAdmin {
   createdAt: string;
   media?: Record<string, Record<number, File[]>>;
   coverMedia: Media;
+  isSubscribed?: 0 | 1;
 }

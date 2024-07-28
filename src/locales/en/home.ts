@@ -42,6 +42,7 @@ export const home = {
   get_started_title: 'Learning shouldn’t be complicated',
   get_started_description:
     'Achieve your goals with our personalized e-learning platform, tailored to your unique style and needs.',
-  choose_category: 'Choose a category',
-  choose_subcategory: 'Choose a subcategory',
+  choose_category: '1st step : Choose a category',
+  choose_subcategory: '2nd step: Choose a subcategory',
+  choose_course: '3rd step: Choose a course',
 };

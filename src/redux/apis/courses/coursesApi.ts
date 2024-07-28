@@ -73,9 +73,9 @@ export const courseApi = createApi({
       invalidatesTags: ['Courses', 'Course'],
     }),
 
-    getCourseForAdminById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
+    getCourseById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
-        url: ENDPOINTS.ADMIN_COURSES + `/${id}`,
+        url: ENDPOINTS.COURSES + `/${id}`,
         method: MethodsEnum.GET,
       }),
       transformResponse: (response: SingleCourseResponseData) =>
@@ -106,6 +106,25 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+    getCoursesBySubcategory: builder.query<
+      PaginationResponse<CourseForAdmin>,
+      { params: QueryParams; subcategoryId: number }
+    >({
+      query: ({ params, subcategoryId }) => ({
+        url: injectPaginationParamsToUrl(`${ENDPOINTS.USER_COURSES}/${subcategoryId}`, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<CourseApi>) =>
+        transformFetchCoursesResponse(response),
+      providesTags: ['Courses'],
+    }),
+    enrollCourse: builder.mutation<void, number>({
+      query: (courseId) => ({
+        url: `${ENDPOINTS.ENROLL_COURSE}/${courseId}`,
+        method: MethodsEnum.POST,
+      }),
+      invalidatesTags: ['Courses', 'Course'],
+    }),
   }),
 });
 
@@ -113,10 +132,12 @@ export const {
   useGetAdminCoursesQuery,
   useDeleteCourseMutation,
   useCreateCourseMutation,
-  useGetCourseForAdminByIdQuery,
+  useGetCourseByIdQuery,
   useUpdateCourseMutation,
   useCreateEuMutation,
   usePutCourseActiveMutation,
   useSetCourseOfflineMutation,
   useSetCourseOnlineMutation,
+  useGetCoursesBySubcategoryQuery,
+  useEnrollCourseMutation,
 } = courseApi;

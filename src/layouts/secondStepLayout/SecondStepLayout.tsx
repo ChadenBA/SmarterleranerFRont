@@ -21,7 +21,14 @@ function SecondStepLayout() {
       />
 
       <Suspense fallback={<FallbackLoader />}>
-        <Stack direction="column" spacing={2} width={'100%'}>
+        <Stack
+          direction="column"
+          spacing={2}
+          width={'100%'}
+          sx={{
+            backgroundColor: 'background.paper',
+          }}
+        >
           <Outlet />
         </Stack>
       </Suspense>

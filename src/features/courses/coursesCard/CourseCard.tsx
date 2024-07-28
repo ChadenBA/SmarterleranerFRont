@@ -25,13 +25,14 @@ import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import {
   useDeleteCourseMutation,
+  useEnrollCourseMutation,
   usePutCourseActiveMutation,
   useSetCourseOfflineMutation,
   useSetCourseOnlineMutation,
 } from '@redux/apis/courses/coursesApi';
 import trash from '@assets/logo/icon-trash.svg';
 import { getUserFromLocalStorage } from '@utils/localStorage/storage';
-// import { IError } from 'types/interfaces/Error';
+import { IError } from 'types/interfaces/Error';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import avert from '@assets/images/avert.png';
@@ -60,7 +61,7 @@ const CourseCard = ({
   const [putCourseActive] = usePutCourseActiveMutation();
   const [setCourseOffline] = useSetCourseOfflineMutation();
   const [setCourseOnline] = useSetCourseOnlineMutation();
-  // const [enrollCourse] = useEnrollCourseMutation();
+  const [enrollCourse] = useEnrollCourseMutation();
 
   const handleDeleteCourse = async (id: number) => {
     try {
@@ -88,18 +89,19 @@ const CourseCard = ({
     return navigate(`${PATHS.COURSES.ROOT}/${id}`);
   };
 
-  // const handleEnroll = async (id: number) => {
-  //   try {
-  //     await enrollCourse(id).unwrap();
-  //     dispatch(showSuccess(t('course.enroll_course_success')));
-  //   } catch (error) {
-  //     if ((error as IError).status === 403) {
-  //       dispatch(showError(t('errors.forbidden_error')));
-  //     } else {
-  //       dispatch(showError(t('errors.general_error')));
-  //     }
-  //   }
-  // };
+  const handleEnroll = async (id: number) => {
+    try {
+      await enrollCourse(id).unwrap();
+      dispatch(showSuccess(t('course.enroll_course_success')));
+      navigate(`${PATHS.SECOND_STEP.QUIZ}/${id}`);
+    } catch (error) {
+      if ((error as IError).status === 403) {
+        dispatch(showError(t('errors.forbidden_error')));
+      } else {
+        dispatch(showError(t('errors.general_error')));
+      }
+    }
+  };
 
   const handleButtonClick = () => {
     if (!user) {
@@ -107,7 +109,7 @@ const CourseCard = ({
       return;
     }
     if (!isEnrolled) {
-      //  handleEnroll(id);
+      handleEnroll(id);
     }
   };
 

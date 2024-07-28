@@ -4,6 +4,7 @@ export const PATHS = {
   COURSES: {
     ROOT: '/courses',
     COURSE: '/courses/:courseId',
+    QUIZ: '/courses/:courseId/quiz',
   },
 
   CATEGORIES: {
@@ -64,7 +65,10 @@ export const PATHS = {
     ROOT: '/second-step',
     CATEGORIES: '/second-step/categories',
     SUBCATEGORIES: '/second-step/categories/:categoryId',
-    COURSES: '/second-step/courses',
+    COURSES_USER: '/second-step/courses',
+    COURSES: '/second-step/courses/:subcategoryId',
+    QUIZ_COURSES: '/second-step/courses/prestest/:courseId',
+    QUIZ: '/second-step/courses/prestest',
   },
 
   MAIN: {

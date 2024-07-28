@@ -34,7 +34,7 @@ function AllCoursesList({ courses, isLoading, isAdmin }: AllCoursesListProps) {
             learningObjectsCount={course.learningObjectsCount}
             createdAt={course.createdAt}
             isAdmin={isAdmin}
-            //   isEnrolled={course.isSubscribed}
+            isEnrolled={course.isSubscribed}
             navigateToEditCoursePage={navigateToEditCoursePage}
           />
         ))}

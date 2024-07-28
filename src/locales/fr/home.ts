@@ -41,6 +41,7 @@ export const home = {
   get_started_title: "L'apprentissage ne devrait pas être compliqué",
   get_started_description:
     "Atteignez vos objectifs avec notre plateforme d'apprentissage en ligne personnalisée, adaptée à votre style et à vos besoins uniques.",
-  choose_category: 'Choisissez une catégorie',
-  choose_subcategory: 'Choisissez une sous-catégorie',
+  choose_category: '1ère étape: Choisissez une catégorie',
+  choose_subcategory: '2ème étape: Choisissez une sous-catégorie',
+  choose_course: '3ème étape: Choisissez un cours',
 };
