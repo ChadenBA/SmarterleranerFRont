@@ -1,17 +1,40 @@
 import { StyledCategoriesButton } from '@components/buttons/customCategoriesButton/CustomCategoriesButton.style';
 import FallbackLoader from '@components/fallback/FallbackLoader';
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
+import { useGetUserSubcategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import usePagination from 'src/hooks/usePagination';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function SubcategoriesChoicePage() {
-  const { queryParams } = usePagination();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { categoryId } = useParams();
+
+  const categoryIdNumber = parseInt(categoryId as string, 10);
+
+  const { data: subcategoriesData, isLoading: isLoadingCategories } =
+    useGetUserSubcategoriesQuery(categoryIdNumber);
+
+  if (isLoadingCategories) {
+    return <FallbackLoader />;
+  }
+  const handleSubcategoryClick = (subcategoryId: number) => {
+    navigate(`/courses/${subcategoryId}`);
+  };
 
   return (
     <Stack>
+      <Stack direction={'row'} alignItems={'center'} justifyContent={'space-between'} m={2}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            navigate('/second-step/categories');
+          }}
+        >
+          {t('common.back')}
+        </Button>
+      </Stack>
       <Typography variant="h1" sx={{ alignSelf: 'center', color: 'primary.main', marginTop: 2 }}>
         {t('home.choose_subcategory')}
       </Typography>
@@ -24,7 +47,17 @@ function SubcategoriesChoicePage() {
           justifyContent: 'center',
           flexWrap: 'wrap',
         }}
-      ></Stack>
+      >
+        {subcategoriesData?.data.map((category) => (
+          <StyledCategoriesButton
+            variant="outlined"
+            key={category.id}
+            onClick={() => handleSubcategoryClick(category.id)}
+          >
+            {category.title}
+          </StyledCategoriesButton>
+        ))}
+      </Stack>
     </Stack>
   );
 }
