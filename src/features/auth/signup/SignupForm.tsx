@@ -40,58 +40,67 @@ export default function SignUpForm() {
     }
   });
 
+  const handleKeyPress = (event: any) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onSubmit();
+    }
+  };
+
   const password = watch('password');
   return (
     <>
       <FormProvider {...RegisterFormMethods}>
-        <Stack spacing={3} width={'100%'}>
-          <Grid container width={'100%'} spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField config={SIGNUP_FORM_CONFIG.firstName} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField config={SIGNUP_FORM_CONFIG.lastName} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField config={SIGNUP_FORM_CONFIG.birthdate} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomTextField config={SIGNUP_FORM_CONFIG.major} />
-            </Grid>
-            <Grid item xs={12}>
-              <CustomTextField config={SIGNUP_FORM_CONFIG.email} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomPasswordTextField config={SIGNUP_FORM_CONFIG.password} />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <CustomPasswordTextField
-                config={{
-                  ...SIGNUP_FORM_CONFIG.passwordConfirmation,
-                  rules: {
-                    validate: (value) => {
-                      if (value !== password) return `${t('auth.password_not_match')}`;
+        <form noValidate onKeyPress={handleKeyPress}>
+          <Stack spacing={3} width={'100%'}>
+            <Grid container width={'100%'} spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <CustomTextField config={SIGNUP_FORM_CONFIG.firstName} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <CustomTextField config={SIGNUP_FORM_CONFIG.lastName} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <CustomTextField config={SIGNUP_FORM_CONFIG.birthdate} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <CustomTextField config={SIGNUP_FORM_CONFIG.major} />
+              </Grid>
+              <Grid item xs={12}>
+                <CustomTextField config={SIGNUP_FORM_CONFIG.email} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <CustomPasswordTextField config={SIGNUP_FORM_CONFIG.password} />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <CustomPasswordTextField
+                  config={{
+                    ...SIGNUP_FORM_CONFIG.passwordConfirmation,
+                    rules: {
+                      validate: (value) => {
+                        if (value !== password) return `${t('auth.password_not_match')}`;
+                      },
                     },
-                  },
-                }}
-              />
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
-          <Stack alignItems={'center'}>
-            <CustomLoadingButton isLoading={isLoading} onClick={onSubmit}>
-              {t('auth.create_account')}
-            </CustomLoadingButton>
-          </Stack>
+            <Stack alignItems={'center'}>
+              <CustomLoadingButton isLoading={isLoading} onClick={onSubmit}>
+                {t('auth.create_account')}
+              </CustomLoadingButton>
+            </Stack>
 
-          <Typography variant="body2" textAlign={'center'}>
-            {t('auth.already_have_account')}
-            <CustomLink
-              to={`/${PATHS.AUTH.ROOT}/${PATHS.AUTH.LOGIN}`}
-              label="Login"
-              isActive={false}
-            />
-          </Typography>
-        </Stack>
+            <Typography variant="body2" textAlign={'center'}>
+              {t('auth.already_have_account')}
+              <CustomLink
+                to={`/${PATHS.AUTH.ROOT}/${PATHS.AUTH.LOGIN}`}
+                label="Login"
+                isActive={false}
+              />
+            </Typography>
+          </Stack>
+        </form>
       </FormProvider>
       <CustomDialog
         children={successImage}

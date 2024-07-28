@@ -4,6 +4,7 @@ export const PATHS = {
   COURSES: {
     ROOT: '/courses',
     COURSE: '/courses/:courseId',
+    QUIZ: '/courses/:courseId/quiz',
   },
 
   CATEGORIES: {
@@ -40,11 +41,11 @@ export const PATHS = {
         ADD_CATEGORY: '/dashboard/admin/categories/add-category',
         EDIT_CATEGORY: '/dashboard/admin/categories/:categoryId',
       },
-      COURSES : {
+      COURSES: {
         ROOT: '/dashboard/admin/courses',
         ADD_COURSE: '/dashboard/admin/courses/add-course',
-        EDIT_COURSE: '/dashboard/admin/courses/:course',
-      }
+        EDIT_COURSE: '/dashboard/admin/courses/:courseId',
+      },
     },
     STUDENT: {
       ROOT: '/dashboard/student',
@@ -54,8 +55,20 @@ export const PATHS = {
       },
       MY_QUIZZES: '/dashboard/student/my-quizzes',
       MY_SUPPORT: '/dashboard/student/my-support',
+      CATEGORIES: '/dashboard/student/categories',
+      SUBCATEGORIES: '/dashboard/student/categories/:categoryId',
+      COURSES: '/dashboard/student/courses',
     },
+  },
 
+  SECOND_STEP: {
+    ROOT: '/second-step',
+    CATEGORIES: '/second-step/categories',
+    SUBCATEGORIES: '/second-step/categories/:categoryId',
+    COURSES_USER: '/second-step/courses',
+    COURSES: '/second-step/courses/:subcategoryId',
+    QUIZ_COURSES: '/second-step/courses/prestest/:courseId',
+    QUIZ: '/second-step/courses/prestest',
   },
 
   MAIN: {
@@ -67,4 +80,4 @@ export const PATHS = {
     },
   },
   ANY: '*',
-}
+};

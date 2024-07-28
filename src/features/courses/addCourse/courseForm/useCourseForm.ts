@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { DEFAULT_ANSWER_OBJECT, DEFAULT_QUESTION_OBJECT } from '../sectionForm/EuForm.constants';
 
 interface UseCourseForm {
-  formMethods: UseFormReturn<CourseFormValues, undefined>;
+  formMethods: UseFormReturn<CourseFormValues, any, undefined>;
 }
 
 export default function useCourseForm({ formMethods }: UseCourseForm) {
@@ -38,10 +38,8 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     pagination: false,
   });
 
-  // Get the selected category from
   const selectedCategory = watch('categoryId');
 
-  // Set the subCategoriesOption based on the selected category
   useEffect(() => {
     if (selectedCategory) {
       const selectedCategoryData = categoriesData?.data.find((cat) => cat.id === selectedCategory);
@@ -57,7 +55,6 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
     }
   }, [selectedCategory, categoriesData]);
 
-  // Map the data to the options
   const categoryOptions = categoriesData?.data.map((cat) => ({
     label: cat.title,
     value: cat.id,
@@ -68,12 +65,22 @@ export default function useCourseForm({ formMethods }: UseCourseForm) {
   const handleRemoveQuestion = (questionIndex: number) => {
     const questionsToUpdate = formMethods.watch('quiz.questions');
 
+    // This will update the questions array, removing the selected question
     const updatedQuestions = [
       ...questionsToUpdate.slice(0, questionIndex),
       ...questionsToUpdate.slice(questionIndex + 1),
     ];
 
     setValue('quiz.questions', updatedQuestions);
+
+    // Ensure we use an empty array if currentDeletedQuestions is undefined
+    const currentDeletedQuestions = formMethods.watch('quiz.deletedQuestions') ?? [];
+
+    // Add the deleted question's ID to the deletedQuestions array only if it is defined
+    const deletedQuestionId = questionsToUpdate[questionIndex]?.id;
+    if (deletedQuestionId !== undefined) {
+      setValue('quiz.deletedQuestions', [...currentDeletedQuestions, deletedQuestionId]);
+    }
   };
 
   const handleAddAnswer = (questionIndex: number) => {

@@ -1,16 +1,8 @@
-import {
-  Stack,
-  styled,
-  Avatar,
-  alpha,
-  Typography,
-  MenuItem,
-  Menu,
-} from '@mui/material'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
-import { TopBarContainerProps } from './topbar.type'
-import { BLUE } from '@config/colors/colors'
-import { ThemeModeEnum } from '@config/enums/theme.enum'
+import { Stack, styled, Avatar, alpha, Typography, MenuItem, Menu } from '@mui/material';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { TopBarContainerProps } from './topbar.type';
+import { BLUE } from '@config/colors/colors';
+import { ThemeModeEnum } from '@config/enums/theme.enum';
 
 export const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -18,15 +10,14 @@ export const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'space-between',
   padding: theme.spacing(2),
   ...theme.mixins.toolbar,
-}))
+}));
 
 export const TopBarContainer = styled(Stack)(
   ({ theme }) =>
     ({ isscrolled, ishomepage }: TopBarContainerProps) => ({
       height: '70px',
       flexDirection: 'row',
-      padding:
-        isscrolled === GLOBAL_VARIABLES.TRUE_STRING ? '10px 25px' : '10px 25px',
+      padding: isscrolled === GLOBAL_VARIABLES.TRUE_STRING ? '10px 25px' : '10px 25px',
       justifyContent: 'space-between',
       alignItems: 'center',
       width: '100%',
@@ -48,7 +39,7 @@ export const TopBarContainer = styled(Stack)(
             : theme.palette.common.white
           : 'transparent',
     }),
-)
+);
 
 export const LogoAvatar = styled(Avatar)(({ theme }) => ({
   width: '10%',
@@ -58,7 +49,7 @@ export const LogoAvatar = styled(Avatar)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'block',
   },
-}))
+}));
 
 export const UserTitle = styled(Typography)(({ theme }) => ({
   display: 'none',
@@ -69,7 +60,7 @@ export const UserTitle = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'block',
   },
-}))
+}));
 
 export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
   lineHeight: '1.5rem',
@@ -78,13 +69,12 @@ export const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     color: theme.palette.primary.main,
     backgroundColor: 'transparent',
   },
-}))
+}));
 export const StyledMenu = styled(Menu)(({ theme }) => ({
   '& .MuiPaper-root': {
     borderRadius: '10px',
     padding: theme.spacing(1),
     width: '200px',
-    background:theme.palette.background.default
-       
+    background: theme.palette.background.default,
   },
-}))
+}));

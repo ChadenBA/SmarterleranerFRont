@@ -34,7 +34,7 @@ function CourseForm({ formMethods, defaultValues }: CourseFormProps) {
   const { preview, handleOnChange, handleResetPreview } = useUploadFile({
     formMethods,
     fieldName: 'courseMedia',
-    initPreview: generatePictureSrc(defaultValues?.courseMedia?.name) || null,
+    initPreview: generatePictureSrc(defaultValues?.coverMedia?.fileName),
     index: 0,
     id: 0,
   });

@@ -1,3 +1,4 @@
 export interface StyleProps {
-  isactive: string
+  isactive: string;
+  isPending: string;
 }

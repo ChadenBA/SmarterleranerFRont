@@ -22,6 +22,7 @@ export const FirstBloc = styled(Stack)(({ theme }) => ({
   [theme.breakpoints.down('sm')]: {
     display: 'bloc',
     flexDirection: 'column',
+    width: 'auto',
   },
 }))
 export const SecondBloc = styled(Stack)(({ theme }) => ({

@@ -3,6 +3,7 @@ import { Eu } from './Eu';
 import { Quiz } from './Quiz';
 
 export interface Course {
+  coverMedia: Media;
   id: number;
   title: string;
   categoryId: number;
@@ -29,17 +30,22 @@ export interface Course {
 }
 
 export interface CourseForAdmin {
-  id?: number;
+  id: number;
   title: string;
   description: string;
   categoryId: number;
   subcategoryId: number;
   isOffline?: 1 | 0;
   isActive?: 1 | 0;
-  subscribers: number[];
+  subscribers?: number[];
   educationalUnits: Eu[];
+  educationalUnitsCount?: number;
+  learningObjectsCount?: number;
+  subscribedUsersCount?: number;
   quiz: Quiz;
-  courseMedia: File;
+  courseMedia?: File;
   createdAt: string;
   media?: Record<string, Record<number, File[]>>;
+  coverMedia: Media;
+  isSubscribed?: 0 | 1;
 }

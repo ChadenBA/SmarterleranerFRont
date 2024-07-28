@@ -1,7 +1,7 @@
-import { Course } from 'types/models/Course';
+import { CourseForAdmin } from 'types/models/Course';
 
 export interface AllCoursesListProps {
-  courses?: Course[];
+  courses?: CourseForAdmin[];
   isLoading: boolean;
   isAdmin?: boolean;
 }

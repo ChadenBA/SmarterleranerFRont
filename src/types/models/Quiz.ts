@@ -4,6 +4,8 @@ import { ApiQuestion } from '@redux/apis/courses/coursesApi.type';
 export interface Quiz {
   id?: number;
   questions: Question[];
+
+  deletedQuestions?: number[];
 }
 
 export interface Question {

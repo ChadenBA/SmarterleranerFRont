@@ -1,10 +1,13 @@
 import { FieldArrayWithId } from 'react-hook-form';
 import { FormValues } from '../module/Eu.type';
 import { SyntheticEvent } from 'react';
+import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 
 export interface SectionTabsProps {
-  activeTab: number;
-  sections: FieldArrayWithId<FormValues, 'sections', 'id'>[];
+  activeEu: number;
+  eu: FieldArrayWithId<FormValues, 'eu', 'id'>[];
   handleChange: (_: SyntheticEvent, newValue: number) => void;
-  onAddNewSection: () => void;
+  onAddNewEu: (type: EducationalUnitEnum, index: number, isEditMode?: boolean) => void;
+  setActiveEu?: (_: number) => void;
+  setSelectedEu: (id: number) => void;
 }

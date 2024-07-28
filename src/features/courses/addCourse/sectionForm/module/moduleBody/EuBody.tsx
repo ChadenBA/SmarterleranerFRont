@@ -42,7 +42,7 @@ function EuBody({
 
         {/*  Learning objects for the educational unit */}
 
-        {field.learningObjects.map((lo, loIndex) => (
+        {field?.learningObjects.map((lo, loIndex) => (
           <Stack
             key={loIndex}
             spacing={2}
@@ -79,6 +79,7 @@ function EuBody({
                     ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
                     name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
                     disabled: loIndex === 0 || loIndex === 1,
+                    defaultValue: lo.type,
                   }}
                 />
               </Grid>

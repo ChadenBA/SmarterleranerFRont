@@ -49,4 +49,5 @@ export const common = {
   coming: 'À venir',
   filter_price: 'Filtrer par prix',
   filter_date_range: 'Filtrer par plage horaire de début',
+  skip: 'Passer',
 };

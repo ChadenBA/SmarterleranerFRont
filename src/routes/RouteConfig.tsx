@@ -8,17 +8,7 @@ import { AuthGuard } from '@guards/AuthGuard';
 import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
 import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
-import CategoriesPage from '@pages/dashboard/admin/categories/CategoriesPage';
-
-import AddCoursePage from '@pages/dashboard/designer/courses/addCoursePage/AddCoursePage';
-
-// import { GuestGuard } from '@guards/GuestGuard'
-// import AuthLayout from '@layouts/authLayout/AuthLayout'
-// import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout'
-// import { AuthGuard } from '@guards/AuthGuard'
-// import { RoleBasedGuard } from '@guards/RoleBasedGuard'
-// import { UserRoleEnum } from '@config/enums/role.enum'
-
+import SecondStepLayout from '@layouts/secondStepLayout/SecondStepLayout';
 
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
@@ -49,6 +39,24 @@ const AddUserPages = lazy(() => import('src/pages/dashboard/admin/users/addUser/
 const AdminDashboard = lazy(() => import('src/pages/dashboard/admin/AdminDashboard'));
 
 const CoursesPage = lazy(() => import('src/pages/dashboard/admin/courses/CoursesPage'));
+
+const EditCoursePage = lazy(
+  () => import('src/pages/dashboard/admin/courses/updateCoursePage/UpdateCoursePage'),
+);
+const AddCoursePage = lazy(
+  () => import('src/pages/dashboard/admin/courses/addCoursePage/AddCoursePage'),
+);
+const CategoriesPage = lazy(() => import('src/pages/dashboard/admin/categories/CategoriesPage'));
+const CategoriesChoicePage = lazy(
+  () => import('src/pages/secondStep/categories/CategoriesChoicePage'),
+);
+const CoursesChoicePage = lazy(() => import('src/pages/secondStep/courses/CoursesChoicePage'));
+const SubcategoriesChoicePage = lazy(
+  () => import('src/pages/secondStep/subcategories/SubcategoriesChoicePage'),
+);
+
+const PretestPage = lazy(() => import('src/pages/secondStep/pretest/PretestPage'));
+
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -138,7 +146,6 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-    
 
       {
         path: PATHS.DASHBOARD.ADMIN.USERS.ADD_USER,
@@ -165,7 +172,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-     
+
       {
         path: PATHS.DASHBOARD.ADMIN.COURSES.ADD_COURSE,
         element: (
@@ -174,14 +181,14 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-      // {
-      //   path: PATHS.DASHBOARD.ADMIN.COURSES.EDIT_COURSE,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
-      //       <EditCoursePage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+      {
+        path: PATHS.DASHBOARD.ADMIN.COURSES.EDIT_COURSE,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.ADMIN]}>
+            <EditCoursePage />
+          </RoleBasedGuard>
+        ),
+      },
       // {
       //   path: PATHS.DASHBOARD.STUDENT.MY_QUIZZES,
       //   element: (
@@ -202,17 +209,56 @@ export const ROUTE_CONFIG: RouteObject[] = [
       //       path: PATHS.DASHBOARD.STUDENT.MY_PROGRAM.ROOT,
       //       element: <EnrolledCoursesList />,
       //     },
-      //     {
-      //       path: PATHS.DASHBOARD.STUDENT.MY_PROGRAM.COMPLETED_COURSES,
-      //       element: <CompletedCoursesList />,
-      //     },
       //   ],
       // },
     ],
   },
-  { path: PATHS.MAIN.ERROR.P_404, element: <NotFound /> },
+
   {
-    path: PATHS.ANY,
-    element: <Navigate to={PATHS.MAIN.ERROR.P_404} replace />,
+    path: PATHS.SECOND_STEP.ROOT,
+    element: (
+      <AuthGuard>
+        <SecondStepLayout />
+      </AuthGuard>
+    ),
+    children: [
+      {
+        path: PATHS.SECOND_STEP.CATEGORIES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <CategoriesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.SUBCATEGORIES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <SubcategoriesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.COURSES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <CoursesChoicePage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.QUIZ_COURSES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <PretestPage />
+          </RoleBasedGuard>
+        ),
+      },
+    ],
   },
+  // { path: PATHS.MAIN.ERROR.P_404, element: <NotFound /> },
+  // {
+  //   path: PATHS.ANY,
+  //   element: <Navigate to={PATHS.MAIN.ERROR.P_404} replace />,
+  // },
 ];

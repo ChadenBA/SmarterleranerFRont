@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
-import { Divider, Stack } from '@mui/material';
+import { Button, Divider, Stack } from '@mui/material';
 import CustomStepper from '@components/CustomStepper/CustomStepper';
 import { STEPS } from './AddCourseForm.constants';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
@@ -36,6 +36,7 @@ export default function AddCourseForm({
   isFetching,
 }: AddCourseFormProps) {
   const { t } = useTranslation();
+
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
@@ -45,7 +46,7 @@ export default function AddCourseForm({
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
 
   const StepperFormMethods = useForm<CourseFormValues>({
@@ -53,6 +54,8 @@ export default function AddCourseForm({
     shouldFocusError: true,
     defaultValues: generateCourseFormDefaultValues(courseDefaultValues),
   });
+
+  const handleNextStep = () => setActiveStep((prev) => prev + 1);
 
   const educationalUnitFormMethod = useForm<FormValues>({
     mode: 'onChange',
@@ -164,12 +167,19 @@ export default function AddCourseForm({
           {t('common.back')}
         </GoBackButton>
         <Stack>
-          <CustomLoadingButton
-            isLoading={isLoading || isLoadingEu || isLoadingUpdate}
-            onClick={activeStep === 0 ? handleAddCourse : handleAddSection}
-          >
-            {isEditMode ? t('common.update') : t('common.next')}
-          </CustomLoadingButton>
+          <Stack direction={'row'} spacing={2}>
+            {isEditMode && activeStep === 0 && (
+              <Button onClick={handleNextStep} variant="contained" sx={{ color: 'white' }}>
+                {t('common.skip')}
+              </Button>
+            )}
+            <CustomLoadingButton
+              isLoading={isLoading || isLoadingEu || isLoadingUpdate}
+              onClick={activeStep === 0 ? handleAddCourse : handleAddSection}
+            >
+              {isEditMode && activeStep === 0 ? t('common.update') : t('common.next')}
+            </CustomLoadingButton>
+          </Stack>
         </Stack>
       </Stack>
     </Box>

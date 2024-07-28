@@ -1,5 +1,10 @@
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
+
+import { Eu } from 'types/models/Eu';
 import { FormValues } from './module/Eu.type';
+import { QuestionTypeEnum } from '@config/enums/questionType.enum';
+import { LearningObjectType } from '@config/enums/learningObjectType.enum';
+import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 
 import {
   DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
@@ -8,29 +13,34 @@ import {
   DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
   DEFAULT_QUESTION_OBJECT,
 } from './EuForm.constants';
-import { Eu } from 'types/models/Eu';
-import { QuestionTypeEnum } from '@config/enums/questionType.enum';
-import { LearningObjectType } from '@config/enums/learningObjectType.enum';
-import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 interface UseSectionFormProps {
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
 }
 export default function useEducationalUnitForm({ euFormMethods }: UseSectionFormProps) {
-  const { fields, insert, remove, update } = useFieldArray({
+  // ----------------------------- Form Methods -----------------------------
+  const { fields, append, insert, remove, update } = useFieldArray({
     control: euFormMethods.control,
     name: 'eu',
   });
 
   // Add a new educational unit to the form
-  const handleAddEducationalUnit = (unitType: EducationalUnitEnum, index: number) => {
+  const handleAddEducationalUnit = (
+    unitType: EducationalUnitEnum,
+    index: number,
+    isEditMode: boolean,
+    title: string = GLOBAL_VARIABLES.EMPTY_STRING,
+  ) => {
     const unitDefaults: { [key: string]: Eu } = {
       basic: DEFAULT_BASIC_EDUCATIONAL_UNIT,
       intermediate: DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
       advanced: DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
     };
 
-    insert(index + 1, unitDefaults[(unitType as string).toLocaleLowerCase()]);
+    !isEditMode
+      ? insert(index + 1, unitDefaults[(unitType as string).toLocaleLowerCase()])
+      : append({ ...unitDefaults[(unitType as string).toLocaleLowerCase()], title });
   };
 
   // remove an educational unit from the form
@@ -172,5 +182,6 @@ export default function useEducationalUnitForm({ euFormMethods }: UseSectionForm
     handleRemoveAnswer,
     handleAddAnswer,
     handleAddLearningObject,
+    euFormMethods,
   };
 }

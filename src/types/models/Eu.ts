@@ -7,3 +7,15 @@ export interface Eu {
   type: EducationalUnitEnum;
   learningObjects: Lo[];
 }
+
+export interface QuizSubmissionApi {
+  score: number;
+  total_score_possible: number;
+  status: string;
+}
+
+export interface QuizSubmission {
+  score: number;
+  totalScorePossible: number;
+  status: string;
+}

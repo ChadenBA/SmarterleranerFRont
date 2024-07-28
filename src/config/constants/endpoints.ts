@@ -28,4 +28,9 @@ export const ENDPOINTS = {
   OFFLINE_COURSE: 'admin/offline-course',
   ONLINE_COURSE: 'admin/online-course',
   CREATE_EDUCATIONAL_UNIT: 'admin/create-eu',
+  USER_CATEGORIES: 'user/categories',
+  USER_SUBCATEGORIES: 'user/subcategories',
+  USER_COURSES: 'user/courses',
+  ENROLL_COURSE: 'user/subscribe-course',
+  COURSES: 'courses',
 };

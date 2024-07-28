@@ -1,4 +1,5 @@
 import { UseFormReturn } from 'react-hook-form';
+import { Media } from 'types/models/Media';
 import { Quiz } from 'types/models/Quiz';
 
 export interface CourseFormProps {
@@ -14,5 +15,5 @@ export interface CourseFormValues {
   subcategoryId: number;
   subscribers?: number[];
   quiz: Quiz;
-  courseMedia?: File;
+  coverMedia?: Media;
 }
