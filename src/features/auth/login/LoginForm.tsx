@@ -31,7 +31,6 @@ export default function LoginForm() {
   const { getError } = useError({ formMethods: LoginFormMethods });
 
   const handleKeyPress = (event: any) => {
-    console.log(event.key);
     if (event.key === 'Enter') {
       event.preventDefault();
       onSubmit();

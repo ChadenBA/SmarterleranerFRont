@@ -79,6 +79,7 @@ function EuBody({
                     ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
                     name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
                     disabled: loIndex === 0 || loIndex === 1,
+                    defaultValue: lo.type,
                   }}
                 />
               </Grid>

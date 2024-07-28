@@ -20,7 +20,7 @@ function SectionTabs({ eu, activeEu, handleChange, onAddNewEu, setSelectedEu }: 
         ))}
       </SectionTabsRoot>
       <Tooltip title={t('section.add_section')}>
-        <AddNewSectionIcon onClick={() => onAddNewEu(activeEu)} />
+        <AddNewSectionIcon onClick={() => onAddNewEu(eu[0]?.type, activeEu, true)} />
       </Tooltip>
     </Stack>
   );

@@ -40,9 +40,9 @@ function EUnit({
   const quiz = learningObjects[0]?.quiz as Quiz | undefined;
 
   const questions = quiz?.questions ?? [];
-  console.log(field, 'fffff');
+
   // State Declaration
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(isEditMode ? true : false);
   const [expandedQuiz, setExpandedQuiz] = useState(true);
   const [open, setOpen] = useState(false);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
