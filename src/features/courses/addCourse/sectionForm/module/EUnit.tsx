@@ -51,7 +51,7 @@ function EUnit({
   const { t } = useTranslation();
   const [deletedMedia, setDeletedMedia] = useState<string[]>([]);
 
-  const isNewSection = !field?.id || !field?.title;
+  const isNewSection = !field?.id || !field?.title || !field?.learningObjects[0]?.title;
   const isNewQuiz = quiz?.id || quiz?.questions[0]?.question;
   const handleChangeExpand = () => setExpanded((prev) => !prev);
 
@@ -205,7 +205,7 @@ function EUnit({
             })}
           </Stack>
         </Collapse>
-        {/* TODO: api calls */}
+
         <CustomDialogActions
           open={open || openQuizDialog || openQuestionDialog || openAnswerDialog}
           onAccept={

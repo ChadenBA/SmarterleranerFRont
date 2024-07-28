@@ -41,7 +41,7 @@ function EducationalUnitForm({
   const [selectedEu, setSelectedEu] = useState(0);
   const [deletedEu, setDeletedEu] = useState(false);
   const [newEuAdded, setNewEuAdded] = useState(false);
-  const [lastDeletedEuType, setLastDeletedEuType] = useState('');
+  const [lastDeletedAddedEuType, setLastDeletedAddedEuType] = useState('');
 
   const [euList, setEuList] = useState<FieldArrayWithId<FormValues, 'eu', 'id'>[]>(
     fields.filter((field) => field.type.toLocaleUpperCase() === EducationalUnitEnum.BASIC),
@@ -64,11 +64,23 @@ function EducationalUnitForm({
     }
   }, [fields, isEditMode, selectedEu]);
 
+  //-- Reset the activeEu to 0 when the activeTab changes
+  useEffect(() => {
+    if (isEditMode) {
+      setActiveEu(0);
+    }
+  }, [activeTab]);
   //-- Set the current index of the educational unit
   useEffect(() => {
     if (newEuAdded || deletedEu) {
-      if (newEuAdded) handleChangeTab(null, handleTypeByIndex(fields[fields.length - 1].type));
-      else handleChangeTab(null, handleTypeByIndex(lastDeletedEuType));
+      if (newEuAdded) {
+        handleChangeTab(null, handleTypeByIndex(fields[fields.length - 1].type));
+        setSelectedEu(getLastIdByType(lastDeletedAddedEuType));
+        setActiveEu(getCountByType(lastDeletedAddedEuType) - 1);
+      } else {
+        handleChangeTab(null, handleTypeByIndex(lastDeletedAddedEuType));
+        setActiveEu(getCountByType(lastDeletedAddedEuType) - 1);
+      }
 
       setNewEuAdded(false);
       setDeletedEu(false);
@@ -104,6 +116,12 @@ function EducationalUnitForm({
     }
   };
 
+  //-- Get the last id of the educational unit based on the type
+  const getLastIdByType = (type: string) => {
+    const filtered = fields.filter((field) => field.type.toUpperCase() === type.toUpperCase());
+    return filtered[filtered.length - 1]?.id;
+  };
+
   //-- Handle tab changes
   const handleChangeTab = (_: React.SyntheticEvent<Element, Event> | null, newValue: number) => {
     if (newEuAdded || deletedEu) {
@@ -132,6 +150,7 @@ function EducationalUnitForm({
     } else {
       handleAddEducationalUnit(type, index, isEditMode, t('eu.new_eu'));
       setNewEuAdded(true);
+      setLastDeletedAddedEuType(type);
     }
   };
 
@@ -143,7 +162,7 @@ function EducationalUnitForm({
       setActiveTab(fields.length - 2);
     } else {
       setDeletedEu(true);
-      setLastDeletedEuType(type || '');
+      setLastDeletedAddedEuType(type || '');
     }
   };
 
@@ -157,6 +176,18 @@ function EducationalUnitForm({
     return fields.findIndex((field) => field.id === id);
   };
 
+  //-- Get the count of the educational unit by type
+  const getCountByType = (type: string) => {
+    let count = 0;
+
+    fields.forEach((field) => {
+      if (field.type.toUpperCase() === type.toUpperCase()) {
+        count++;
+      }
+    });
+
+    return count;
+  };
   //-- Handle changes in the section tabs
   const handleChangeEuType = (type: string) => {
     switch (type) {
