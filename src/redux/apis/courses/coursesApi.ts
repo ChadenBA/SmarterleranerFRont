@@ -83,6 +83,16 @@ export const courseApi = createApi({
       providesTags: ['CoursesForAdmin'],
     }),
 
+    getAdminCourseById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
+      query: (id) => ({
+        url: ENDPOINTS.ADMIN_COURSES + `/${id}`,
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: SingleCourseResponseData) =>
+        transformFetchCourseResponse(response),
+      providesTags: ['CoursesForAdmin'],
+    }),
+
     putCourseActive: builder.mutation<void, number>({
       query: (id) => ({
         url: `${ENDPOINTS.ACTIVE_COURSE}/${id}`,
@@ -140,4 +150,6 @@ export const {
   useSetCourseOnlineMutation,
   useGetCoursesBySubcategoryQuery,
   useEnrollCourseMutation,
+
+  useGetAdminCourseByIdQuery,
 } = courseApi;

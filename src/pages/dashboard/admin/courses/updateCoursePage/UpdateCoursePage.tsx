@@ -2,7 +2,7 @@ import BodyCard from '@components/cards/bodyCard/BodyCard';
 import Error from '@components/error/Error';
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import AddCourseForm from '@features/courses/addCourse/AddCourseForm';
-import { useGetCourseByIdQuery } from '@redux/apis/courses/coursesApi';
+import { useGetAdminCourseByIdQuery } from '@redux/apis/courses/coursesApi';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 
@@ -11,7 +11,7 @@ function UpdateCoursePage() {
 
   const { courseId } = useParams();
 
-  const { data, isLoading, isFetching, isError } = useGetCourseByIdQuery(courseId as string);
+  const { data, isLoading, isFetching, isError } = useGetAdminCourseByIdQuery(courseId as string);
 
   if (isLoading) return <FallbackLoader />;
 
