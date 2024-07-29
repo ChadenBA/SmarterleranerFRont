@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { Button, Divider, Stack } from '@mui/material';
@@ -57,30 +57,38 @@ export default function AddCourseForm({
 
   const handleNextStep = () => setActiveStep((prev) => prev + 1);
 
-  const educationalUnitFormMethod = useForm<FormValues>({
-    mode: 'onChange',
-    shouldFocusError: true,
-    defaultValues: {
-      eu: courseDefaultValues
-        ? courseDefaultValues.educationalUnits.map((eu: Eu) => ({
-            ...eu,
-            learningObjects: eu.learningObjects.map((lo) => ({
-              ...lo,
-              questions: lo.quiz.questions.map((question) => ({
-                ...question,
-                answers: question.answers.map((answer) => ({
-                  ...answer,
-                  isValid: answer.isValid ? answer.isValid : false,
-                })),
+  const defaultValues = useMemo(() => {
+    if (courseDefaultValues) {
+      return {
+        eu: courseDefaultValues.educationalUnits.map((eu) => ({
+          ...eu,
+          learningObjects: eu.learningObjects.map((lo) => ({
+            ...lo,
+            questions: lo.quiz.questions.map((question) => ({
+              ...question,
+              answers: question.answers.map((answer) => ({
+                ...answer,
+                isValid: answer.isValid || false,
               })),
             })),
-          }))
-        : [
-            DEFAULT_BASIC_EDUCATIONAL_UNIT,
-            DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
-            DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
-          ],
-    },
+          })),
+        })),
+      };
+    } else {
+      return {
+        eu: [
+          DEFAULT_BASIC_EDUCATIONAL_UNIT,
+          DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
+          DEFAULT_ADVANCED_EDUCATIONAL_UNIT,
+        ],
+      };
+    }
+  }, [courseDefaultValues]);
+
+  const educationalUnitFormMethod = useForm({
+    mode: 'onChange',
+    shouldFocusError: true,
+    defaultValues: defaultValues,
   });
 
   const [createCourseActionApi, { isLoading }] = useCreateCourseMutation();

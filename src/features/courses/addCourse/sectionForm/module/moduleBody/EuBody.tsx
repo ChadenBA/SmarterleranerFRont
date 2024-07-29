@@ -43,7 +43,7 @@ function EuBody({
   const [open, setOpen] = useState(false);
 
   return (
-    <Collapse in={expanded} timeout={700}>
+    <Collapse in={expanded}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} pr={5}>
           <CustomTextField

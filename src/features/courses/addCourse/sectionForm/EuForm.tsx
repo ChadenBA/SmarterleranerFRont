@@ -1,8 +1,7 @@
 import { t } from 'i18next';
-import { DevTool } from '@hookform/devtools';
 
 import { FieldArrayWithId, FormProvider } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { Stack } from '@mui/material';
 import MainTabs from './mainTabs/MainTabs';
@@ -14,6 +13,7 @@ import EUnit from './module/EUnit';
 import { EUFormProps } from './EuForm.type';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 import { FormValues } from './module/Eu.type';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function EducationalUnitForm({
   files,
@@ -34,14 +34,17 @@ function EducationalUnitForm({
     handleAddLearningObject,
   } = useEducationalUnitForm({ euFormMethods });
 
-  const [activeEu, setActiveEu] = useState(0);
-  const [activeTab, setActiveTab] = useState(0);
-  const [oldValues, setOldValues] = useState(-1);
-  const [currentId, setCurrentId] = useState(0);
-  const [selectedEu, setSelectedEu] = useState(0);
-  const [deletedEu, setDeletedEu] = useState(false);
-  const [newEuAdded, setNewEuAdded] = useState(false);
-  const [lastDeletedAddedEuType, setLastDeletedAddedEuType] = useState('');
+  //______________________ Local State ______________________
+  const [euState, setEuState] = useState({
+    activeEu: 0,
+    selectedEu: 0,
+    currentId: 0,
+    deletedEu: false,
+    newEuAdded: false,
+    lastDeletedAddedEuType: GLOBAL_VARIABLES.EMPTY_STRING,
+    activeTab: 0,
+    oldValues: -1,
+  });
 
   const [euList, setEuList] = useState<FieldArrayWithId<FormValues, 'eu', 'id'>[]>(
     fields.filter((field) => field.type.toLocaleUpperCase() === EducationalUnitEnum.BASIC),
@@ -51,45 +54,38 @@ function EducationalUnitForm({
   //-- Set the current index of the educational unit
   useEffect(() => {
     if (isEditMode) {
-      const index = fields.findIndex((field) => field.id === euList[0]?.id);
-      setCurrentId(index === -1 ? 0 : index);
+      const index = fields.findIndex((field) => field.id === (euState.selectedEu || euList[0]?.id));
+      setEuState((prev) => ({ ...prev, currentId: index === -1 ? 0 : index }));
     }
-  }, [euList, fields, isEditMode]);
+  }, [euList, fields, isEditMode, euState.selectedEu]);
 
   //-- Set the current index of the educational unit
   useEffect(() => {
-    if (isEditMode) {
-      const index = fields.findIndex((field) => field.id === selectedEu);
-      setCurrentId(index === -1 ? 0 : index);
-    }
-  }, [fields, isEditMode, selectedEu]);
-
-  //-- Reset the activeEu to 0 when the activeTab changes
-  useEffect(() => {
-    if (isEditMode) {
-      setActiveEu(0);
-    }
-  }, [activeTab, isEditMode]);
-  //-- Set the current index of the educational unit
-  useEffect(() => {
-    if (newEuAdded || deletedEu) {
-      if (newEuAdded) {
+    if (euState.newEuAdded || euState.deletedEu) {
+      if (euState.newEuAdded) {
         handleChangeTab(null, handleTypeByIndex(fields[fields.length - 1].type));
-        setSelectedEu(getLastIdByType(lastDeletedAddedEuType));
-        setActiveEu(getCountByType(lastDeletedAddedEuType) - 1);
+        setEuState((prev) => ({
+          ...prev,
+          selectedEu: getLastIdByType(prev.lastDeletedAddedEuType),
+          activeEu: getCountByType(prev.lastDeletedAddedEuType) - 1,
+          newEuAdded: false,
+          deletedEu: false,
+        }));
       } else {
-        handleChangeTab(null, handleTypeByIndex(lastDeletedAddedEuType));
-        setActiveEu(getCountByType(lastDeletedAddedEuType) - 1);
+        handleChangeTab(null, handleTypeByIndex(euState.lastDeletedAddedEuType));
+        setEuState((prev) => ({
+          ...prev,
+          activeEu: getCountByType(prev.lastDeletedAddedEuType) - 1,
+          newEuAdded: false,
+          deletedEu: false,
+        }));
       }
-
-      setNewEuAdded(false);
-      setDeletedEu(false);
     }
-  }, [newEuAdded, deletedEu]);
+  }, [euState.newEuAdded, euState.deletedEu, fields]);
 
   //______________________ Event Handlers ______________________
   //-- Handle index changes
-  const handleIndexChange = (index: number): string => {
+  const handleIndexChange = useCallback((index: number): string => {
     switch (index) {
       case 0:
         return 'BASIC';
@@ -100,10 +96,10 @@ function EducationalUnitForm({
       default:
         return 'BASIC';
     }
-  };
+  }, []);
 
   //-- Handle type by index
-  const handleTypeByIndex = (type: string): number => {
+  const handleTypeByIndex = useCallback((type: string): number => {
     switch (type.toUpperCase()) {
       case 'BASIC':
         return 0;
@@ -114,108 +110,136 @@ function EducationalUnitForm({
       default:
         return 0;
     }
-  };
+  }, []);
 
   //-- Get the last id of the educational unit based on the type
-  const getLastIdByType = (type: string) => {
-    const filtered = fields.filter((field) => field.type.toUpperCase() === type.toUpperCase());
-    return filtered[filtered.length - 1]?.id;
-  };
+  const getLastIdByType = useCallback(
+    (type: string) => {
+      const filtered = fields.filter((field) => field.type.toUpperCase() === type.toUpperCase());
+      return filtered[filtered.length - 1]?.id;
+    },
+    [fields],
+  );
 
   //-- Handle tab changes
-  const handleChangeTab = (_: React.SyntheticEvent<Element, Event> | null, newValue: number) => {
-    if (newEuAdded || deletedEu) {
-      setEuList([]);
-    } else {
-      setActiveTab(newValue);
-    }
-
-    if (newValue !== oldValues) {
-      setEuList([]);
-      setOldValues(newValue);
-    }
-
-    fields.forEach((field) => {
-      if (field.type.toUpperCase() === handleIndexChange(newValue)) {
-        setEuList((prev) => [...prev, field]);
+  const handleChangeTab = useCallback(
+    (_: React.SyntheticEvent<Element, Event> | null, newValue: number) => {
+      if (euState.newEuAdded || euState.deletedEu) {
+        setEuList([]);
+      } else {
+        setEuState((prev) => ({ ...prev, activeTab: newValue, selectedEu: 0 }));
       }
-    });
-  };
+
+      if (newValue !== euState.oldValues) {
+        setEuList([]);
+        setEuState((prev) => ({ ...prev, oldValues: newValue }));
+      }
+
+      fields.forEach((field) => {
+        if ((field.type.toUpperCase() as EducationalUnitEnum) === handleIndexChange(newValue)) {
+          setEuList((prev) => [...prev, field]);
+        }
+      });
+    },
+    [fields, handleIndexChange, euState.newEuAdded, euState.deletedEu, euState.oldValues],
+  );
 
   //-- Add a new educational unit
-  const addNewEducationalUnit = (type: EducationalUnitEnum, index: number, isEditMode = false) => {
+  const addNewEducationalUnit = (
+    type: keyof typeof EducationalUnitEnum,
+    index: number,
+    isEditMode: boolean = false,
+  ): void => {
     if (!isEditMode) {
-      handleAddEducationalUnit(type, index, isEditMode);
-      setActiveTab(fields.length - 1);
+      handleAddEducationalUnit(type as EducationalUnitEnum, index, isEditMode);
+      setEuState((prevState) => ({
+        ...prevState,
+        activeTab: fields.length - 1,
+      }));
     } else {
-      handleAddEducationalUnit(type, index, isEditMode, t('eu.new_eu'));
-      setNewEuAdded(true);
-      setLastDeletedAddedEuType(type);
+      handleAddEducationalUnit(type as EducationalUnitEnum, index, isEditMode, t('eu.new_eu'));
+      setEuState((prevState) => ({
+        ...prevState,
+        newEuAdded: true,
+        lastDeletedAddedEuType: type,
+      }));
     }
   };
 
   //-- Remove an educational unit
-  const handleRemoveSection = (index: number, type?: string) => {
-    handleRemoveEducationalUnit(index);
-
-    if (!isEditMode) {
-      setActiveTab(fields.length - 2);
-    } else {
-      setDeletedEu(true);
-      setLastDeletedAddedEuType(type || '');
-    }
-  };
+  const handleRemoveSection = useCallback(
+    (index: number, type?: string) => {
+      handleRemoveEducationalUnit(index);
+      if (!isEditMode) {
+        setEuState((prevState) => ({
+          ...prevState,
+          activeTab: Math.max(fields.length - 2, 0),
+        }));
+      } else {
+        setEuState((prevState) => ({
+          ...prevState,
+          deletedEu: true,
+          lastDeletedAddedEuType: type?.toUpperCase() || GLOBAL_VARIABLES.EMPTY_STRING,
+        }));
+      }
+    },
+    [handleRemoveEducationalUnit, isEditMode, fields.length],
+  );
 
   //-- Handle changes in the section tabs
-  const handleChangeSectionTabs = (_: React.SyntheticEvent, newValue: number) => {
-    setActiveEu(newValue);
-  };
+  const handleChangeSectionTabs = useCallback((_: React.SyntheticEvent, newValue: number) => {
+    setEuState((prevState) => ({
+      ...prevState,
+      activeEu: newValue,
+    }));
+  }, []);
 
   //-- Get index by id
-  const getIndexById = (id: string) => {
-    return fields.findIndex((field) => field.id === id);
-  };
+  const getIndexById = useCallback(
+    (id: string) => {
+      return fields.findIndex((field) => field.id === id);
+    },
+    [fields],
+  );
 
   //-- Get the count of the educational unit by type
-  const getCountByType = (type: string) => {
-    let count = 0;
+  const getCountByType = useCallback(
+    (type: string) => {
+      return fields.reduce(
+        (count, field) => count + (field.type.toUpperCase() === type.toUpperCase() ? 1 : 0),
+        0,
+      );
+    },
+    [fields],
+  );
 
-    fields.forEach((field) => {
-      if (field.type.toUpperCase() === type.toUpperCase()) {
-        count++;
-      }
-    });
-
-    return count;
-  };
   //-- Handle changes in the section tabs
-  const handleChangeEuType = (type: string) => {
-    switch (type) {
-      case EducationalUnitEnum.BASIC:
-        return t('eu.basic_eu');
-      case EducationalUnitEnum.INTERMEDIATE:
-        return t('eu.intermediate_eu');
-      case EducationalUnitEnum.ADVANCED:
-        return t('eu.advanced_eu');
-      default:
-        return t('eu.basic_eu');
-    }
-  };
+  const handleChangeEuType = useCallback(
+    (type: string) => {
+      switch (type) {
+        case EducationalUnitEnum.BASIC:
+          return t('eu.basic_eu');
+        case EducationalUnitEnum.INTERMEDIATE:
+          return t('eu.intermediate_eu');
+        case EducationalUnitEnum.ADVANCED:
+          return t('eu.advanced_eu');
+        default:
+          return t('eu.basic_eu');
+      }
+    },
+    [t],
+  );
 
   //-- Check if the educational unit can be deleted
-  const canDeleteEu = (type: string) => {
-    let count = 0;
+  const canDeleteEu = useCallback(
+    (type: string) => {
+      const count = getCountByType(type);
+      return count > 1;
+    },
+    [getCountByType],
+  );
 
-    fields.forEach((field) => {
-      if (field.type.toUpperCase() === type.toUpperCase()) {
-        count++;
-      }
-    });
-
-    return count > 1;
-  };
-
-  //______________________ If fetching Render loader ______________________
+  //______________________ Loader  ______________________
   if (isFetching) {
     return <FallbackLoader />;
   }
@@ -251,25 +275,27 @@ function EducationalUnitForm({
         </>
       ) : (
         <Stack p={2} spacing={3}>
-          <MainTabs activeTab={activeTab} handleChange={handleChangeTab} />
+          <MainTabs activeTab={euState.activeTab} handleChange={handleChangeTab} />
 
           <SectionTabs
             eu={euList}
-            activeEu={activeEu}
+            activeEu={euState.activeEu}
             handleChange={handleChangeSectionTabs}
             onAddNewEu={addNewEducationalUnit}
-            setSelectedEu={setSelectedEu}
+            setSelectedEu={(id: number) =>
+              setEuState((prevState) => ({ ...prevState, selectedEu: id }))
+            }
           />
 
-          {fields[currentId] && euList.length > 0 && (
+          {fields[euState.currentId] && euList.length > 0 && (
             <EUnit
-              key={fields[currentId].id}
-              field={fields[currentId]}
+              key={fields[euState.currentId].id}
+              field={fields[euState.currentId]}
               euFormMethods={euFormMethods}
               files={files}
-              canDelete={canDeleteEu(fields[currentId].type)}
-              euIndex={currentId}
-              loIndex={currentId}
+              canDelete={canDeleteEu(fields[euState.currentId].type)}
+              euIndex={euState.currentId}
+              loIndex={euState.currentId}
               isEditMode={isEditMode}
               setFiles={setFiles}
               handleAddQuestion={handleAddQuestion}
@@ -277,17 +303,22 @@ function EducationalUnitForm({
               handleAddAnswer={handleAddAnswer}
               handleRemoveAnswer={handleRemoveAnswer}
               handleRemoveEu={() =>
-                handleRemoveSection(getIndexById(fields[currentId].id), fields[currentId].type)
+                handleRemoveSection(
+                  getIndexById(fields[euState.currentId].id),
+                  fields[euState.currentId].type,
+                )
               }
               handleAddEuApi={handleAddEU}
-              handleAddLearningObject={() => handleAddLearningObject(activeEu)}
-              type={handleChangeEuType(fields[activeEu].type)}
-              onAddEu={() => addNewEducationalUnit(fields[activeEu].type, activeEu, true)}
+              handleAddLearningObject={() => handleAddLearningObject(euState.activeEu)}
+              type={handleChangeEuType(fields[euState.activeEu].type)}
+              onAddEu={() =>
+                addNewEducationalUnit(fields[euState.activeEu].type, euState.activeEu, true)
+              }
             />
           )}
         </Stack>
       )}
-      <DevTool control={euFormMethods.control} />
+      {/* <DevTool control={euFormMethods.control} /> */}
     </FormProvider>
   );
 }

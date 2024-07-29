@@ -28,6 +28,7 @@ function EUnit({
   // Destructing the questions from the form methods
 
   const learningObjects = field?.learningObjects ?? [];
+
   const quiz = learningObjects[0]?.quiz as Quiz | undefined;
 
   const questions = quiz?.questions ?? [];
@@ -70,6 +71,7 @@ function EUnit({
     //   dispatch(showError(t('errors.general_error')))
     // }
   });
+
   return (
     <>
       <ModuleRoot spacing={2} mb={1} mt={1}>

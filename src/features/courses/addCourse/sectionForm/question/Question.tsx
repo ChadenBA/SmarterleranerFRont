@@ -1,3 +1,4 @@
+import React from 'react';
 import CustomTextField from '@components/Inputs/customTextField/CustomTextField';
 import { Divider, Grid, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -11,7 +12,7 @@ import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOu
 import { CustomLabel } from '@components/Inputs/customRadioButton/CustomRadioButton.style';
 import { CREATE_LEARNING_OBJECT_FORM_CONFIG } from '../EuForm.constants';
 
-function Question({
+function QuestionComponent({
   questionIndex,
   euIndex,
   loIndex,
@@ -135,4 +136,5 @@ function Question({
   );
 }
 
+const Question = React.memo(QuestionComponent);
 export default Question;
