@@ -48,4 +48,5 @@ export interface CourseForAdmin {
   media?: Record<string, Record<number, File[]>>;
   coverMedia: Media;
   isSubscribed?: 0 | 1;
+  studentLevel?: string;
 }

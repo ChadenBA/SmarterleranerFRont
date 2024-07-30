@@ -45,11 +45,7 @@ export const convertFromUnixTimestampToDate = (
     .unix(timestamp)
     .format(GLOBAL_VARIABLES.DATES_FORMAT.DATE)
 }
-export const transformUnixToISO = (
-  unixTimestamp: number | undefined,
-): string => {
-  if (unixTimestamp === undefined) {
-    return GLOBAL_VARIABLES.EMPTY_STRING
-  }
-  return dayjs.unix(unixTimestamp).toISOString()
-}
+export const convertToISODate = (dateString: string) => {
+  const [day, month, year] = dateString.split('/');
+  return `${year}-${month}-${day}`;
+};

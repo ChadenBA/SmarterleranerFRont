@@ -7,7 +7,6 @@ import {
   ApiLO,
   ApiQuestion,
   CourseApi,
-  CourseForAdminApi,
   SingleCourseResponseData,
   StudentQuiz,
   StudentQuizApi,
@@ -15,12 +14,7 @@ import {
 import { toSnakeCase } from '@utils/helpers/string.helpers';
 
 import { transformMedia } from '../transform';
-import {
-  transformDateFormat,
-  convertToUnixTimestamp,
-  convertFromUnixTimestampToDateTime,
-  transformDateTime,
-} from '@utils/helpers/date.helpers';
+import { transformDateFormat, transformDateTime } from '@utils/helpers/date.helpers';
 
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
@@ -107,6 +101,8 @@ export const transformSingleCourse = (course: CourseApi): CourseForAdmin => {
     learningObjectsCount: course.learning_objects_count,
     subscribedUsersCount: course.subscribed_users_count,
     coverMedia: transformSingleMedia(course.media[0]),
+    isSubscribed: course.is_subscribed ? 1 : 0,
+    studentLevel: course.student_level,
   };
 };
 
@@ -163,41 +159,6 @@ export const transformLearningObjects = (learningObjects: ApiLO[]): Lo[] => {
   }));
 };
 
-export const transformFetchCourseForAdminResponse = (
-  response: ItemDetailsResponse<CourseForAdminApi>,
-): ItemDetailsResponse<CourseForAdmin> => {
-  const { data } = response;
-  return {
-    message: response.message,
-    data: {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      categoryId: data.category_id,
-      subcategoryId: data.subcategory_id,
-      isOffline: data.is_offline,
-      isActive: data.is_active,
-      quiz: {
-        id: data.quiz.id,
-        questions: data.quiz.questions.map((question) => transformQuestionSection(question)),
-      },
-      subscribers: data.subscribers.map((subscriber) => subscriber.id),
-      createdAt: convertFromUnixTimestampToDateTime(convertToUnixTimestamp(data.created_at)),
-      courseMedia: new File(
-        [data.media[0].file_name],
-        data.media[0]?.file_name,
-
-        {
-          type: data.media[0].mime_type,
-        },
-      ),
-      educationalUnits: data.educational_units.map((eu) => transformEducationalUnit(eu)),
-      coverMedia: transformSingleMedia(data.media[0]),
-    },
-  };
-};
-
-// const transformCourseLo = (loApi: ApiLO): Lo => {
 //   return {
 //     title: loApi.title,
 //     type: loApi.type,
@@ -262,27 +223,6 @@ export const transformQuestionSection = (questionApi: ApiQuestion): Question => 
           ],
   };
 };
-
-// export const decodeSectionsMedia = (sections: ApiLO[]): Record<number, File[]> => {
-//   let sectionsMedias: Record<number, File[]> = {};
-
-//   sections.forEach((step, index) => {
-//     if (!step.media) return;
-//     sectionsMedias[index] = step.media.map((media) => {
-//       const newGeneratedFile = new File(
-//         [media.file_name],
-//         `${ConfigEnv.MEDIA_BASE_URL}/${media.file_name}`,
-//         {
-//           type: media.mime_type,
-//         },
-//       );
-
-//       return newGeneratedFile;
-//     });
-//   });
-
-//   return sectionsMedias;
-// };
 
 export const encodeCourse = (values: FieldValues): FormData => {
   const formData = new FormData();

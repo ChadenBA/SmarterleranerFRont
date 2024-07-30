@@ -187,6 +187,25 @@ export const courseApi = createApi({
       transformResponse: (response: ApiPaginationResponse<StudentQuizApi>) =>
         transformQuizScoreResponse(response),
     }),
+    getEnrolledCourses: builder.query<PaginationResponse<CourseForAdmin>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.ENROLLED_COURSES, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<CourseApi>) =>
+        transformFetchCoursesResponse(response),
+      providesTags: ['Courses'],
+    }),
+
+    getCourses: builder.query<PaginationResponse<CourseForAdmin>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.COURSES, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<CourseApi>) =>
+        transformFetchCoursesResponse(response),
+      providesTags: ['Courses'],
+    }),
   }),
 });
 
@@ -207,4 +226,6 @@ export const {
   useSubmitQuizMutation,
   useGetQuizzesScoreQuery,
   useUpdateEuMutation,
+  useGetEnrolledCoursesQuery,
+  useGetCoursesQuery,
 } = courseApi;

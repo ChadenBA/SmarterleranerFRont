@@ -14,15 +14,11 @@ import { useTranslation } from 'react-i18next'
 import { GREY } from '@config/colors/colors'
 import { filterOptions } from './FilterHeader.constants'
 import { FilterHeaderProps } from './FilterHeader.type'
-import DateRangeFilter from '@components/dateRangeFilter/DateRangeFilter'
 
 function FilterHeader({
   total,
   handleOrderChange,
   hasFilter,
-  queryParams,
-  isCoursePage,
-  handleFiltersRangeChange,
 }: FilterHeaderProps) {
   const { t } = useTranslation()
 
@@ -53,14 +49,7 @@ function FilterHeader({
           {t('pagination.showing_total', { total })}
         </Typography>
       </Stack>
-      {isCoursePage && (
-        <Stack p={2} alignSelf={'flex-end'}>
-          <DateRangeFilter
-            filtersQueryParams={queryParams}
-            handleFiltersRangeChange={handleFiltersRangeChange}
-          />
-        </Stack>
-      )}
+     
 
       {hasFilter && (
         <Stack direction={'row'} spacing={2} alignItems={'center'}>

@@ -34,8 +34,9 @@ export const ENDPOINTS = {
   ENROLL_COURSE: 'user/subscribe-course',
   COURSES: 'courses',
   SUBMIT_QUIZ: 'user/quiz/submit',
-  STUDENT_DASHBOARD: 'student/dashboard',
+  STUDENT_DASHBOARD: 'user/dashboard',
   ADMIN_DASHBOARD: 'admin/dashboard',
   INDEX_QUIZZES_SCORE: 'user/quiz-scores',
   UPDATE_EU: 'admin/update-eu',
+  ENROLLED_COURSES: 'user/enrolled-courses',
 };

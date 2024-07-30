@@ -16,11 +16,13 @@ import CustomPasswordTextField from '@components/Inputs/customPasswordTextField/
 import useError from 'src/hooks/useError';
 import { StyledSubTitle } from '../userProfile/UserProfile.style';
 import { UserRoleEnum } from '@config/enums/role.enum';
+import { convertToISODate } from '@utils/helpers/date.helpers';
 
 function EditProfile() {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
+
   const media = useAppSelector((state) => state.auth.media);
   const UserFormMethods = useForm({
     mode: 'onChange',
@@ -39,6 +41,7 @@ function EditProfile() {
   });
 
   const [updateProfileApiAction, { isLoading: isUpdating }] = useUpdateProfileMutation();
+  console.log('user?.birthDate', user?.birthDate);
 
   const onSubmit = UserFormMethods.handleSubmit(async (values) => {
     try {
@@ -110,8 +113,10 @@ function EditProfile() {
                 <Stack mb={2}>
                   <CustomTextField
                     config={{
-                      ...SIGNUP_FORM_CONFIG.birthdate,
-                      defaultValue: user?.birthDate || GLOBAL_VARIABLES.EMPTY_STRING,
+                      ...SIGNUP_FORM_CONFIG.birthDate,
+                      defaultValue: user?.birthDate
+                        ? convertToISODate(user.birthDate)
+                        : GLOBAL_VARIABLES.EMPTY_STRING,
                     }}
                   />
                 </Stack>

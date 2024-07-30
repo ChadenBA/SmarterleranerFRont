@@ -8,11 +8,11 @@ import { useState } from 'react';
 import { useAppDispatch } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CustomDialogActions from '@components/dialogs/customDialogActions/CustomDialogActions';
-import UserStatusChip from '@pages/dashboard/admin/users/allUsersTable/userStatusChip/userStatusChip';
 import { PATHS } from '@config/constants/paths';
 import { GREY } from '@config/colors/colors';
 import trash from '@assets/logo/icon-trash.svg';
 import { InstructorAvatar } from '@features/home/userAvatar/UserAvatar.style';
+import UserStatusChip from '../userStatusChip/userStatusChip';
 
 function AllUsersRow({ user }: AllUserRowProps) {
   const [deleteUser] = useDeleteUserMutation();

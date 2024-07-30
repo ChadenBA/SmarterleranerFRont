@@ -81,6 +81,14 @@ export const TopBar = ({ items }: TopBarProps) => {
   const chnageThemeHandler = () =>
     dispatch(changeTheme(isDarkMode ? ThemeModeEnum.LIGHT : ThemeModeEnum.DARK));
 
+  // Filter items based on the user role
+  const filteredItems = items.filter((item) => {
+    if (item.id === 3 && user?.role !== UserRoleEnum.USER) {
+      return false;
+    }
+    return true;
+  });
+
   return (
     <TopBarContainer
       isscrolled={isScrolled ? GLOBAL_VARIABLES.TRUE_STRING : GLOBAL_VARIABLES.FALSE_STRING}
@@ -105,7 +113,7 @@ export const TopBar = ({ items }: TopBarProps) => {
         </CustomIconButton>
       ) : (
         <Stack direction="row" spacing={4}>
-          {items.map((item) => (
+          {filteredItems.map((item) => (
             <CustomLink
               key={item.id}
               label={t(item.label)}

@@ -28,14 +28,22 @@ function EuHead({
           expanded={expanded ? GLOBAL_VARIABLES.TRUE_STRING : GLOBAL_VARIABLES.FALSE_STRING}
         />
         <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Typography variant="h3" color="primary">
-            {type} : {title}
-          </Typography>
-          <Tooltip title={t('eu.add')}>
-            <IconButton onClick={onAddEu} color="success">
-              <AddCircleOutlineOutlinedIcon fontSize="medium" />
-            </IconButton>
-          </Tooltip>
+          {isNewEu ? (
+            <>
+              <Typography variant="h3" color="primary">
+                {type} : {title}
+              </Typography>
+              <Tooltip title={t('eu.add')}>
+                <IconButton onClick={onAddEu} color="success">
+                  <AddCircleOutlineOutlinedIcon fontSize="medium" />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <Typography variant="h3" color="primary">
+              {title}
+            </Typography>
+          )}
         </Stack>
       </Stack>
       <Stack direction={'row'} spacing={1}>

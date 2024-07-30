@@ -30,6 +30,7 @@ export interface CourseApi {
   subscribed_users_count: number;
   educational_units: ApiEU[];
   quiz: QuizApi;
+  student_level?: string;
 }
 export interface SingleCourseResponseData {
   data: CourseApi;
