@@ -15,6 +15,7 @@ export const transformSingleMedia = (media: MediaApi): Media => {
     mimeType: media?.mime_type,
     modelType: media?.model_type,
     title: media?.title,
+    isSupplementary: media?.is_supplementary === 0 ? false : true,
   };
 };
 

@@ -46,6 +46,7 @@ function EducationalUnitForm({
     oldValues: -1,
   });
 
+  //______________________ Local State ______________________
   const [euList, setEuList] = useState<FieldArrayWithId<FormValues, 'eu', 'id'>[]>(
     fields.filter((field) => field.type.toLocaleUpperCase() === EducationalUnitEnum.BASIC),
   );

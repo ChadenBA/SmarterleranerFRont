@@ -35,7 +35,7 @@ function EuBody({
   handleAddLearningObject,
 }: EuBodyProps) {
   const { t } = useTranslation();
-
+  console.log('filesfiles', files);
   const [expandedQuiz, setExpandedQuiz] = useState(true);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
@@ -90,7 +90,7 @@ function EuBody({
                     ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
                     name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
                     disabled: loIndex === 0 || loIndex === 1,
-                    defaultValue: lo.type,
+                    defaultValue: loIndex,
                   }}
                 />
               </Grid>

@@ -355,71 +355,95 @@ export const encodeCourse = (values: FieldValues): FormData => {
 export const encodeEu = (
   eu: Eu[],
   files: Record<number, Record<number, FileWithMetadata[]>>,
+  deletedMedia?: string[],
 ): FormData => {
   const formData = new FormData();
   eu.forEach((unit, euIndex) => {
     formData.append(`eu[${euIndex}][title]`, unit.title);
-    formData.append(`eu[${euIndex}][type]`, unit.type);
+    formData.append(`eu[${euIndex}][type]`, unit.type.toUpperCase());
 
     unit.learningObjects.forEach((lo, loIndex) => {
       formData.append(`eu[${euIndex}][learningObjects][${loIndex}][title]`, lo.title);
       formData.append(`eu[${euIndex}][learningObjects][${loIndex}][type]`, lo.type);
+      lo.id &&
+        lo.id > 0 &&
+        formData.append(`eu[${euIndex}][learningObjects][${loIndex}][id]`, lo.id.toString());
 
       if (lo.quiz.questions.length > 0) {
         lo.quiz.questions.forEach((question, questionIndex) => {
-          formData.append(
-            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
-            question.question,
-          );
-
-          formData.append(
-            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
-            getQuestionTypeFilter(question.type as number),
-          );
-
-          if (Number(question.type) === QuestionTypeEnum.BINARY) {
+          if (!question.id || question.id == 0) {
             formData.append(
-              `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
-              String(question.isValid),
+              `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
+              question.question,
             );
-          }
 
-          if (question.answers.length > 0 && question.type === QuestionTypeEnum.QCM) {
-            question.answers.forEach((answer, answerIndex) => {
+            question.id &&
+              question.id > 0 &&
               formData.append(
-                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
-                answer.answer,
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                getQuestionTypeFilter(question.type as number),
+              );
+
+            if (Number(question.type) === QuestionTypeEnum.BINARY) {
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
+                String(question.isValid),
               );
 
               formData.append(
-                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
-                String(answer.isValid ? '1' : '0'),
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                'BINARY',
               );
+            }
 
-              // formData.append(
-              //   `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][id]`,
-              //   String(answer.id),
-              // );
-            });
+            if (question.answers.length > 0 && question.type === QuestionTypeEnum.QCM) {
+              question.answers.forEach((answer, answerIndex) => {
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
+                  answer.answer,
+                );
+
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
+                  String(answer.isValid ? '1' : '0'),
+                );
+
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                  'QCM',
+                );
+                // formData.append(
+                //   `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][id]`,
+                //   String(answer.id),
+                // );
+              });
+            }
           }
         });
       }
 
       if (files[euIndex] && files[euIndex][loIndex]) {
         files[euIndex][loIndex].forEach((file, fileIndex) => {
-          if (!file['metadata']['isSupplementary'])
+          if (!file['metadata']['isSupplementary'] && !('fileName' in file['file']))
             formData.append(
               `eu[${euIndex}][learningObjects][${loIndex}][media_files][${fileIndex}]`,
               file['file'],
             );
           else
-            formData.append(
-              `eu[${euIndex}][learningObjects][${loIndex}][supplementary_files][${fileIndex}]`,
-              file['file'],
-            );
+            !('fileName' in file['file']) &&
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][supplementary_files][${fileIndex}]`,
+                file['file'],
+              );
         });
       }
     });
+
+    if (deletedMedia && deletedMedia.length > 0) {
+      deletedMedia.forEach((mediaId, index) => {
+        formData.append(`eu[${euIndex}][deleted_media][${index}]`, mediaId);
+      });
+    }
   });
 
   return formData;

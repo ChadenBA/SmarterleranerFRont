@@ -37,4 +37,5 @@ export const ENDPOINTS = {
   STUDENT_DASHBOARD: 'student/dashboard',
   ADMIN_DASHBOARD: 'admin/dashboard',
   INDEX_QUIZZES_SCORE: 'user/quiz-scores',
+  UPDATE_EU: 'admin/update-eu',
 };

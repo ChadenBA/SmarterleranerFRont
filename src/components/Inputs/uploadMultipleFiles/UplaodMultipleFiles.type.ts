@@ -1,7 +1,8 @@
 import { Dispatch, SetStateAction } from 'react';
+import { Media } from 'types/models/Media';
 
 export interface UploadMultipleFilesProps {
-  files: FileWithMetadata[];
+  files: FileWithMetadata[] | MediaWithMetadata[];
   euIndex: number;
   loIndex: number;
   isSupplementary: boolean;
@@ -11,6 +12,13 @@ export interface UploadMultipleFilesProps {
 }
 export interface FileWithMetadata {
   file: File;
+  metadata: {
+    isSupplementary: boolean;
+  };
+}
+
+export interface MediaWithMetadata {
+  file: Media;
   metadata: {
     isSupplementary: boolean;
   };

@@ -82,6 +82,24 @@ export const courseApi = createApi({
       invalidatesTags: ['Courses', 'Course'],
     }),
 
+    updateEu: builder.mutation<
+      void,
+      {
+        euId: number;
+        deletedMedia: string[];
+        files: Record<number, Record<number, FileWithMetadata[]>>;
+        euData: FieldValues;
+        courseId: number;
+      }
+    >({
+      query: ({ euId, euData, deletedMedia, files, courseId }) => ({
+        url: ENDPOINTS.UPDATE_EU + `/${courseId}/${euId}`,
+        method: MethodsEnum.POST,
+        body: encodeEu([euData] as Eu[], files, deletedMedia),
+      }),
+      invalidatesTags: ['Courses', 'Course'],
+    }),
+
     getCourseById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
         url: ENDPOINTS.COURSES + `/${id}`,
@@ -125,6 +143,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+
     getCoursesBySubcategory: builder.query<
       PaginationResponse<CourseForAdmin>,
       { params: QueryParams; subcategoryId: number }
@@ -137,6 +156,7 @@ export const courseApi = createApi({
         transformFetchCoursesResponse(response),
       providesTags: ['Courses'],
     }),
+
     enrollCourse: builder.mutation<void, number>({
       query: (courseId) => ({
         url: `${ENDPOINTS.ENROLL_COURSE}/${courseId}`,
@@ -144,6 +164,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course'],
     }),
+
     submitQuiz: builder.mutation<
       ItemDetailsResponse<QuizSubmission>,
       { quizId: number | undefined; data: FieldValues }
@@ -157,6 +178,7 @@ export const courseApi = createApi({
         transformQuizSubmissionResponse(response),
       invalidatesTags: ['Courses'],
     }),
+
     getQuizzesScore: builder.query<PaginationResponse<StudentQuiz>, QueryParams>({
       query: (params) => ({
         url: injectPaginationParamsToUrl(ENDPOINTS.INDEX_QUIZZES_SCORE, params),
@@ -184,4 +206,5 @@ export const {
   useGetAdminCourseByIdQuery,
   useSubmitQuizMutation,
   useGetQuizzesScoreQuery,
+  useUpdateEuMutation,
 } = courseApi;

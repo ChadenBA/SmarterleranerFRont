@@ -12,7 +12,7 @@ import {
   StyledUploadIcon,
 } from './UploadInput.style';
 import { UploadInputProps } from './UploadInput.type';
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { Media } from 'types/models/Media';
 
 function UploadInput({ preview, multiple, label, file, onChange, onDelete }: UploadInputProps) {
   const { t } = useTranslation();
@@ -22,37 +22,38 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
     ref.current?.click();
   };
 
-  const AudioPreview = ({ fileURL }: { fileURL: string }) => {
-    return (
-      <audio
-        controls
-        src={fileURL}
-        style={{ width: '100%', height: '100%', border: 'none', background: 'none' }}
-      />
-    );
+  const getFileURL = (file: File | Media) => {
+    if ('fileName' in file) {
+      return file.fileName;
+    } else {
+      return URL.createObjectURL(file);
+    }
   };
 
-  const FilePreview = (file: File) => {
-    const fileURL = file.name?.includes(GLOBAL_VARIABLES.BACKEND_SCHEMA)
-      ? file.name
-      : URL.createObjectURL(file);
+  const getFileMimeType = (file: File | Media): string => {
+    return 'mimeType' in file ? file.mimeType : file.type;
+  };
 
-    if (file.type.startsWith('image/')) {
+  const FilePreview = ({ file }: { file: File | Media }) => {
+    const fileURL = getFileURL(file);
+    const mimeType = getFileMimeType(file);
+
+    if (mimeType.startsWith('image/')) {
       return <StyledPreviewImage src={fileURL} alt="File preview" />;
-    } else if (file.type.startsWith('video/')) {
+    } else if (mimeType.startsWith('video/')) {
       return (
         <StyledPreviewVideo controls>
-          <source src={fileURL} type={file.type} />
+          <source src={fileURL} type={mimeType} />
         </StyledPreviewVideo>
       );
-    } else if (file.type === 'application/pdf') {
+    } else if (mimeType === 'application/pdf') {
       return (
         <StyledPreviewPdf data={fileURL}>
           <embed src={fileURL} type="application/pdf" width="100%" height="100%" />
         </StyledPreviewPdf>
       );
-    } else if (file.type.startsWith('audio/')) {
-      return <AudioPreview fileURL={fileURL} />;
+    } else if (mimeType.startsWith('audio/')) {
+      return <audio controls src={fileURL} style={{ marginTop: '20%', width: '100%' }} />;
     } else {
       return <div>Unsupported file type</div>;
     }
@@ -66,7 +67,11 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
         <StyledInputContainer onClick={handleOnContainerClick}>
           {preview ? (
             <StyledPreviewContainer>
-              {file && FilePreview(file) ? FilePreview(file) : <StyledPreviewImage src={preview} />}
+              {file && FilePreview({ file }) ? (
+                FilePreview({ file })
+              ) : (
+                <StyledPreviewImage src={preview} />
+              )}
               <Tooltip title={t('common.delete')} arrow>
                 <StyledDeleteIcon onClick={onDelete} />
               </Tooltip>

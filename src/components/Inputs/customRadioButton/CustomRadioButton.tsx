@@ -24,6 +24,12 @@ function CustomRadioButton({ config }: CustomRadioButtonProps) {
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
+  // (['ABSTRACT', 'CONCRETE'].includes(
+  //   (field?.value as string).toUpperCase(),
+  // ) && {
+  //   checked: undefined,
+  // })}
+
   return (
     <FormControl component="fieldset">
       <Controller
@@ -46,15 +52,27 @@ function CustomRadioButton({ config }: CustomRadioButtonProps) {
                 </Tooltip>
               )}
             </Stack>
-            <RadioGroup value={field.value} onChange={field.onChange} row={isMobile ? false : true}>
-              {options?.map((option, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={option?.value.toString()}
-                  control={<Radio disabled={disabled} />}
-                  label={t(option.label)}
-                />
-              ))}
+            <RadioGroup value={field?.value?.toString()} onChange={field.onChange} row={!isMobile}>
+              {options?.map((option, index) => {
+                const stringValue = option?.value?.toString();
+
+                return (
+                  <FormControlLabel
+                    key={index}
+                    value={stringValue}
+                    control={
+                      <Radio
+                        disabled={disabled}
+                        {...(['ABSTRACT', 'CONCRETE'].includes(stringValue.toUpperCase()) && {
+                          checked:
+                            option?.value.toString().toUpperCase() === field.value.toUpperCase(),
+                        })}
+                      />
+                    }
+                    label={t(option.label)}
+                  />
+                );
+              })}
             </RadioGroup>
           </>
         )}

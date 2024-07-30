@@ -8,6 +8,7 @@ import { EuHeadProps } from './EuHead.type';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 function EuHead({
+  index,
   expanded,
   title,
   canDelete,
@@ -40,7 +41,7 @@ function EuHead({
       <Stack direction={'row'} spacing={1}>
         {!isNewEu && (
           <Tooltip title={t('section.update')}>
-            <IconButton color="info" onClick={onUpdateEu}>
+            <IconButton color="info" onClick={() => onUpdateEu && onUpdateEu(index)}>
               <Edit />
             </IconButton>
           </Tooltip>

@@ -8,6 +8,6 @@ export interface EuHeadProps {
   onChangeExpanded: () => void;
   onCreateEu?: () => void;
   onDeleteEu?: () => void;
-  onUpdateEu?: () => void;
+  onUpdateEu?: (id: number) => void;
   onAddEu?: () => void;
 }

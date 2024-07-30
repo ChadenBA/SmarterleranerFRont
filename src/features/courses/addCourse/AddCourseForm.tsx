@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import { useTranslation } from 'react-i18next';
 import { Button, Divider, Stack } from '@mui/material';
@@ -27,6 +27,7 @@ import {
   DEFAULT_INTERMEDIATE_EDUCATIONAL_UNIT,
 } from './sectionForm/EuForm.constants';
 import { PATHS } from '@config/constants/paths';
+import { MediaWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export default function AddCourseForm({
   isEditMode,
@@ -40,12 +41,41 @@ export default function AddCourseForm({
 
   const dispatch = useAppDispatch();
 
-  const [files, setFiles] = useState<Record<number, Record<number, File[]>>>(
-    courseDefaultValues?.media ? courseDefaultValues.media : {},
+  const transformDefaultValuesToFiles = (
+    defaultValues?: typeof courseDefaultValues,
+  ): Record<number, Record<number, MediaWithMetadata[]>> => {
+    if (!defaultValues) return {};
+
+    const files: Record<number, Record<number, MediaWithMetadata[]>> = {};
+
+    defaultValues.educationalUnits.forEach((eu, index) => {
+      if (!eu.id) return;
+
+      files[index] = {};
+
+      eu.learningObjects.forEach((lo, loIndex) => {
+        if (!lo.id) return;
+        if (!lo.media) {
+          files[index][loIndex] = [];
+          return;
+        }
+
+        files[index][loIndex] = lo.media.map((media) => ({
+          file: media,
+          metadata: { isSupplementary: media.isSupplementary },
+        }));
+      });
+    });
+
+    return files;
+  };
+
+  const [files, setFiles] = useState<Record<number, Record<number, MediaWithMetadata[]>>>(
+    transformDefaultValuesToFiles(courseDefaultValues),
   );
 
   const [courseId, setCourseId] = useState<string | null | undefined>(id || null);
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(1);
   const [completed, setCompleted] = useState<{ [k: number]: boolean }>({});
 
   const StepperFormMethods = useForm<CourseFormValues>({
@@ -55,6 +85,10 @@ export default function AddCourseForm({
   });
 
   const handleNextStep = () => setActiveStep((prev) => prev + 1);
+
+  useEffect(() => {
+    setFiles(transformDefaultValuesToFiles(courseDefaultValues));
+  }, [courseDefaultValues]);
 
   const defaultValues = useMemo(() => {
     if (courseDefaultValues) {

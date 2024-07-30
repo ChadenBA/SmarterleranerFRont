@@ -5,6 +5,11 @@ import { ModuleRoot } from './Eu.style';
 import EuBody from './moduleBody/EuBody';
 import { EuProps } from './Eu.type';
 import { Quiz } from 'types/models/Quiz';
+import { useAppDispatch } from '@redux/hooks';
+import { showError, showSuccess } from '@redux/slices/snackbarSlice';
+import { useTranslation } from 'react-i18next';
+import { useUpdateEuMutation } from '@redux/apis/courses/coursesApi';
+import { useParams } from 'react-router-dom';
 
 function EUnit({
   field,
@@ -27,6 +32,12 @@ function EUnit({
 }: EuProps) {
   // Destructing the questions from the form methods
 
+  const dispatch = useAppDispatch();
+
+  const { t } = useTranslation();
+
+  const { courseId } = useParams();
+
   const learningObjects = field?.learningObjects ?? [];
 
   const quiz = learningObjects[0]?.quiz as Quiz | undefined;
@@ -45,32 +56,39 @@ function EUnit({
   const handleDeleteOrRemoveSection = () => {
     isEditMode && !isNewSection ? setOpen(true) : handleRemoveEu(euIndex);
   };
-
   //watch the field title
   const title = euFormMethods.watch(`eu.${euIndex}.title`);
 
-  const handleUpdateEuApi = euFormMethods.handleSubmit(async (values) => {
-    // const sectionId = values.sections[index].databaseId
-    // const sectionData = values.sections[index]
-    // try {
-    //   // Update Section api call
-    //   await updateSection({
-    //     sectionId,
-    //     data: sectionData,
-    //     files: files[index],
-    //     deletedMedia,
-    //   }).unwrap()
-    //   // Dispatch success Snackbar
-    //   dispatch(showSuccess(t('section.update_success')))
-    //   setDeletedMedia([])
-    //   dispatch(
-    //     courseApi.util.invalidateTags(['Courses', 'CoursesForDesigner']),
-    //   )
-    // } catch (error) {
-    //   // Dispatch error Snackbar
-    //   dispatch(showError(t('errors.general_error')))
-    // }
-  });
+  const [updateEuApi, { isLoading: updateEuIsLoading }] = useUpdateEuMutation();
+
+  const handleUpdateEuApi = async (index: number) => {
+    const result = await euFormMethods.trigger();
+
+    if (result) {
+      const values = euFormMethods.getValues();
+      const euId = values.eu[index].id ?? 0;
+      const sectionData = values.eu[index];
+
+      //const files = values.files[index];
+      try {
+        // Update Section api call
+        await updateEuApi({
+          euId,
+          euData: sectionData,
+          files,
+          deletedMedia,
+          courseId,
+        }).unwrap();
+        // Dispatch success Snackbar
+        dispatch(showSuccess(t('section.update_success')));
+        setDeletedMedia([]);
+        //dispatch(courseApi.util.invalidateTags(['Courses', 'CoursesForDesigner']));
+      } catch (error) {
+        // Dispatch error Snackbar
+        dispatch(showError(t('errors.general_error')));
+      }
+    }
+  };
 
   return (
     <>
