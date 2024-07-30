@@ -1,20 +1,19 @@
-import StatisticsCard from '@components/statisticsCard/StatisticsCard'
-import { useGetStudentStatisticsQuery } from '@redux/apis/dashboard/dashboardApi'
-import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined'
-import { useTranslation } from 'react-i18next'
-import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined'
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined'
-import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined'
-import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined'
-import { Grid } from '@mui/material'
-import ExpensesBarChart from '@components/CustomCharts/expensesBarChart/ExpensesBarChart'
-import DashboardSkeleton from '../DashboardSkeleton'
+import StatisticsCard from '@components/statisticsCard/StatisticsCard';
+import { useGetStudentStatisticsQuery } from '@redux/apis/dashboard/dashboardApi';
+import AutoStoriesOutlinedIcon from '@mui/icons-material/AutoStoriesOutlined';
+import { useTranslation } from 'react-i18next';
+import ExploreOutlinedIcon from '@mui/icons-material/ExploreOutlined';
+import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+import EmojiEventsOutlinedIcon from '@mui/icons-material/EmojiEventsOutlined';
+import { Grid } from '@mui/material';
+import DashboardSkeleton from '../DashboardSkeleton';
 
 function StudentDashboard() {
-  const { data, isLoading } = useGetStudentStatisticsQuery()
-  const { t } = useTranslation()
+  const { data, isLoading } = useGetStudentStatisticsQuery();
+  const { t } = useTranslation();
 
-  if (isLoading) return <DashboardSkeleton />
+  if (isLoading) return <DashboardSkeleton />;
   return (
     <>
       <Grid container gap={2}>
@@ -26,7 +25,7 @@ function StudentDashboard() {
             icon={<AutoStoriesOutlinedIcon />}
           />
         </Grid>
-        <Grid item xs={5.5} md={4} lg={3.8}>
+        {/* <Grid item xs={5.5} md={4} lg={3.8}>
           <StatisticsCard
             title={t('dashboard.student.completed_courses')}
             value={data?.completedCourses}
@@ -65,12 +64,11 @@ function StudentDashboard() {
             subtitle={t('dashboard.student.attestations_subtitle')}
             icon={<EmojiEventsOutlinedIcon />}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
 
-      <ExpensesBarChart data={data} />
     </>
-  )
+  );
 }
 
-export default StudentDashboard
+export default StudentDashboard;

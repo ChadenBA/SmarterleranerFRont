@@ -12,17 +12,13 @@ function AdminDashboard() {
   const { data, isLoading } = useGetAdminStatisticsQuery();
   const { t } = useTranslation();
 
-  //const { data, isLoading } = useGetAdminStatisticsQuery()
-
-
-  const pieChartData = {
-    enrolledStudentsInPrivateCourses: data?.enrolledStudentsInPrivateCourses,
-    enrolledStudentsInPublicCourses: data?.enrolledStudentsInPublicCourses,
-    enrolledStudentsInPrivateLearningPaths: data?.enrolledStudentsInPrivateLearningPaths,
-    enrolledStudentsInPublicLearningPaths: data?.enrolledStudentsInPublicLearningPaths,
-  };
+  const pieChartData = data?.subscribersPerCourseCategory?.map((category) => ({
+    title: category.category,
+    value: category.subscribers,
+  }));
 
   if (isLoading) return <DashboardSkeleton />;
+
   return (
     <>
       <Grid container gap={2}>
@@ -52,16 +48,8 @@ function AdminDashboard() {
           />
         </Grid>
       </Grid>
-      <PieChartComponent
-        data={{
-          enrolledStudentsInPrivateCourses: pieChartData.enrolledStudentsInPrivateCourses ?? 0,
-          enrolledStudentsInPublicCourses: pieChartData.enrolledStudentsInPublicCourses ?? 0,
-          enrolledStudentsInPrivateLearningPaths:
-            pieChartData.enrolledStudentsInPrivateLearningPaths ?? 0,
-          enrolledStudentsInPublicLearningPaths:
-            pieChartData.enrolledStudentsInPublicLearningPaths ?? 0,
-        }}
-      />
+      
+      <PieChartComponent data={pieChartData ?? []} />
     </>
   );
 }

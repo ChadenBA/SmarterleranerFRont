@@ -57,6 +57,10 @@ const SubcategoriesChoicePage = lazy(
 
 const PretestPage = lazy(() => import('src/pages/secondStep/pretest/PretestPage'));
 
+const StudentQuizPage = lazy(
+  () => import('src/pages/dashboard/student/studentQuiz/StudentQuizPage'),
+);
+const StudentDashboard = lazy(() => import('src/pages/dashboard/student/StudentDashboard'));
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -189,14 +193,22 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
-      // {
-      //   path: PATHS.DASHBOARD.STUDENT.MY_QUIZZES,
-      //   element: (
-      //     <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-      //       <StudentQuizPage />
-      //     </RoleBasedGuard>
-      //   ),
-      // },
+      {
+        path: PATHS.DASHBOARD.STUDENT.ROOT,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <StudentDashboard />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.DASHBOARD.STUDENT.MY_QUIZZES,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <StudentQuizPage />
+          </RoleBasedGuard>
+        ),
+      },
       // {
       //   path: PATHS.DASHBOARD.STUDENT.MY_PROGRAM.ROOT,
       //   element: (

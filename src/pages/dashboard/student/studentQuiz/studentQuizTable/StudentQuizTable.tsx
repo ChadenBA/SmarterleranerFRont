@@ -1,12 +1,12 @@
 import CustomPagination from '@components/customPagination/CustomPagination'
 import CustomTable from '@components/customTable/CustomTable'
 import { Stack } from '@mui/material'
-import { useGetQuizzesScoreQuery } from '@redux/apis/modules/moduleApi'
 import usePagination from 'src/hooks/usePagination'
 import StudentQuizRow from './studentQuizRow/StudentQuizRow'
 import useDebounce from 'src/hooks/useDebounce'
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
 import { StudentQuizTableHeaders } from './StudentQuizTable.constants'
+import { useGetQuizzesScoreQuery } from '@redux/apis/courses/coursesApi'
 
 function StudentQuizTable() {
   const {

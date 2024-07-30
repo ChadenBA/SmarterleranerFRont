@@ -9,6 +9,8 @@ import {
   CourseApi,
   CourseForAdminApi,
   SingleCourseResponseData,
+  StudentQuiz,
+  StudentQuizApi,
 } from './coursesApi.type';
 import { toSnakeCase } from '@utils/helpers/string.helpers';
 
@@ -17,6 +19,7 @@ import {
   transformDateFormat,
   convertToUnixTimestamp,
   convertFromUnixTimestampToDateTime,
+  transformDateTime,
 } from '@utils/helpers/date.helpers';
 
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
@@ -25,7 +28,7 @@ import { Question, Quiz } from 'types/models/Quiz';
 import { decodeQuestionType, getQuestionTypeFilter } from '@utils/helpers/course.helpers';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionType.enum';
-import { Eu } from 'types/models/Eu';
+import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
@@ -420,4 +423,70 @@ export const encodeEu = (
   });
 
   return formData;
+};
+interface QuizAnswer {
+  answer: number[] | number;
+}
+export const encodeQuizSubmission = (data: FieldValues): FormData => {
+  const formData = new FormData();
+  Object.entries(data.answers).forEach(([questionId, answerData], index) => {
+    const typedAnswerData = answerData as QuizAnswer;
+
+    // Always append the question_id
+    formData.append(`answers[${index}][question_id]`, questionId);
+
+    // Check if answer is an array and append each item individually
+    if (Array.isArray(typedAnswerData.answer)) {
+      typedAnswerData.answer.forEach((answerId) => {
+        formData.append(`answers[${index}][answer][]`, `${answerId}`);
+      });
+    } else {
+      // For single answers, just append the value
+      formData.append(`answers[${index}][answer][]`, `${typedAnswerData.answer}`);
+    }
+  });
+  return formData;
+};
+export const transformQuizScores = (data: StudentQuizApi[]): StudentQuiz[] => {
+  return data.map((data) => ({
+    id: data.id,
+    score: data.score,
+    totalScorePossible: data.total_score_possible,
+    status: data.status,
+    createAt: transformDateTime(data.created_at),
+    quiz: {
+      id: data.quiz.id,
+      course: {
+        id: data?.quiz?.course?.id || 0,
+        title: data?.quiz?.course?.title || GLOBAL_VARIABLES.EMPTY_STRING,
+      },
+    },
+  }));
+};
+export const transformQuizScoreResponse = (
+  data: ApiPaginationResponse<StudentQuizApi>,
+): PaginationResponse<StudentQuiz> => {
+  return {
+    message: data.message,
+    data: transformQuizScores(data.data),
+    meta: {
+      currentPage: GLOBAL_VARIABLES.PAGINATION.FIRST_PAGE,
+      perPage: GLOBAL_VARIABLES.PAGINATION.ROWS_PER_PAGE,
+      total: GLOBAL_VARIABLES.PAGINATION.TOTAL_ITEMS,
+      count: GLOBAL_VARIABLES.PAGINATION.TOTAL_ITEMS,
+    },
+  };
+};
+
+export const transformQuizSubmissionResponse = (
+  data: ItemDetailsResponse<QuizSubmissionApi>,
+): ItemDetailsResponse<QuizSubmission> => {
+  return {
+    message: data.message,
+    data: {
+      score: data.data.score,
+      totalScorePossible: data.data.total_score_possible,
+      status: data.data.status,
+    },
+  };
 };

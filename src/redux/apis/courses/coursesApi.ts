@@ -1,7 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { PaginationResponse } from 'types/interfaces/Pagination';
-import { CourseApi, CreateCourseResponse, SingleCourseResponseData } from './coursesApi.type';
+import {
+  CourseApi,
+  CreateCourseResponse,
+  SingleCourseResponseData,
+  StudentQuiz,
+  StudentQuizApi,
+} from './coursesApi.type';
 import { baseQueryConfigWithRefresh } from '@redux/baseQueryConfig';
 import { CourseForAdmin } from 'types/models/Course';
 import { QueryParams } from 'types/interfaces/QueryParams';
@@ -12,12 +18,15 @@ import { ApiPaginationResponse } from '../type';
 import {
   encodeCourse,
   encodeEu,
+  encodeQuizSubmission,
   transformFetchCourseResponse,
   transformFetchCoursesResponse,
+  transformQuizScoreResponse,
+  transformQuizSubmissionResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
-import { Eu } from 'types/models/Eu';
+import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const courseApi = createApi({
@@ -135,6 +144,27 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course'],
     }),
+    submitQuiz: builder.mutation<
+      ItemDetailsResponse<QuizSubmission>,
+      { quizId: number | undefined; data: FieldValues }
+    >({
+      query: ({ quizId, data }) => ({
+        url: `${ENDPOINTS.SUBMIT_QUIZ}/${quizId}`,
+        method: MethodsEnum.POST,
+        body: encodeQuizSubmission(data),
+      }),
+      transformResponse: (response: ItemDetailsResponse<QuizSubmissionApi>) =>
+        transformQuizSubmissionResponse(response),
+      invalidatesTags: ['Courses'],
+    }),
+    getQuizzesScore: builder.query<PaginationResponse<StudentQuiz>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.INDEX_QUIZZES_SCORE, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<StudentQuizApi>) =>
+        transformQuizScoreResponse(response),
+    }),
   }),
 });
 
@@ -152,4 +182,6 @@ export const {
   useEnrollCourseMutation,
 
   useGetAdminCourseByIdQuery,
+  useSubmitQuizMutation,
+  useGetQuizzesScoreQuery,
 } = courseApi;

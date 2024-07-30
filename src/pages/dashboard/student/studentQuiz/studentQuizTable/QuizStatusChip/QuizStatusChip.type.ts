@@ -1,11 +1,11 @@
-import { MUIDefaultColors } from 'types/interfaces/MUI'
+import { MUIDefaultColors } from 'types/interfaces/MUI';
 
 export interface QuizStatusProps {
-  status: 0 | 1 | undefined
+  status: string;
 }
 
 export type QuizStatusColorProps = {
-  label: string
-  color: MUIDefaultColors
-  background: string
-}
+  label: string;
+  color: MUIDefaultColors;
+  background: string;
+};
