@@ -52,4 +52,5 @@ export const common = {
   filter_date_range: 'Filter By Start Time Range',
   skip: 'Skip',
   pretest: 'Pretest',
+  learning_style: 'Your Learning Style',
 };

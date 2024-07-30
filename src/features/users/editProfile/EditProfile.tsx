@@ -41,7 +41,6 @@ function EditProfile() {
   });
 
   const [updateProfileApiAction, { isLoading: isUpdating }] = useUpdateProfileMutation();
-  console.log('user?.birthDate', user?.birthDate);
 
   const onSubmit = UserFormMethods.handleSubmit(async (values) => {
     try {

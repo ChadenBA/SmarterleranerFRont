@@ -8,7 +8,8 @@ import { userApi } from './apis/user/usersApi';
 import authReducer from './slices/authSlice';
 import { dashboardApi } from './apis/dashboard/dashboardApi';
 import { courseApi } from './apis/courses/coursesApi';
-
+import { silvermanApi } from './apis/user/silvermanQuestionsApi';
+import silvermanQuestionsReducer from './slices/silvermanQuestionsSlice';
 export const store = configureStore({
   reducer: {
     appSlice: searchQueryReducer,
@@ -20,6 +21,8 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     [courseApi.reducerPath]: courseApi.reducer,
     [dashboardApi.reducerPath]: dashboardApi.reducer,
+    silvermanQuestions: silvermanQuestionsReducer,
+    [silvermanApi.reducerPath]: silvermanApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -28,6 +31,7 @@ export const store = configureStore({
       authApi.middleware,
       dashboardApi.middleware,
       courseApi.middleware,
+      silvermanApi.middleware,
     ),
 });
 

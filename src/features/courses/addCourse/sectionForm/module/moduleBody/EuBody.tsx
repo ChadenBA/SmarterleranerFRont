@@ -33,7 +33,6 @@ function EuBody({
   handleAddLearningObject,
 }: EuBodyProps) {
   const { t } = useTranslation();
-  console.log('filesfiles', files);
   const [expandedQuiz, setExpandedQuiz] = useState(true);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const [openQuestionDialog, setOpenQuestionDialog] = useState(false);

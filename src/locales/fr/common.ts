@@ -51,4 +51,5 @@ export const common = {
   filter_date_range: 'Filtrer par plage horaire de début',
   skip: 'Passer',
   pretest: 'Pré-test',
+  learning_style: "Ton Style d'apprentissage",
 };

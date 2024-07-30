@@ -53,6 +53,7 @@ export const PATHS = {
         ROOT: '/dashboard/student/my-program',
         COMPLETED_COURSES: '/dashboard/student/my-program/completed-courses',
       },
+
       MY_QUIZZES: '/dashboard/student/my-quizzes',
       MY_SUPPORT: '/dashboard/student/my-support',
       CATEGORIES: '/dashboard/student/categories',
@@ -69,6 +70,7 @@ export const PATHS = {
     COURSES: '/second-step/courses/:subcategoryId',
     QUIZ_COURSES: '/second-step/courses/prestest/:courseId',
     QUIZ: '/second-step/courses/prestest',
+    SILVERMAN_QUESTIONS: '/second-step/silverman-questions',
   },
 
   MAIN: {
