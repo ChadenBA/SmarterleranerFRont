@@ -68,6 +68,10 @@ const StudentCoursesPage = lazy(
 const EnrolledCoursesList = lazy(
   () => import('src/pages/dashboard/student/courses/enrolledCourses/EnrolledCoursesList'),
 );
+
+const SilvermanQuestionsPage = lazy(
+  () => import('src/pages/silvermanQuestions/SilvermanQuestionsPage'),
+);
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -270,6 +274,14 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
             <PretestPage />
+          </RoleBasedGuard>
+        ),
+      },
+      {
+        path: PATHS.SECOND_STEP.SILVERMAN_QUESTIONS,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <SilvermanQuestionsPage />
           </RoleBasedGuard>
         ),
       },

@@ -39,4 +39,7 @@ export const ENDPOINTS = {
   INDEX_QUIZZES_SCORE: 'user/quiz-scores',
   UPDATE_EU: 'admin/update-eu',
   ENROLLED_COURSES: 'user/enrolled-courses',
+  SILVERMAN_QUESTIONS: 'user/Silverman/questions',
+  SILVERMAN_SUBMIT_RESPONSES: 'user/Silverman/submit-responses',
+  SILVERMAN_RESULT: 'user/Silverman/result',
 };

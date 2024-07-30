@@ -59,7 +59,7 @@ function PretestPage() {
   const onClose = () => {
     setOpen(false);
     setQuizResults(undefined);
-    navigate(PATHS.DASHBOARD.STUDENT.ROOT);
+    navigate(PATHS.SECOND_STEP.SILVERMAN_QUESTIONS);
   };
 
   if (quizResults) {

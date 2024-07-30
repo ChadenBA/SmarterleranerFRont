@@ -153,10 +153,12 @@ const CourseCard = ({
           icon={<MenuBookOutlinedIcon />}
         />
 
-        <LabelWithIcon
-          label={t('course.number_of_lo', { count: learningObjectsCount })}
-          icon={<MenuBookOutlinedIcon />}
-        />
+        {isAdmin && (
+          <LabelWithIcon
+            label={t('course.number_of_lo', { count: learningObjectsCount })}
+            icon={<MenuBookOutlinedIcon />}
+          />
+        )}
         <Divider />
         {!isAdmin && Number(isEnrolled) === 1 && <QuizStatusChip status={studentLevel as string} />}
 

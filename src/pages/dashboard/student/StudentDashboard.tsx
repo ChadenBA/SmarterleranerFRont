@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Grid } from '@mui/material';
 import DashboardSkeleton from '../DashboardSkeleton';
+import Resultp from '@pages/silvermanResult/SilvermanResult';
+import BodyCard from '@components/cards/bodyCard/BodyCard';
 
 function StudentDashboard() {
   const { data, isLoading } = useGetStudentStatisticsQuery();
@@ -22,6 +24,9 @@ function StudentDashboard() {
             icon={<AutoStoriesOutlinedIcon />}
           />
         </Grid>
+        <BodyCard title={t('common.learning_style')}>
+          <Resultp />
+        </BodyCard>
       </Grid>
     </>
   );
