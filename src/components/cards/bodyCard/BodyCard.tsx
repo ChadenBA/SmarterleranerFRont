@@ -1,25 +1,14 @@
-import { Button, Divider, Stack } from '@mui/material'
-import {
-  StyledBodyCardContent,
-  StyledBodyCardRoot,
-  StyledBodyCardTitle,
-} from './BodyCard.style'
-import { BodyCardProps } from './BodyCard.type'
+import { Button, Divider, Stack } from '@mui/material';
+import { StyledBodyCardContent, StyledBodyCardRoot, StyledBodyCardTitle } from './BodyCard.style';
+import { BodyCardProps } from './BodyCard.type';
 
 function BodyCard({ children, title, onClick, buttonText }: BodyCardProps) {
   return (
     <StyledBodyCardRoot>
-      <Stack
-        direction={'row'}
-        justifyContent={'space-between'}
-        width={'100%'}
-        alignItems={'center'}>
+      <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
         <StyledBodyCardTitle>{title}</StyledBodyCardTitle>
         {onClick && (
-          <Button
-            sx={{ marginRight: '20px' }}
-            variant="outlined"
-            onClick={onClick}>
+          <Button sx={{ marginRight: '20px' }} variant="outlined" onClick={onClick}>
             {buttonText}
           </Button>
         )}
@@ -32,7 +21,7 @@ function BodyCard({ children, title, onClick, buttonText }: BodyCardProps) {
         </Stack>
       </StyledBodyCardContent>
     </StyledBodyCardRoot>
-  )
+  );
 }
 
-export default BodyCard
+export default BodyCard;

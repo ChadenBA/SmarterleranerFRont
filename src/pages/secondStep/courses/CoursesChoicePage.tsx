@@ -1,4 +1,5 @@
 import CustomPagination from '@components/customPagination/CustomPagination';
+import NoDataFound from '@components/noDataFound/NoDataFound';
 import { PATHS } from '@config/constants/paths';
 import CourseCard from '@features/courses/coursesCard/CourseCard';
 import CoursesListSkeleton from '@features/courses/coursesList/coursesListSkeleton/CoursesListSkeleton';
@@ -39,6 +40,10 @@ function CoursesChoicePage() {
         </Stack>
       </>
     );
+
+  if (!coursesData?.data?.length) {
+    return <NoDataFound message={t('course.not_found')} />;
+  }
 
   return (
     <Stack>

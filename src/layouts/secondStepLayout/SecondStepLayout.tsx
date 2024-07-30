@@ -25,9 +25,7 @@ function SecondStepLayout() {
           direction="column"
           spacing={2}
           width={'100%'}
-          sx={{
-            backgroundColor: 'background.paper',
-          }}
+          
         >
           <Outlet />
         </Stack>

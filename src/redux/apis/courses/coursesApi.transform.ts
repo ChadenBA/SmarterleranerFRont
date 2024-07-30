@@ -7,17 +7,14 @@ import {
   ApiLO,
   ApiQuestion,
   CourseApi,
-  CourseForAdminApi,
   SingleCourseResponseData,
+  StudentQuiz,
+  StudentQuizApi,
 } from './coursesApi.type';
 import { toSnakeCase } from '@utils/helpers/string.helpers';
 
 import { transformMedia } from '../transform';
-import {
-  transformDateFormat,
-  convertToUnixTimestamp,
-  convertFromUnixTimestampToDateTime,
-} from '@utils/helpers/date.helpers';
+import { transformDateFormat, transformDateTime } from '@utils/helpers/date.helpers';
 
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
@@ -25,7 +22,7 @@ import { Question, Quiz } from 'types/models/Quiz';
 import { decodeQuestionType, getQuestionTypeFilter } from '@utils/helpers/course.helpers';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionType.enum';
-import { Eu } from 'types/models/Eu';
+import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
@@ -104,6 +101,8 @@ export const transformSingleCourse = (course: CourseApi): CourseForAdmin => {
     learningObjectsCount: course.learning_objects_count,
     subscribedUsersCount: course.subscribed_users_count,
     coverMedia: transformSingleMedia(course.media[0]),
+    isSubscribed: course.is_subscribed ? 1 : 0,
+    studentLevel: course.student_level,
   };
 };
 
@@ -160,41 +159,6 @@ export const transformLearningObjects = (learningObjects: ApiLO[]): Lo[] => {
   }));
 };
 
-export const transformFetchCourseForAdminResponse = (
-  response: ItemDetailsResponse<CourseForAdminApi>,
-): ItemDetailsResponse<CourseForAdmin> => {
-  const { data } = response;
-  return {
-    message: response.message,
-    data: {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      categoryId: data.category_id,
-      subcategoryId: data.subcategory_id,
-      isOffline: data.is_offline,
-      isActive: data.is_active,
-      quiz: {
-        id: data.quiz.id,
-        questions: data.quiz.questions.map((question) => transformQuestionSection(question)),
-      },
-      subscribers: data.subscribers.map((subscriber) => subscriber.id),
-      createdAt: convertFromUnixTimestampToDateTime(convertToUnixTimestamp(data.created_at)),
-      courseMedia: new File(
-        [data.media[0].file_name],
-        data.media[0]?.file_name,
-
-        {
-          type: data.media[0].mime_type,
-        },
-      ),
-      educationalUnits: data.educational_units.map((eu) => transformEducationalUnit(eu)),
-      coverMedia: transformSingleMedia(data.media[0]),
-    },
-  };
-};
-
-// const transformCourseLo = (loApi: ApiLO): Lo => {
 //   return {
 //     title: loApi.title,
 //     type: loApi.type,
@@ -259,27 +223,6 @@ export const transformQuestionSection = (questionApi: ApiQuestion): Question => 
           ],
   };
 };
-
-// export const decodeSectionsMedia = (sections: ApiLO[]): Record<number, File[]> => {
-//   let sectionsMedias: Record<number, File[]> = {};
-
-//   sections.forEach((step, index) => {
-//     if (!step.media) return;
-//     sectionsMedias[index] = step.media.map((media) => {
-//       const newGeneratedFile = new File(
-//         [media.file_name],
-//         `${ConfigEnv.MEDIA_BASE_URL}/${media.file_name}`,
-//         {
-//           type: media.mime_type,
-//         },
-//       );
-
-//       return newGeneratedFile;
-//     });
-//   });
-
-//   return sectionsMedias;
-// };
 
 export const encodeCourse = (values: FieldValues): FormData => {
   const formData = new FormData();
@@ -352,72 +295,162 @@ export const encodeCourse = (values: FieldValues): FormData => {
 export const encodeEu = (
   eu: Eu[],
   files: Record<number, Record<number, FileWithMetadata[]>>,
+  deletedMedia?: string[],
 ): FormData => {
   const formData = new FormData();
   eu.forEach((unit, euIndex) => {
     formData.append(`eu[${euIndex}][title]`, unit.title);
-    formData.append(`eu[${euIndex}][type]`, unit.type);
+    formData.append(`eu[${euIndex}][type]`, unit.type.toUpperCase());
 
     unit.learningObjects.forEach((lo, loIndex) => {
       formData.append(`eu[${euIndex}][learningObjects][${loIndex}][title]`, lo.title);
       formData.append(`eu[${euIndex}][learningObjects][${loIndex}][type]`, lo.type);
+      lo.id &&
+        lo.id > 0 &&
+        formData.append(`eu[${euIndex}][learningObjects][${loIndex}][id]`, lo.id.toString());
 
       if (lo.quiz.questions.length > 0) {
         lo.quiz.questions.forEach((question, questionIndex) => {
-          formData.append(
-            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
-            question.question,
-          );
-
-          formData.append(
-            `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
-            getQuestionTypeFilter(question.type as number),
-          );
-
-          if (Number(question.type) === QuestionTypeEnum.BINARY) {
+          if (!question.id || question.id == 0) {
             formData.append(
-              `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
-              String(question.isValid),
+              `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][question]`,
+              question.question,
             );
-          }
 
-          if (question.answers.length > 0 && question.type === QuestionTypeEnum.QCM) {
-            question.answers.forEach((answer, answerIndex) => {
+            question.id &&
+              question.id > 0 &&
               formData.append(
-                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
-                answer.answer,
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                getQuestionTypeFilter(question.type as number),
+              );
+
+            if (Number(question.type) === QuestionTypeEnum.BINARY) {
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][is_valid]`,
+                String(question.isValid),
               );
 
               formData.append(
-                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
-                String(answer.isValid ? '1' : '0'),
+                `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                'BINARY',
               );
+            }
 
-              // formData.append(
-              //   `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][id]`,
-              //   String(answer.id),
-              // );
-            });
+            if (question.answers.length > 0 && question.type === QuestionTypeEnum.QCM) {
+              question.answers.forEach((answer, answerIndex) => {
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][answer]`,
+                  answer.answer,
+                );
+
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][is_valid]`,
+                  String(answer.isValid ? '1' : '0'),
+                );
+
+                formData.append(
+                  `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][type]`,
+                  'QCM',
+                );
+                // formData.append(
+                //   `eu[${euIndex}][learningObjects][${loIndex}][quiz][questions][${questionIndex}][answers][${answerIndex}][id]`,
+                //   String(answer.id),
+                // );
+              });
+            }
           }
         });
       }
 
       if (files[euIndex] && files[euIndex][loIndex]) {
         files[euIndex][loIndex].forEach((file, fileIndex) => {
-          if (!file['metadata']['isSupplementary'])
+          if (!file['metadata']['isSupplementary'] && !('fileName' in file['file']))
             formData.append(
               `eu[${euIndex}][learningObjects][${loIndex}][media_files][${fileIndex}]`,
               file['file'],
             );
           else
-            formData.append(
-              `eu[${euIndex}][learningObjects][${loIndex}][supplementary_files][${fileIndex}]`,
-              file['file'],
-            );
+            !('fileName' in file['file']) &&
+              formData.append(
+                `eu[${euIndex}][learningObjects][${loIndex}][supplementary_files][${fileIndex}]`,
+                file['file'],
+              );
         });
       }
     });
+
+    if (deletedMedia && deletedMedia.length > 0) {
+      deletedMedia.forEach((mediaId, index) => {
+        formData.append(`eu[${euIndex}][deleted_media][${index}]`, mediaId);
+      });
+    }
   });
 
   return formData;
+};
+interface QuizAnswer {
+  answer: number[] | number;
+}
+export const encodeQuizSubmission = (data: FieldValues): FormData => {
+  const formData = new FormData();
+  Object.entries(data.answers).forEach(([questionId, answerData], index) => {
+    const typedAnswerData = answerData as QuizAnswer;
+
+    // Always append the question_id
+    formData.append(`answers[${index}][question_id]`, questionId);
+
+    // Check if answer is an array and append each item individually
+    if (Array.isArray(typedAnswerData.answer)) {
+      typedAnswerData.answer.forEach((answerId) => {
+        formData.append(`answers[${index}][answer][]`, `${answerId}`);
+      });
+    } else {
+      // For single answers, just append the value
+      formData.append(`answers[${index}][answer][]`, `${typedAnswerData.answer}`);
+    }
+  });
+  return formData;
+};
+export const transformQuizScores = (data: StudentQuizApi[]): StudentQuiz[] => {
+  return data.map((data) => ({
+    id: data.id,
+    score: data.score,
+    totalScorePossible: data.total_score_possible,
+    status: data.status,
+    createAt: transformDateTime(data.created_at),
+    quiz: {
+      id: data.quiz.id,
+      course: {
+        id: data?.quiz?.course?.id || 0,
+        title: data?.quiz?.course?.title || GLOBAL_VARIABLES.EMPTY_STRING,
+      },
+    },
+  }));
+};
+export const transformQuizScoreResponse = (
+  data: ApiPaginationResponse<StudentQuizApi>,
+): PaginationResponse<StudentQuiz> => {
+  return {
+    message: data.message,
+    data: transformQuizScores(data.data),
+    meta: {
+      currentPage: GLOBAL_VARIABLES.PAGINATION.FIRST_PAGE,
+      perPage: GLOBAL_VARIABLES.PAGINATION.ROWS_PER_PAGE,
+      total: GLOBAL_VARIABLES.PAGINATION.TOTAL_ITEMS,
+      count: GLOBAL_VARIABLES.PAGINATION.TOTAL_ITEMS,
+    },
+  };
+};
+
+export const transformQuizSubmissionResponse = (
+  data: ItemDetailsResponse<QuizSubmissionApi>,
+): ItemDetailsResponse<QuizSubmission> => {
+  return {
+    message: data.message,
+    data: {
+      score: data.data.score,
+      totalScorePossible: data.data.total_score_possible,
+      status: data.data.status,
+    },
+  };
 };

@@ -1,16 +1,14 @@
-import BodyCard from '@components/cards/bodyCard/BodyCard'
-import { useTranslation } from 'react-i18next'
-import { Outlet } from 'react-router-dom'
-import CoursesTabs from './coursesTabs/CoursesTabs'
+import BodyCard from '@components/cards/bodyCard/BodyCard';
+import { useTranslation } from 'react-i18next';
+import EnrolledCoursesList from './enrolledCourses/EnrolledCoursesList';
 
 function StudentCoursesPage() {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   return (
     <BodyCard title={t('course.enrolled_courses')}>
-      <CoursesTabs />
-      <Outlet />
+      <EnrolledCoursesList />
     </BodyCard>
-  )
+  );
 }
 
-export default StudentCoursesPage
+export default StudentCoursesPage;

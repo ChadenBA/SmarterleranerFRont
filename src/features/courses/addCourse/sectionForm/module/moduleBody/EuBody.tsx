@@ -16,8 +16,6 @@ import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import CustomDialogActions from '@components/dialogs/customDialogActions/CustomDialogActions';
 import trash from '@assets/logo/icon-trash.svg';
 import { QuizRoot, StyledArrowIcon } from '../Eu.style';
-import { Edit } from '@mui/icons-material';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 function EuBody({
   expanded,
@@ -35,7 +33,7 @@ function EuBody({
   handleAddLearningObject,
 }: EuBodyProps) {
   const { t } = useTranslation();
-
+  console.log('filesfiles', files);
   const [expandedQuiz, setExpandedQuiz] = useState(true);
   const [openQuizDialog, setOpenQuizDialog] = useState(false);
   const [openQuestionDialog, setOpenQuestionDialog] = useState(false);
@@ -90,7 +88,7 @@ function EuBody({
                     ...CREATE_LEARNING_OBJECT_FORM_CONFIG.type,
                     name: `eu.${euIndex}.learningObjects.${loIndex}.type`,
                     disabled: loIndex === 0 || loIndex === 1,
-                    defaultValue: lo.type,
+                    defaultValue: loIndex,
                   }}
                 />
               </Grid>
@@ -157,19 +155,6 @@ function EuBody({
                     <Typography variant="h3" color="primary">
                       {t('section.quiz.quiz')}
                     </Typography>
-                  </Stack>
-
-                  <Stack direction={'row'} spacing={1}>
-                    <IconButton color="info" onClick={() => {}}>
-                      <Tooltip title={t('section.quiz.update')}>
-                        <Edit />
-                      </Tooltip>
-                    </IconButton>
-                    <IconButton color="error" onClick={() => setOpenQuizDialog(true)}>
-                      <Tooltip title={t('section.quiz.delete')}>
-                        <DeleteOutlineOutlinedIcon />
-                      </Tooltip>
-                    </IconButton>
                   </Stack>
                 </Stack>
                 <Collapse in={expandedQuiz} timeout={700}>

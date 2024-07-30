@@ -4,6 +4,7 @@ export interface CourseCardProps {
   courseTitle: string;
   isActive?: 0 | 1;
   isOffline?: 0 | 1;
+  studentLevel?: string;
   educationaUnitsCount?: number;
   learningObjectsCount?: number;
   createdAt: string;

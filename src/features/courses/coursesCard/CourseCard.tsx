@@ -36,6 +36,7 @@ import { IError } from 'types/interfaces/Error';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import avert from '@assets/images/avert.png';
+import QuizStatusChip from '@pages/dashboard/student/studentQuiz/studentQuizTable/QuizStatusChip/QuizStatusChip';
 const CourseCard = ({
   id,
   image,
@@ -48,6 +49,7 @@ const CourseCard = ({
   isAdmin,
   isEnrolled,
   width,
+  studentLevel,
   navigateToEditCoursePage,
 }: CourseCardProps) => {
   const { t } = useTranslation();
@@ -156,6 +158,7 @@ const CourseCard = ({
           icon={<MenuBookOutlinedIcon />}
         />
         <Divider />
+        {!isAdmin && Number(isEnrolled) === 1 && <QuizStatusChip status={studentLevel as string} />}
 
         {!isAdmin && !(Number(isEnrolled) === 1) ? (
           <Stack alignItems="flex-end" sx={{ zIndex: 999 }}>

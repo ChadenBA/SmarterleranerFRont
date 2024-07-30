@@ -61,7 +61,7 @@ export default function SignUpForm() {
                 <CustomTextField config={SIGNUP_FORM_CONFIG.lastName} />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <CustomTextField config={SIGNUP_FORM_CONFIG.birthdate} />
+                <CustomTextField config={SIGNUP_FORM_CONFIG.birthDate} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <CustomTextField config={SIGNUP_FORM_CONFIG.major} />

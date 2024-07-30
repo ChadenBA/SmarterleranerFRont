@@ -8,6 +8,7 @@ import { EuHeadProps } from './EuHead.type';
 import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 
 function EuHead({
+  index,
   expanded,
   title,
   canDelete,
@@ -27,20 +28,28 @@ function EuHead({
           expanded={expanded ? GLOBAL_VARIABLES.TRUE_STRING : GLOBAL_VARIABLES.FALSE_STRING}
         />
         <Stack direction={'row'} spacing={1} alignItems={'center'}>
-          <Typography variant="h3" color="primary">
-            {type} : {title}
-          </Typography>
-          <Tooltip title={t('eu.add')}>
-            <IconButton onClick={onAddEu} color="success">
-              <AddCircleOutlineOutlinedIcon fontSize="medium" />
-            </IconButton>
-          </Tooltip>
+          {isNewEu ? (
+            <>
+              <Typography variant="h3" color="primary">
+                {type} : {title}
+              </Typography>
+              <Tooltip title={t('eu.add')}>
+                <IconButton onClick={onAddEu} color="success">
+                  <AddCircleOutlineOutlinedIcon fontSize="medium" />
+                </IconButton>
+              </Tooltip>
+            </>
+          ) : (
+            <Typography variant="h3" color="primary">
+              {title}
+            </Typography>
+          )}
         </Stack>
       </Stack>
       <Stack direction={'row'} spacing={1}>
         {!isNewEu && (
           <Tooltip title={t('section.update')}>
-            <IconButton color="info" onClick={onUpdateEu}>
+            <IconButton color="info" onClick={() => onUpdateEu && onUpdateEu(index)}>
               <Edit />
             </IconButton>
           </Tooltip>

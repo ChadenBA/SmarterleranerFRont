@@ -9,7 +9,11 @@ import noUser from '@assets/images/noUser.png';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { FieldValues } from 'react-hook-form';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
-import { convertFromUnixTimestampToDate, transformDateTime } from '@utils/helpers/date.helpers';
+import {
+  convertFromUnixTimestampToDate,
+  convertToUnixTimestamp,
+  transformDateTime,
+} from '@utils/helpers/date.helpers';
 
 export const transformFetchUsersResponse = (
   response: ApiPaginationResponse<UserApi>,
@@ -20,7 +24,6 @@ export const transformFetchUsersResponse = (
       data: transformUsers(Object.values(response?.data)),
     };
   }
-
   return {
     message: response.message,
     data: transformUsers(Object.values(response?.data)),
@@ -74,6 +77,8 @@ export const transformSingleUser = (data: UserApi): User => {
 
 export const encodeUser = (values: FieldValues): FormData => {
   const formData = new FormData();
+  // birth_date out of formValues
+
   if (values.media) {
     formData.append('profile_picture', values.media);
   }
@@ -82,5 +87,9 @@ export const encodeUser = (values: FieldValues): FormData => {
       formData.append(toSnakeCase(key), values[key]);
     }
   });
+  if (values.birthDate) {
+    const birthDate = convertToUnixTimestamp(values.birthDate);
+    formData.append('birth_date', birthDate.toString());
+  }
   return formData;
 };

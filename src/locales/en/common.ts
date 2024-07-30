@@ -51,4 +51,5 @@ export const common = {
   filter_price: 'Filter By Price',
   filter_date_range: 'Filter By Start Time Range',
   skip: 'Skip',
+  pretest: 'Pretest',
 };

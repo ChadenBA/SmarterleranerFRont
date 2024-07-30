@@ -7,15 +7,13 @@ import {
   Tooltip,
   IconButton,
   Stack,
-  Typography,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
 import { CustomRadioButtonProps } from './CustomRadioButton.type';
-import { StyledErrorIcon } from './CustomRadioButton.style';
+import { CustomLabel, StyledErrorIcon } from './CustomRadioButton.style';
 import { useTranslation } from 'react-i18next';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
-import { BLUE } from '@config/colors/colors';
 
 function CustomRadioButton({ config }: CustomRadioButtonProps) {
   const { t } = useTranslation();
@@ -25,6 +23,12 @@ function CustomRadioButton({ config }: CustomRadioButtonProps) {
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  // (['ABSTRACT', 'CONCRETE'].includes(
+  //   (field?.value as string).toUpperCase(),
+  // ) && {
+  //   checked: undefined,
+  // })}
 
   return (
     <FormControl component="fieldset">
@@ -36,9 +40,7 @@ function CustomRadioButton({ config }: CustomRadioButtonProps) {
         render={({ field, fieldState }) => (
           <>
             <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="h6" sx={{ color: BLUE.main }}>
-                {t(label)}
-              </Typography>
+              <CustomLabel variant="h6">{t(label)}</CustomLabel>
               {fieldState.error && (
                 <Tooltip
                   title={t(fieldState.error?.message || GLOBAL_VARIABLES.EMPTY_STRING)}
@@ -50,23 +52,27 @@ function CustomRadioButton({ config }: CustomRadioButtonProps) {
                 </Tooltip>
               )}
             </Stack>
-            <RadioGroup value={field.value} onChange={field.onChange} row={isMobile ? false : true}>
-              {options?.map((option, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={option?.value.toString()}
-                  control={
-                    <Radio
-                      disabled={disabled}
-                      checked={
-                        option.value?.toString().toUpperCase() ===
-                        defaultValue?.toString().toUpperCase()
-                      }
-                    />
-                  }
-                  label={t(option.label)}
-                />
-              ))}
+            <RadioGroup value={field?.value?.toString()} onChange={field.onChange} row={!isMobile}>
+              {options?.map((option, index) => {
+                const stringValue = option?.value?.toString();
+
+                return (
+                  <FormControlLabel
+                    key={index}
+                    value={stringValue}
+                    control={
+                      <Radio
+                        disabled={disabled}
+                        {...(['ABSTRACT', 'CONCRETE'].includes(stringValue.toUpperCase()) && {
+                          checked:
+                            option?.value.toString().toUpperCase() === field.value.toUpperCase(),
+                        })}
+                      />
+                    }
+                    label={t(option.label)}
+                  />
+                );
+              })}
             </RadioGroup>
           </>
         )}

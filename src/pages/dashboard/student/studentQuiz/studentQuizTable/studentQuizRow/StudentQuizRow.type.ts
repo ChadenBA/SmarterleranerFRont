@@ -1,4 +1,4 @@
-import { StudentQuiz } from '@redux/apis/modules/modulesApi.type'
+import { StudentQuiz } from "@redux/apis/courses/coursesApi.type";
 
 export interface StudentQuizRowProps {
   quiz: StudentQuiz

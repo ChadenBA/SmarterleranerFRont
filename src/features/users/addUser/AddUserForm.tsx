@@ -107,7 +107,7 @@ export default function AddUserForm() {
             />
             <CustomTextField
               config={{
-                ...SIGNUP_FORM_CONFIG.birthdate,
+                ...SIGNUP_FORM_CONFIG.birthDate,
                 defaultValue: user?.birthDate ?? GLOBAL_VARIABLES.EMPTY_STRING,
               }}
             />

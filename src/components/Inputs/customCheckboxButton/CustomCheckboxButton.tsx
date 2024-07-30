@@ -6,18 +6,18 @@ import {
   Stack,
   Tooltip,
   Typography,
-} from '@mui/material'
-import { Controller, useFormContext } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { CustomCheckboxButtonProps } from './CustomCheckboxButton.type'
-import { BLUE } from '@config/colors/colors'
-import { GLOBAL_VARIABLES } from '@config/constants/globalVariables'
-import { StyledErrorIcon } from '../customRadioButton/CustomRadioButton.style'
+} from '@mui/material';
+import { Controller, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { CustomCheckboxButtonProps } from './CustomCheckboxButton.type';
+import { BLUE } from '@config/colors/colors';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
+import { StyledErrorIcon } from '../customRadioButton/CustomRadioButton.style';
 
 function CustomCheckboxButton({ config }: CustomCheckboxButtonProps) {
-  const { t } = useTranslation()
-  const { control } = useFormContext()
-  const { name, label, defaultValue, options, disabled, rules } = config
+  const { t } = useTranslation();
+  const { control } = useFormContext();
+  const { name, label, defaultValue, options, disabled, rules } = config;
 
   return (
     <FormControl component="fieldset">
@@ -34,10 +34,9 @@ function CustomCheckboxButton({ config }: CustomCheckboxButtonProps) {
               </Typography>
               {fieldState.error && (
                 <Tooltip
-                  title={t(
-                    fieldState.error?.message || GLOBAL_VARIABLES.EMPTY_STRING,
-                  )}
-                  placement="right">
+                  title={t(fieldState.error?.message || GLOBAL_VARIABLES.EMPTY_STRING)}
+                  placement="right"
+                >
                   <IconButton>
                     <StyledErrorIcon />
                   </IconButton>
@@ -63,7 +62,7 @@ function CustomCheckboxButton({ config }: CustomCheckboxButtonProps) {
         )}
       />
     </FormControl>
-  )
+  );
 }
 
-export default CustomCheckboxButton
+export default CustomCheckboxButton;

@@ -1,41 +1,43 @@
-import { LIGHT_COLORS } from '@config/colors/colors'
-import { QuizStatusColorProps } from './QuizStatusChip.type'
+import { LIGHT_COLORS } from '@config/colors/colors';
+import { QuizStatusColorProps } from './QuizStatusChip.type';
+import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
-export const getQuizStatusChipColor = (
-  status: 0 | 1 | undefined,
-): QuizStatusColorProps => {
+export const getQuizStatusChipColor = (status: string | undefined): QuizStatusColorProps => {
   let quizStatusColor: QuizStatusColorProps = {
-    label: getQuizStatus(status || 0),
+    label: status || GLOBAL_VARIABLES.EMPTY_STRING,
     color: 'primary',
     background: LIGHT_COLORS.primary.light,
-  }
+  };
   switch (status) {
-    case 1:
+    case 'Beginner':
       quizStatusColor = {
         ...quizStatusColor,
         color: 'success',
         background: '#D0FFE1',
-      }
-      break
+      };
+      break;
 
-    case 0:
+    case 'Intermediate':
       quizStatusColor = {
         ...quizStatusColor,
         color: 'error',
         background: '#FFF0F3',
-      }
-      break
+      };
+      break;
+    case 'Advanced':
+      quizStatusColor = {
+        ...quizStatusColor,
+        color: 'warning',
+        background: '#FFF7D0',
+      };
+      break;
+
     default:
       quizStatusColor = {
-        label: getQuizStatus(status || 0),
+        ...quizStatusColor,
         color: 'primary',
         background: LIGHT_COLORS.primary.light,
-      }
+      };
   }
-  return quizStatusColor
-}
-
-export const getQuizStatus = (passed: 0 | 1): string => {
-  if (passed) return 'section.quiz.success'
-  return 'section.quiz.fail'
-}
+  return quizStatusColor;
+};

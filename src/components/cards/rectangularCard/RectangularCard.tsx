@@ -1,8 +1,5 @@
-import {
-  RectangularCardRoot,
-  RectangularCardTitle,
-} from './RectangularCard.style'
-import { RectangularCardProps } from './RectangularCard.type'
+import { RectangularCardRoot, RectangularCardTitle } from './RectangularCard.style';
+import { RectangularCardProps } from './RectangularCard.type';
 
 function RectangularCard({ title, children }: RectangularCardProps) {
   return (
@@ -10,7 +7,7 @@ function RectangularCard({ title, children }: RectangularCardProps) {
       <RectangularCardTitle>{title}</RectangularCardTitle>
       {children}
     </RectangularCardRoot>
-  )
+  );
 }
 
-export default RectangularCard
+export default RectangularCard;

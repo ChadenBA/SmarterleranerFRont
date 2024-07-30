@@ -30,6 +30,7 @@ export interface CourseApi {
   subscribed_users_count: number;
   educational_units: ApiEU[];
   quiz: QuizApi;
+  student_level?: string;
 }
 export interface SingleCourseResponseData {
   data: CourseApi;
@@ -91,4 +92,33 @@ export interface ApiAnswer {
   id: number;
   answer: string;
   is_valid: 0 | 1;
+}
+export interface StudentQuiz {
+  id: number;
+  score: number;
+  totalScorePossible: number;
+  status: string;
+  createAt: string;
+  quiz: {
+    id: number;
+    course?: {
+      id: number;
+      title: string;
+    };
+  };
+}
+
+export interface StudentQuizApi {
+  id: number;
+  score: number;
+  total_score_possible: number;
+  status: string;
+  created_at: string;
+  quiz: {
+    id: number;
+    course?: {
+      id: number;
+      title: string;
+    };
+  };
 }

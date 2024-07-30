@@ -1,7 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 
 import { PaginationResponse } from 'types/interfaces/Pagination';
-import { CourseApi, CreateCourseResponse, SingleCourseResponseData } from './coursesApi.type';
+import {
+  CourseApi,
+  CreateCourseResponse,
+  SingleCourseResponseData,
+  StudentQuiz,
+  StudentQuizApi,
+} from './coursesApi.type';
 import { baseQueryConfigWithRefresh } from '@redux/baseQueryConfig';
 import { CourseForAdmin } from 'types/models/Course';
 import { QueryParams } from 'types/interfaces/QueryParams';
@@ -12,12 +18,15 @@ import { ApiPaginationResponse } from '../type';
 import {
   encodeCourse,
   encodeEu,
+  encodeQuizSubmission,
   transformFetchCourseResponse,
   transformFetchCoursesResponse,
+  transformQuizScoreResponse,
+  transformQuizSubmissionResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
-import { Eu } from 'types/models/Eu';
+import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const courseApi = createApi({
@@ -73,6 +82,24 @@ export const courseApi = createApi({
       invalidatesTags: ['Courses', 'Course'],
     }),
 
+    updateEu: builder.mutation<
+      void,
+      {
+        euId: number;
+        deletedMedia: string[];
+        files: Record<number, Record<number, FileWithMetadata[]>>;
+        euData: FieldValues;
+        courseId: number;
+      }
+    >({
+      query: ({ euId, euData, deletedMedia, files, courseId }) => ({
+        url: ENDPOINTS.UPDATE_EU + `/${courseId}/${euId}`,
+        method: MethodsEnum.POST,
+        body: encodeEu([euData] as Eu[], files, deletedMedia),
+      }),
+      invalidatesTags: ['Courses', 'Course'],
+    }),
+
     getCourseById: builder.query<ItemDetailsResponse<CourseForAdmin>, string>({
       query: (id) => ({
         url: ENDPOINTS.COURSES + `/${id}`,
@@ -116,6 +143,7 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses', 'Course', 'CoursesForAdmin'],
     }),
+
     getCoursesBySubcategory: builder.query<
       PaginationResponse<CourseForAdmin>,
       { params: QueryParams; subcategoryId: number }
@@ -128,12 +156,55 @@ export const courseApi = createApi({
         transformFetchCoursesResponse(response),
       providesTags: ['Courses'],
     }),
+
     enrollCourse: builder.mutation<void, number>({
       query: (courseId) => ({
         url: `${ENDPOINTS.ENROLL_COURSE}/${courseId}`,
         method: MethodsEnum.POST,
       }),
       invalidatesTags: ['Courses', 'Course'],
+    }),
+
+    submitQuiz: builder.mutation<
+      ItemDetailsResponse<QuizSubmission>,
+      { quizId: number | undefined; data: FieldValues }
+    >({
+      query: ({ quizId, data }) => ({
+        url: `${ENDPOINTS.SUBMIT_QUIZ}/${quizId}`,
+        method: MethodsEnum.POST,
+        body: encodeQuizSubmission(data),
+      }),
+      transformResponse: (response: ItemDetailsResponse<QuizSubmissionApi>) =>
+        transformQuizSubmissionResponse(response),
+      invalidatesTags: ['Courses'],
+    }),
+
+    getQuizzesScore: builder.query<PaginationResponse<StudentQuiz>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.INDEX_QUIZZES_SCORE, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<StudentQuizApi>) =>
+        transformQuizScoreResponse(response),
+    }),
+    getEnrolledCourses: builder.query<PaginationResponse<CourseForAdmin>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.ENROLLED_COURSES, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<CourseApi>) =>
+        transformFetchCoursesResponse(response),
+      providesTags: ['Courses'],
+    }),
+
+    getCourses: builder.query<PaginationResponse<CourseForAdmin>, QueryParams>({
+      query: (params) => ({
+        url: injectPaginationParamsToUrl(ENDPOINTS.COURSES, params),
+        method: MethodsEnum.GET,
+      }),
+      transformResponse: (response: ApiPaginationResponse<CourseApi>) =>
+        transformFetchCoursesResponse(response),
+      providesTags: ['Courses'],
     }),
   }),
 });
@@ -152,4 +223,9 @@ export const {
   useEnrollCourseMutation,
 
   useGetAdminCourseByIdQuery,
+  useSubmitQuizMutation,
+  useGetQuizzesScoreQuery,
+  useUpdateEuMutation,
+  useGetEnrolledCoursesQuery,
+  useGetCoursesQuery,
 } = courseApi;
