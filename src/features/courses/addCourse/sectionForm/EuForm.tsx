@@ -9,10 +9,10 @@ import FallbackLoader from '@components/fallback/FallbackLoader';
 import SectionTabs from './sectionTabs/SectionTabs';
 import useEducationalUnitForm from './useEducationalUnitForm';
 
-import EUnit from './module/EUnit';
+import EUnit from './eu/EUnit';
 import { EUFormProps } from './EuForm.type';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
-import { FormValues } from './module/Eu.type';
+import { FormValues } from './eu/Eu.type';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function EducationalUnitForm({

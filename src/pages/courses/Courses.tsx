@@ -3,8 +3,7 @@ import { Grid, Stack, Typography } from '@mui/material';
 import { StackWithBackground } from '@components/stackWithBackground/stackWithBackground.style';
 import Header from '@components/header/Header';
 import SearchSection from '@features/courses/searchSection/SearchSection';
-import FilterCategories from '@features/courses/filterSection/filterCategories/FilterCategories';
-import FilterHeader from '@features/courses/filterSection/filterHeader/FilterHeader';
+
 import CustomPagination from '@components/customPagination/CustomPagination';
 import usePagination from 'src/hooks/usePagination';
 import { useGetCoursesQuery } from '@redux/apis/courses/coursesApi';
@@ -17,14 +16,7 @@ import { useTranslation } from 'react-i18next';
 import CoursesList from '@features/courses/coursesList/CoursesList';
 
 const Courses = () => {
-  const {
-    queryParams,
-    handlePageChange,
-    handleSearchChange,
-    handleFiltersChange,
-    handleSortChange,
-    handleResetFilters,
-  } = usePagination();
+  const { queryParams, handlePageChange, handleSearchChange, handleResetFilters } = usePagination();
 
   const { t } = useTranslation();
 
@@ -49,11 +41,6 @@ const Courses = () => {
   return (
     <StackWithBackground>
       <Header />
-      <FilterHeader
-        hasFilter
-        total={data?.meta.total as number}
-        handleOrderChange={handleSortChange}
-      />
 
       <Stack alignItems={'flex-end'} mr={2}>
         <Typography
@@ -85,11 +72,6 @@ const Courses = () => {
               searchValue={queryParams.keyword}
             />
           </Stack>
-
-          <FilterCategories
-            filtersQueryParams={queryParams}
-            handleFiltersChange={handleFiltersChange}
-          />
         </Grid>
       </Grid>
     </StackWithBackground>

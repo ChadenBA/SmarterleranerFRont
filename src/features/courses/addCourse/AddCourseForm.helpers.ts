@@ -12,7 +12,7 @@ export const generateCourseFormDefaultValues = (
       categoryId: valuesFromApi.categoryId,
       subcategoryId: valuesFromApi.subcategoryId,
       quiz: valuesFromApi.quiz,
-      courseMedia: valuesFromApi.courseMedia,
+      coverMedia: valuesFromApi.coverMedia,
       subscribers: valuesFromApi.subscribers,
     };
   }

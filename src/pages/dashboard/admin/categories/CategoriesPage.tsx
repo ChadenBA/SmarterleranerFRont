@@ -52,7 +52,7 @@ function CategoriesPage() {
       >
         {isLoadingCategory ||
         isFetchingCategory ||
-        (fields.length <= 0 && isEditMode & (category?.children.length > 0)) ? (
+        ((fields.length <= 0 && isEditMode && category?.children?.length) ?? 0 > 0) ? (
           <FallbackLoader />
         ) : (
           <FormProvider {...categoryFormMethods}>

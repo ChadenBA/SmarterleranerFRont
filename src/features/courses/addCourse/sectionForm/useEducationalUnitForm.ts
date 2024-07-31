@@ -1,7 +1,7 @@
 import { UseFormReturn, useFieldArray } from 'react-hook-form';
 
 import { Eu } from 'types/models/Eu';
-import { FormValues } from './module/Eu.type';
+import { FormValues } from './eu/Eu.type';
 import { QuestionTypeEnum } from '@config/enums/questionType.enum';
 import { LearningObjectType } from '@config/enums/learningObjectType.enum';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';

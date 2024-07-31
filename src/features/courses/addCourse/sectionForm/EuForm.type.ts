@@ -1,5 +1,5 @@
 import { UseFormReturn } from 'react-hook-form';
-import { FormValues } from './module/Eu.type';
+import { FormValues } from './eu/Eu.type';
 import { Dispatch, SetStateAction } from 'react';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 

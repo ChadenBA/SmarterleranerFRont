@@ -1,5 +1,5 @@
 import { FieldArrayWithId } from 'react-hook-form';
-import { FormValues } from '../module/Eu.type';
+import { FormValues } from '../eu/Eu.type';
 import { SyntheticEvent } from 'react';
 import { EducationalUnitEnum } from '@config/enums/educationalUnit.enum';
 

@@ -1,11 +1,8 @@
-import { AddNewSectionIcon, SectionTabsRoot } from './SectionTabs.style';
+import { SectionTabsRoot } from './SectionTabs.style';
 import { SectionTabsProps } from './SectionTabs.type';
-import { Stack, Tab, Tooltip } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { Stack, Tab } from '@mui/material';
 
-function SectionTabs({ eu, activeEu, handleChange, onAddNewEu, setSelectedEu }: SectionTabsProps) {
-  const { t } = useTranslation();
-
+function SectionTabs({ eu, activeEu, handleChange, setSelectedEu }: SectionTabsProps) {
   return (
     <Stack direction={'row'} alignItems={'center'} spacing={3}>
       <SectionTabsRoot
