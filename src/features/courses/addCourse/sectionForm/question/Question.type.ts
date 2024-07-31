@@ -1,5 +1,5 @@
 import { FieldArrayWithId, UseFormReturn } from 'react-hook-form';
-import { FormValues } from '../module/Eu.type';
+import { FormValues } from '../eu/Eu.type';
 
 export interface QuestionProps {
   field: FieldArrayWithId<FormValues, 'eu', 'id'>;

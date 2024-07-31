@@ -2,7 +2,7 @@ import { Divider } from '@mui/material';
 import { useState } from 'react';
 import EuHead from './EuHead/EuHead';
 import { ModuleRoot } from './Eu.style';
-import EuBody from './moduleBody/EuBody';
+import EuBody from './euBody/EuBody';
 import { EuProps } from './Eu.type';
 import { Quiz } from 'types/models/Quiz';
 import { useAppDispatch } from '@redux/hooks';
@@ -44,7 +44,7 @@ function EUnit({
 
   const questions = quiz?.questions ?? [];
 
-  const [open, setOpen] = useState(false);
+  const [_, setOpen] = useState(false);
   // State Declaration
   const [expanded, setExpanded] = useState(isEditMode ? true : false);
 
@@ -59,7 +59,7 @@ function EUnit({
   //watch the field title
   const title = euFormMethods.watch(`eu.${euIndex}.title`);
 
-  const [updateEuApi, { isLoading: updateEuIsLoading }] = useUpdateEuMutation();
+  const [updateEuApi, { isLoading }] = useUpdateEuMutation();
 
   const handleUpdateEuApi = async (index: number) => {
     const result = await euFormMethods.trigger();
@@ -89,6 +89,10 @@ function EUnit({
       }
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

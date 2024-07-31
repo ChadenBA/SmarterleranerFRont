@@ -89,7 +89,7 @@ export const courseApi = createApi({
         deletedMedia: string[];
         files: Record<number, Record<number, FileWithMetadata[]>>;
         euData: FieldValues;
-        courseId: number;
+        courseId: string | undefined;
       }
     >({
       query: ({ euId, euData, deletedMedia, files, courseId }) => ({
