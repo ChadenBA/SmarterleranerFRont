@@ -66,16 +66,15 @@ function EUnit({
 
     if (result) {
       const values = euFormMethods.getValues();
-      const euId = values.eu[index].id ?? 0;
+      const euId = values.eu[index].euId ?? 0;
       const sectionData = values.eu[index];
 
-      //const files = values.files[index];
       try {
         // Update Section api call
         await updateEuApi({
           euId,
           euData: sectionData,
-          files,
+          files: { [0]: files[euIndex] },
           deletedMedia,
           courseId,
         }).unwrap();

@@ -95,6 +95,7 @@ export default function AddCourseForm({
       return {
         eu: courseDefaultValues.educationalUnits.map((eu) => ({
           ...eu,
+          euId: eu.id,
           learningObjects: eu.learningObjects.map((lo) => ({
             ...lo,
             questions: lo.quiz.questions.map((question) => ({

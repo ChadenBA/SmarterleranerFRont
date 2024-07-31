@@ -3,6 +3,7 @@ import { Lo } from './Lo';
 
 export interface Eu {
   id?: number;
+  euId?: number;
   title: string;
   type: EducationalUnitEnum;
   learningObjects: Lo[];
