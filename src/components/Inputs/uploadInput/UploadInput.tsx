@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Tooltip } from '@mui/material';
+import { Stack, Tooltip, LinearProgress } from '@mui/material';
 import {
   StyledDeleteIcon,
   StyledInputContainer,
@@ -13,16 +13,19 @@ import {
 } from './UploadInput.style';
 import { UploadInputProps } from './UploadInput.type';
 import { Media } from 'types/models/Media';
+import { useAppSelector } from '@redux/hooks';
+import { RootState } from '@redux/store';
 
 function UploadInput({ preview, multiple, label, file, onChange, onDelete }: UploadInputProps) {
   const { t } = useTranslation();
   const ref = useRef<HTMLInputElement>(null);
+  const uploadProgresses = useAppSelector((state: RootState) => (state as any).upload.progresses);
 
   const handleOnContainerClick = () => {
     ref.current?.click();
   };
 
-  const getFileURL = (file: File | Media) => {
+  const getFileURL = (file: File | Media): string => {
     if ('fileName' in file) {
       return file.fileName;
     } else {
@@ -34,17 +37,33 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
     return 'mimeType' in file ? file.mimeType : file.type;
   };
 
-  const FilePreview = ({ file }: { file: File | Media }) => {
+  const FilePreview = ({ file }: { file: File | Media }): JSX.Element => {
     const fileURL = getFileURL(file);
     const mimeType = getFileMimeType(file);
+
+    const fileId =
+      (file as File).name + '-' + (file as File).size + '-' + (file as File).lastModified;
+
+    const uploadProgress = uploadProgresses[fileId];
+    console.log('uploadPrzzogresses', uploadProgresses, fileId);
 
     if (mimeType.startsWith('image/')) {
       return <StyledPreviewImage src={fileURL} alt="File preview" />;
     } else if (mimeType.startsWith('video/')) {
       return (
-        <StyledPreviewVideo controls>
-          <source src={fileURL} type={mimeType} />
-        </StyledPreviewVideo>
+        <Stack height={'100%'}>
+          <StyledPreviewVideo controls>
+            <source src={fileURL} type={mimeType} />
+          </StyledPreviewVideo>
+
+          {uploadProgress && uploadProgress.progress >= 0 && uploadProgress.progress < 100 && (
+            <LinearProgress
+              variant="determinate"
+              value={uploadProgress.progress}
+              sx={{ pt: 1, mt: 0.2 }}
+            />
+          )}
+        </Stack>
       );
     } else if (mimeType === 'application/pdf') {
       return (

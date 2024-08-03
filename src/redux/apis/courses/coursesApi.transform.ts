@@ -25,6 +25,8 @@ import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionT
 import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
+import { getFromLocalStorage } from '@utils/localStorage/storage';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
 
 export const transformFetchCoursesResponse = (
   response: ApiPaginationResponse<CourseApi>,
@@ -386,6 +388,15 @@ export const encodeEu = (
     }
   });
 
+  const temporaryIds = getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? [];
+  if (temporaryIds.length > 0) {
+    temporaryIds.forEach((temporaryId: any) => {
+      formData.append(
+        `lo[${temporaryId.loIndex}]eu[${temporaryId.euIndex}][temporary_ids]`,
+        temporaryId.temporaryId,
+      );
+    });
+  }
   return formData;
 };
 interface QuizAnswer {

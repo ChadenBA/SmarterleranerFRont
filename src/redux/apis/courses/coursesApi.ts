@@ -28,6 +28,20 @@ import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
 import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
+import { Progress, setUploadProgress } from '../../slices/uploadSlice';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
+import { getFromLocalStorage, setToLocalStorage } from '@utils/localStorage/storage';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
+import { ConfigEnv } from '@config/configEnv';
+import { v4 as uuidv4 } from 'uuid';
+
+interface UploadFileArgs {
+  file: File;
+  url?: string;
+  isSupplementary?: boolean;
+  euIndex?: number;
+  loIndex?: number;
+}
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -206,6 +220,65 @@ export const courseApi = createApi({
         transformFetchCoursesResponse(response),
       providesTags: ['Courses'],
     }),
+
+    uploadFile: builder.mutation<void, UploadFileArgs>({
+      queryFn: async (
+        {
+          file,
+          url = ConfigEnv.API_ENDPOINT + ENDPOINTS.MEDIA_UPLOAD_FILE,
+          isSupplementary = false,
+          euIndex,
+          loIndex,
+        },
+        { dispatch },
+      ) => {
+        const data = new FormData();
+        const temporaryId = uuidv4();
+
+        const dataToPush = {
+          temporaryId: temporaryId,
+          euIndex: euIndex,
+          loIndex: loIndex,
+        };
+
+        const currentTemporaryIds =
+          getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? [];
+
+        currentTemporaryIds.push(dataToPush);
+        setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
+
+        data.append('file', file);
+        data.append('temporary_id', temporaryId);
+        data.append('is_supplementary', isSupplementary ? 'true' : 'false');
+
+        const config: AxiosRequestConfig = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${getFromLocalStorage(LocalStorageKeysEnum.RefreshToken)}`,
+          },
+
+          onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+            const progress = {
+              progress: Math.round((progressEvent.loaded * 100) / (progressEvent.total ?? 1)),
+              id: file.name + '-' + file.size + '-' + file.lastModified,
+            };
+            dispatch(setUploadProgress(progress));
+          },
+        };
+        try {
+          const response = await axios.post(url, data, config);
+          return { data: response.data };
+        } catch (error: any) {
+          return {
+            error: {
+              status: error.response?.status,
+              data: error.message || 'An error occurred',
+            },
+          };
+        }
+      },
+    }),
   }),
 });
 
@@ -228,4 +301,5 @@ export const {
   useUpdateEuMutation,
   useGetEnrolledCoursesQuery,
   useGetCoursesQuery,
+  useUploadFileMutation,
 } = courseApi;

@@ -4,6 +4,7 @@ import UploadInput from '../uploadInput/UploadInput';
 import { ChangeEvent, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Media } from 'types/models/Media';
+import { useUploadFileMutation } from '@redux/apis/courses/coursesApi';
 
 function UploadMultipleFiles({
   files,
@@ -15,14 +16,16 @@ function UploadMultipleFiles({
   setDeletedMedia,
 }: UploadMultipleFilesProps) {
   const { t } = useTranslation();
+  const [uploadFile] = useUploadFileMutation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []).map((file) => ({
       file: file,
       metadata: { isSupplementary },
     }));
 
     if (newFiles.length) {
+      // Update the local state first
       setFiles((prev) => ({
         ...prev,
         [euIndex]: {
@@ -30,8 +33,28 @@ function UploadMultipleFiles({
           [loIndex]: [...(prev[euIndex]?.[loIndex] || []), ...newFiles],
         },
       }));
+
+      // Now upload each file
+      newFiles.forEach(({ file }) => {
+        if (file instanceof File && file.type.startsWith('video/')) {
+          uploadFile({
+            file: file,
+            isSupplementary: isSupplementary,
+            euIndex: euIndex,
+            loIndex: loIndex,
+          })
+            .unwrap()
+            .then((uploadedFileResponse) => {
+              console.log('File uploaded successfully', uploadedFileResponse);
+            })
+            .catch((error) => {
+              console.error('Error uploading file:', error);
+            });
+        }
+      });
     }
   };
+
   const handleDeletePreview = (event: MouseEvent<SVGSVGElement>, fileIndex: number) => {
     event.stopPropagation();
     const fileObject = files[fileIndex];
