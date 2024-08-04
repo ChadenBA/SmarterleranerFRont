@@ -70,7 +70,6 @@ function UploadMultipleFiles({
           };
 
           currentTemporaryIds[courseIdKey].push(dataToPush);
-          console.log('currentTemporaryIds', currentTemporaryIds);
           setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
         }
       });
@@ -116,7 +115,7 @@ function UploadMultipleFiles({
       <Grid container spacing={2}>
         {files.map(({ file }, fileIndex) => {
           const previewUrl = getFileURL(file);
-          console.log('previewUrl', files);
+
           return (
             <Grid item key={fileIndex} xs={12} sm={4}>
               <UploadInput
