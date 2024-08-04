@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { Media } from 'types/models/Media';
 
 export interface UploadMultipleFilesProps {
+  courseId?: string;
   files: FileWithMetadata[] | MediaWithMetadata[];
   euIndex: number;
   loIndex: number;

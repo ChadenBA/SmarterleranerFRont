@@ -297,6 +297,7 @@ export const encodeCourse = (values: FieldValues): FormData => {
 export const encodeEu = (
   eu: Eu[],
   files: Record<number, Record<number, FileWithMetadata[]>>,
+  id?: number,
   deletedMedia?: string[],
 ): FormData => {
   const formData = new FormData();
@@ -388,15 +389,16 @@ export const encodeEu = (
     }
   });
 
-  const temporaryIds = getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? [];
-  if (temporaryIds.length > 0) {
-    temporaryIds.forEach((temporaryId: any) => {
-      formData.append(
-        `lo[${temporaryId.loIndex}]eu[${temporaryId.euIndex}][temporary_ids]`,
-        temporaryId.temporaryId,
-      );
-    });
-  }
+  const temporaryIds = getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
+  const currentTemporaryIds = temporaryIds[id ?? 0];
+
+  currentTemporaryIds.forEach((tempsId: any, index: number) => {
+    formData.append(
+      `eu[${tempsId.euIndex}][learningObjects][${tempsId.loIndex}][temporary_ids][${index}]`,
+      tempsId.temporaryId,
+    );
+  });
+
   return formData;
 };
 interface QuizAnswer {

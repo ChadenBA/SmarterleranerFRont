@@ -18,6 +18,7 @@ import trash from '@assets/logo/icon-trash.svg';
 import { QuizRoot, StyledArrowIcon } from '../Eu.style';
 
 function EuBody({
+  courseId,
   expanded,
   files,
   euIndex,
@@ -93,6 +94,7 @@ function EuBody({
               </Grid>
             </Grid>
             <UploadMultipleFiles
+              courseId={courseId}
               files={
                 files[euIndex]?.[loIndex]?.filter(({ metadata }) => !metadata.isSupplementary) || []
               }
@@ -268,6 +270,7 @@ function EuBody({
             )}
             <Typography variant="h3">{t('eu.supplementary_materials')}</Typography>
             <UploadMultipleFiles
+              courseId={courseId}
               files={
                 files[euIndex]?.[loIndex]?.filter(({ metadata }) => metadata.isSupplementary) || []
               }

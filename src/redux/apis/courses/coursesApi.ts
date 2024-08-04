@@ -41,6 +41,28 @@ interface UploadFileArgs {
   isSupplementary?: boolean;
   euIndex?: number;
   loIndex?: number;
+  courseId: string;
+}
+function filterVideoFiles(files: Record<number, Record<number, FileWithMetadata[]>>) {
+  const filteredFiles = files;
+
+  for (const euIndex in filteredFiles) {
+    for (const loIndex in filteredFiles[euIndex]) {
+      filteredFiles[euIndex][loIndex] = filteredFiles[euIndex][loIndex].filter(
+        ({ file }: FileWithMetadata) => !file.type.includes('video'),
+      );
+
+      if (filteredFiles[euIndex][loIndex].length === 0) {
+        delete filteredFiles[euIndex][loIndex];
+      }
+    }
+
+    if (Object.keys(filteredFiles[euIndex]).length === 0) {
+      delete filteredFiles[euIndex];
+    }
+  }
+
+  return filteredFiles;
 }
 
 export const courseApi = createApi({
@@ -74,16 +96,19 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses'],
     }),
-
     createEu: builder.mutation<
       void,
       { id: number; eu: Eu[]; files: Record<number, Record<number, FileWithMetadata[]>> }
     >({
-      query: ({ id, eu, files }) => ({
-        url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
-        method: MethodsEnum.POST,
-        body: encodeEu(eu, files),
-      }),
+      query: ({ id, eu, files }) => {
+        const filteredFiles = filterVideoFiles(files);
+
+        return {
+          url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
+          method: MethodsEnum.POST,
+          body: encodeEu(eu, filteredFiles, id),
+        };
+      },
       invalidatesTags: ['Courses'],
     }),
 
@@ -109,7 +134,7 @@ export const courseApi = createApi({
       query: ({ euId, euData, deletedMedia, files, courseId }) => ({
         url: ENDPOINTS.UPDATE_EU + `/${courseId}/${euId}`,
         method: MethodsEnum.POST,
-        body: encodeEu([euData] as Eu[], files, deletedMedia),
+        body: encodeEu([euData] as Eu[], files, 0, deletedMedia),
       }),
       invalidatesTags: ['Courses', 'Course'],
     }),
@@ -229,6 +254,7 @@ export const courseApi = createApi({
           isSupplementary = false,
           euIndex,
           loIndex,
+          courseId,
         },
         { dispatch },
       ) => {
@@ -242,9 +268,17 @@ export const courseApi = createApi({
         };
 
         const currentTemporaryIds =
-          getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? [];
+          getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
 
-        currentTemporaryIds.push(dataToPush);
+        const courseIdKey = courseId ?? 0;
+        if (!Array.isArray(currentTemporaryIds[courseIdKey])) {
+          currentTemporaryIds[courseIdKey] = [];
+        }
+
+        if (euIndex !== undefined && loIndex !== undefined) {
+          currentTemporaryIds[courseIdKey].push(dataToPush);
+        }
+
         setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
 
         data.append('file', file);
@@ -294,7 +328,6 @@ export const {
   useSetCourseOnlineMutation,
   useGetCoursesBySubcategoryQuery,
   useEnrollCourseMutation,
-
   useGetAdminCourseByIdQuery,
   useSubmitQuizMutation,
   useGetQuizzesScoreQuery,

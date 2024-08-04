@@ -12,6 +12,7 @@ import { useUpdateEuMutation } from '@redux/apis/courses/coursesApi';
 import { useParams } from 'react-router-dom';
 
 function EUnit({
+  couseId,
   field,
   files,
   euIndex,
@@ -111,6 +112,7 @@ function EUnit({
         />
         <Divider />
         <EuBody
+          courseId={couseId}
           euIndex={euIndex}
           expanded={expanded}
           field={field}

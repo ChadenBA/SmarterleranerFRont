@@ -45,7 +45,6 @@ function UploadInput({ preview, multiple, label, file, onChange, onDelete }: Upl
       (file as File).name + '-' + (file as File).size + '-' + (file as File).lastModified;
 
     const uploadProgress = uploadProgresses[fileId];
-    console.log('uploadPrzzogresses', uploadProgresses, fileId);
 
     if (mimeType.startsWith('image/')) {
       return <StyledPreviewImage src={fileURL} alt="File preview" />;

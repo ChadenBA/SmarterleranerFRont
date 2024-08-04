@@ -8,6 +8,7 @@ export interface FormValues {
 }
 
 export interface EuProps {
+  couseId?: string;
   euFormMethods: UseFormReturn<FormValues, any, undefined>;
   files: Record<number, Record<number, FileWithMetadata[]>>;
   euIndex: number;

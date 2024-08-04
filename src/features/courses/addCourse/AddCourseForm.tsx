@@ -28,6 +28,8 @@ import {
 } from './sectionForm/EuForm.constants';
 import { PATHS } from '@config/constants/paths';
 import { MediaWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
+import { setToLocalStorage } from '@utils/localStorage/storage';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
 
 export default function AddCourseForm({
   isEditMode,
@@ -178,6 +180,7 @@ export default function AddCourseForm({
       case 1:
         return (
           <EducationalUnitForm
+            courseId={courseId ?? '0'}
             euFormMethods={educationalUnitFormMethod}
             isEditMode={isEditMode}
             isFetching={isFetching}

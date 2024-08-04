@@ -5,8 +5,11 @@ import { ChangeEvent, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Media } from 'types/models/Media';
 import { useUploadFileMutation } from '@redux/apis/courses/coursesApi';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
+import { getFromLocalStorage, setToLocalStorage } from '@utils/localStorage/storage';
 
 function UploadMultipleFiles({
+  courseId,
   files,
   euIndex,
   loIndex,
@@ -34,14 +37,15 @@ function UploadMultipleFiles({
         },
       }));
 
-      // Now upload each file
+      //Now upload each file
       newFiles.forEach(({ file }) => {
-        if (file instanceof File && file.type.startsWith('video/')) {
+        if (file instanceof File && file.type.startsWith('video/') && !isEditMode) {
           uploadFile({
             file: file,
             isSupplementary: isSupplementary,
             euIndex: euIndex,
             loIndex: loIndex,
+            courseId: courseId ?? '0',
           })
             .unwrap()
             .then((uploadedFileResponse) => {
@@ -50,6 +54,24 @@ function UploadMultipleFiles({
             .catch((error) => {
               console.error('Error uploading file:', error);
             });
+        } else if (file instanceof File && !file.type.startsWith('video/')) {
+          const currentTemporaryIds =
+            getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
+
+          const courseIdKey = courseId ?? 0;
+          if (!Array.isArray(currentTemporaryIds[courseIdKey])) {
+            currentTemporaryIds[courseIdKey] = [];
+          }
+
+          const dataToPush = {
+            temporaryId: 'skip',
+            euIndex: euIndex,
+            loIndex: loIndex,
+          };
+
+          currentTemporaryIds[courseIdKey].push(dataToPush);
+          console.log('currentTemporaryIds', currentTemporaryIds);
+          setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
         }
       });
     }
@@ -94,7 +116,7 @@ function UploadMultipleFiles({
       <Grid container spacing={2}>
         {files.map(({ file }, fileIndex) => {
           const previewUrl = getFileURL(file);
-
+          console.log('previewUrl', files);
           return (
             <Grid item key={fileIndex} xs={12} sm={4}>
               <UploadInput
