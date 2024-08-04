@@ -4,8 +4,12 @@ import UploadInput from '../uploadInput/UploadInput';
 import { ChangeEvent, MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Media } from 'types/models/Media';
+import { useUploadFileMutation } from '@redux/apis/courses/coursesApi';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
+import { getFromLocalStorage, setToLocalStorage } from '@utils/localStorage/storage';
 
 function UploadMultipleFiles({
+  courseId,
   files,
   euIndex,
   loIndex,
@@ -15,14 +19,16 @@ function UploadMultipleFiles({
   setDeletedMedia,
 }: UploadMultipleFilesProps) {
   const { t } = useTranslation();
+  const [uploadFile] = useUploadFileMutation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const newFiles = Array.from(e.target.files || []).map((file) => ({
       file: file,
       metadata: { isSupplementary },
     }));
 
     if (newFiles.length) {
+      // Update the local state first
       setFiles((prev) => ({
         ...prev,
         [euIndex]: {
@@ -30,8 +36,46 @@ function UploadMultipleFiles({
           [loIndex]: [...(prev[euIndex]?.[loIndex] || []), ...newFiles],
         },
       }));
+
+      //Now upload each file
+      newFiles.forEach(({ file }) => {
+        if (file instanceof File && file.type.startsWith('video/') && !isEditMode) {
+          uploadFile({
+            file: file,
+            isSupplementary: isSupplementary,
+            euIndex: euIndex,
+            loIndex: loIndex,
+            courseId: courseId ?? '0',
+          })
+            .unwrap()
+            .then((uploadedFileResponse) => {
+              console.log('File uploaded successfully', uploadedFileResponse);
+            })
+            .catch((error) => {
+              console.error('Error uploading file:', error);
+            });
+        } else if (file instanceof File && !file.type.startsWith('video/')) {
+          const currentTemporaryIds =
+            getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
+
+          const courseIdKey = courseId ?? 0;
+          if (!Array.isArray(currentTemporaryIds[courseIdKey])) {
+            currentTemporaryIds[courseIdKey] = [];
+          }
+
+          const dataToPush = {
+            temporaryId: 'skip',
+            euIndex: euIndex,
+            loIndex: loIndex,
+          };
+
+          currentTemporaryIds[courseIdKey].push(dataToPush);
+          setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
+        }
+      });
     }
   };
+
   const handleDeletePreview = (event: MouseEvent<SVGSVGElement>, fileIndex: number) => {
     event.stopPropagation();
     const fileObject = files[fileIndex];

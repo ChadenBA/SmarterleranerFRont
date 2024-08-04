@@ -3,4 +3,5 @@ export enum LocalStorageKeysEnum {
   RefreshToken = 'refreshToken',
   User = 'user',
   Language = 'language',
+  TemporaryIds = 'temporaryId',
 }

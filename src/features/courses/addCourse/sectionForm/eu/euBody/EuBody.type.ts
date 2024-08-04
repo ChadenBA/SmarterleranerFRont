@@ -5,6 +5,7 @@ import { Question } from 'types/models/Quiz';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export interface EuBodyProps {
+  courseId?: string;
   expanded: boolean;
   questions: Question[];
   euIndex: number;

@@ -16,6 +16,7 @@ import { FormValues } from './eu/Eu.type';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 
 function EducationalUnitForm({
+  courseId,
   files,
   euFormMethods,
   isEditMode,
@@ -252,6 +253,7 @@ function EducationalUnitForm({
           <Stack p={2} spacing={3}>
             {fields.map((field, index) => (
               <EUnit
+                couseId={courseId}
                 field={field}
                 euFormMethods={euFormMethods}
                 files={files}

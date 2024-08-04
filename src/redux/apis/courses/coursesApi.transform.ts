@@ -32,6 +32,8 @@ import {
 } from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
+import { getFromLocalStorage } from '@utils/localStorage/storage';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
 
 export const transformFetchCoursesResponse = (
   response: ApiPaginationResponse<CourseApi>,
@@ -310,6 +312,7 @@ export const encodeCourse = (values: FieldValues): FormData => {
 export const encodeEu = (
   eu: Eu[],
   files: Record<number, Record<number, FileWithMetadata[]>>,
+  id?: number,
   deletedMedia?: string[],
 ): FormData => {
   const formData = new FormData();
@@ -399,6 +402,16 @@ export const encodeEu = (
         formData.append(`eu[${euIndex}][deleted_media][${index}]`, mediaId);
       });
     }
+  });
+
+  const temporaryIds = getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
+  const currentTemporaryIds = temporaryIds[id ?? 0];
+
+  currentTemporaryIds.forEach((tempsId: any, index: number) => {
+    formData.append(
+      `eu[${tempsId.euIndex}][learningObjects][${tempsId.loIndex}][temporary_ids][${index}]`,
+      tempsId.temporaryId,
+    );
   });
 
   return formData;

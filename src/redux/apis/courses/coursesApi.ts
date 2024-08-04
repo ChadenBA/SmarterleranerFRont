@@ -38,6 +38,42 @@ import {
   QuizSubmissionApi,
 } from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
+import { Progress, setUploadProgress } from '../../slices/uploadSlice';
+import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
+import { getFromLocalStorage, setToLocalStorage } from '@utils/localStorage/storage';
+import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
+import { ConfigEnv } from '@config/configEnv';
+import { v4 as uuidv4 } from 'uuid';
+
+interface UploadFileArgs {
+  file: File;
+  url?: string;
+  isSupplementary?: boolean;
+  euIndex?: number;
+  loIndex?: number;
+  courseId: string;
+}
+function filterVideoFiles(files: Record<number, Record<number, FileWithMetadata[]>>) {
+  const filteredFiles = files;
+
+  for (const euIndex in filteredFiles) {
+    for (const loIndex in filteredFiles[euIndex]) {
+      filteredFiles[euIndex][loIndex] = filteredFiles[euIndex][loIndex].filter(
+        ({ file }: FileWithMetadata) => !file.type.includes('video'),
+      );
+
+      if (filteredFiles[euIndex][loIndex].length === 0) {
+        delete filteredFiles[euIndex][loIndex];
+      }
+    }
+
+    if (Object.keys(filteredFiles[euIndex]).length === 0) {
+      delete filteredFiles[euIndex];
+    }
+  }
+
+  return filteredFiles;
+}
 
 export const courseApi = createApi({
   reducerPath: 'courseApi',
@@ -70,16 +106,19 @@ export const courseApi = createApi({
       }),
       invalidatesTags: ['Courses'],
     }),
-
     createEu: builder.mutation<
       void,
       { id: number; eu: Eu[]; files: Record<number, Record<number, FileWithMetadata[]>> }
     >({
-      query: ({ id, eu, files }) => ({
-        url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
-        method: MethodsEnum.POST,
-        body: encodeEu(eu, files),
-      }),
+      query: ({ id, eu, files }) => {
+        const filteredFiles = filterVideoFiles(files);
+
+        return {
+          url: ENDPOINTS.CREATE_EDUCATIONAL_UNIT + `/${id}`,
+          method: MethodsEnum.POST,
+          body: encodeEu(eu, filteredFiles, id),
+        };
+      },
       invalidatesTags: ['Courses'],
     }),
 
@@ -105,7 +144,7 @@ export const courseApi = createApi({
       query: ({ euId, euData, deletedMedia, files, courseId }) => ({
         url: ENDPOINTS.UPDATE_EU + `/${courseId}/${euId}`,
         method: MethodsEnum.POST,
-        body: encodeEu([euData] as Eu[], files, deletedMedia),
+        body: encodeEu([euData] as Eu[], files, 0, deletedMedia),
       }),
       invalidatesTags: ['Courses', 'Course'],
     }),
@@ -218,6 +257,73 @@ export const courseApi = createApi({
         transformFetchCoursesResponse(response),
       providesTags: ['Courses'],
     }),
+
+    uploadFile: builder.mutation<void, UploadFileArgs>({
+      queryFn: async (
+        {
+          file,
+          url = ConfigEnv.API_ENDPOINT + ENDPOINTS.MEDIA_UPLOAD_FILE,
+          isSupplementary = false,
+          euIndex,
+          loIndex,
+          courseId,
+        },
+        { dispatch },
+      ) => {
+        const data = new FormData();
+        const temporaryId = uuidv4();
+
+        const dataToPush = {
+          temporaryId: temporaryId,
+          euIndex: euIndex,
+          loIndex: loIndex,
+        };
+
+        const currentTemporaryIds =
+          getFromLocalStorage(LocalStorageKeysEnum.TemporaryIds, true) ?? {};
+
+        const courseIdKey = courseId ?? 0;
+        if (!Array.isArray(currentTemporaryIds[courseIdKey])) {
+          currentTemporaryIds[courseIdKey] = [];
+        }
+
+        if (euIndex !== undefined && loIndex !== undefined) {
+          currentTemporaryIds[courseIdKey].push(dataToPush);
+        }
+
+        setToLocalStorage(LocalStorageKeysEnum.TemporaryIds, currentTemporaryIds, true);
+
+        data.append('file', file);
+        data.append('temporary_id', temporaryId);
+        data.append('is_supplementary', isSupplementary ? 'true' : 'false');
+
+        const config: AxiosRequestConfig = {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Accept: 'application/json',
+            Authorization: `Bearer ${getFromLocalStorage(LocalStorageKeysEnum.RefreshToken)}`,
+          },
+
+          onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+            const progress = {
+              progress: Math.round((progressEvent.loaded * 100) / (progressEvent.total ?? 1)),
+              id: file.name + '-' + file.size + '-' + file.lastModified,
+            };
+            dispatch(setUploadProgress(progress));
+          },
+        };
+        try {
+          const response = await axios.post(url, data, config);
+          return { data: response.data };
+        } catch (error: any) {
+          return {
+            error: {
+              status: error.response?.status,
+              data: error.message || 'An error occurred',
+            },
+          };
+        }
+      },
     submitLoQuiz: builder.mutation<
       ItemDetailsResponse<QuizLoSubmission>,
       { quizId: number | undefined; data: FieldValues }
@@ -246,12 +352,12 @@ export const {
   useSetCourseOnlineMutation,
   useGetCoursesBySubcategoryQuery,
   useEnrollCourseMutation,
-
   useGetAdminCourseByIdQuery,
   useSubmitQuizMutation,
   useGetQuizzesScoreQuery,
   useUpdateEuMutation,
   useGetEnrolledCoursesQuery,
   useGetCoursesQuery,
+  useUploadFileMutation,
   useSubmitLoQuizMutation,
 } = courseApi;

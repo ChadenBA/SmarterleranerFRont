@@ -42,5 +42,6 @@ export const ENDPOINTS = {
   SILVERMAN_QUESTIONS: 'user/Silverman/questions',
   SILVERMAN_SUBMIT_RESPONSES: 'user/Silverman/submit-responses',
   SILVERMAN_RESULT: 'user/Silverman/result',
+  MEDIA_UPLOAD_FILE: '/media/upload-media',
   SUBMIT_LO_QUIZ: 'user/lo-quiz/submit',
 };

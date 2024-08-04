@@ -10,4 +10,5 @@ export interface EUFormProps {
   isFetching?: boolean;
   handleAddEU?: () => void;
   files: Record<number, Record<number, FileWithMetadata[]>>;
+  courseId?: string;
 }
