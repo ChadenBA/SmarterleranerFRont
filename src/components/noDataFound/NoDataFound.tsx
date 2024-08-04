@@ -8,7 +8,7 @@ import Lottie from 'lottie-react'
 function NoDataFound({ message }: NoDataFoundProps) {
   const { t } = useTranslation()
   return (
-    <Stack alignItems={'center'} alignSelf={'center'}>
+    <Stack alignItems={'center'} alignSelf={'center'} mt={20}>
       <Lottie
         animationData={jsonAnimation}
         loop={true}

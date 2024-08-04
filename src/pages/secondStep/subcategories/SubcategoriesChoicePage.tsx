@@ -2,6 +2,7 @@ import { StyledCategoriesButton } from '@components/buttons/customCategoriesButt
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import { PATHS } from '@config/constants/paths';
 import { Button, Stack, Typography } from '@mui/material';
+import ForbiddenPage from '@pages/forbidden/ForbiddenPage';
 import { useGetUserSubcategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -13,8 +14,11 @@ function SubcategoriesChoicePage() {
 
   const categoryIdNumber = parseInt(categoryId as string, 10);
 
-  const { data: subcategoriesData, isLoading: isLoadingCategories } =
-    useGetUserSubcategoriesQuery(categoryIdNumber);
+  const {
+    data: subcategoriesData,
+    isLoading: isLoadingCategories,
+    isError,
+  } = useGetUserSubcategoriesQuery(categoryIdNumber);
 
   if (isLoadingCategories) {
     return <FallbackLoader />;
@@ -22,6 +26,10 @@ function SubcategoriesChoicePage() {
   const handleSubcategoryClick = (subcategoryId: number) => {
     navigate(`${PATHS.SECOND_STEP.COURSES_USER}/${subcategoryId}`);
   };
+
+  if (isError) {
+    return <ForbiddenPage />;
+  }
 
   return (
     <Stack>

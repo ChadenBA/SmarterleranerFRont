@@ -4,6 +4,7 @@ import { PaginationResponse } from 'types/interfaces/Pagination';
 import {
   CourseApi,
   CreateCourseResponse,
+  EnrollCourseResponse,
   SingleCourseResponseData,
   StudentQuiz,
   StudentQuizApi,
@@ -19,14 +20,23 @@ import {
   encodeCourse,
   encodeEu,
   encodeQuizSubmission,
+  EnrollCourseResponseApi,
+  transformEnrollCourseResponse,
   transformFetchCourseResponse,
   transformFetchCoursesResponse,
+  transformLoQuizSubmissionResponse,
   transformQuizScoreResponse,
   transformQuizSubmissionResponse,
 } from './coursesApi.transform';
 import { ItemDetailsResponse } from 'types/interfaces/ItemDetailsResponse';
 import { FieldValues } from 'react-hook-form';
-import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
+import {
+  Eu,
+  QuizLoSubmission,
+  QuizLoSubmissionApi,
+  QuizSubmission,
+  QuizSubmissionApi,
+} from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
 export const courseApi = createApi({
@@ -157,11 +167,13 @@ export const courseApi = createApi({
       providesTags: ['Courses'],
     }),
 
-    enrollCourse: builder.mutation<void, number>({
+    enrollCourse: builder.mutation<EnrollCourseResponse, number>({
       query: (courseId) => ({
         url: `${ENDPOINTS.ENROLL_COURSE}/${courseId}`,
         method: MethodsEnum.POST,
       }),
+      transformResponse: (response: EnrollCourseResponseApi) =>
+        transformEnrollCourseResponse(response),
       invalidatesTags: ['Courses', 'Course'],
     }),
 
@@ -206,6 +218,19 @@ export const courseApi = createApi({
         transformFetchCoursesResponse(response),
       providesTags: ['Courses'],
     }),
+    submitLoQuiz: builder.mutation<
+      ItemDetailsResponse<QuizLoSubmission>,
+      { quizId: number | undefined; data: FieldValues }
+    >({
+      query: ({ quizId, data }) => ({
+        url: `${ENDPOINTS.SUBMIT_LO_QUIZ}/${quizId}`,
+        method: MethodsEnum.POST,
+        body: encodeQuizSubmission(data),
+      }),
+      transformResponse: (response: ItemDetailsResponse<QuizLoSubmissionApi>) =>
+        transformLoQuizSubmissionResponse(response),
+      invalidatesTags: ['Courses'],
+    }),
   }),
 });
 
@@ -228,4 +253,5 @@ export const {
   useUpdateEuMutation,
   useGetEnrolledCoursesQuery,
   useGetCoursesQuery,
+  useSubmitLoQuizMutation,
 } = courseApi;

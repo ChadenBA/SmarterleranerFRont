@@ -45,4 +45,7 @@ export const home = {
   choose_category: '1st step : Choose a category',
   choose_subcategory: '2nd step: Choose a subcategory',
   choose_course: '3rd step: Choose a course',
+  quiz_button: "Let's take a pretest",
+  access_forbidden: 'Access Forbidden',
+  access_forbidden_description: 'You are not allowed to access this page',
 };

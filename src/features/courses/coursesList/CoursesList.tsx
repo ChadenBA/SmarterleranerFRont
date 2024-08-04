@@ -18,6 +18,7 @@ function CoursesList({ courses, isLoading }: CoursesListProps) {
       {Boolean(courses) &&
         courses?.map((course) => (
           <CourseCard
+            width="45vh"
             key={course.id}
             id={course.id}
             isActive={course?.isActive}

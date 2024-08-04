@@ -2,6 +2,7 @@ import { StyledCategoriesButton } from '@components/buttons/customCategoriesButt
 import FallbackLoader from '@components/fallback/FallbackLoader';
 import { PATHS } from '@config/constants/paths';
 import { Stack, Typography } from '@mui/material';
+import ForbiddenPage from '@pages/forbidden/ForbiddenPage';
 import { useGetUserCategoriesQuery } from '@redux/apis/categories/categoriesApi';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +13,11 @@ function CategoriesChoicePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const { data: categoriesData, isLoading: isLoadingCategories } = useGetUserCategoriesQuery({
+  const {
+    data: categoriesData,
+    isLoading: isLoadingCategories,
+    isError,
+  } = useGetUserCategoriesQuery({
     ...queryParams,
     pagination: false,
   });
@@ -20,9 +25,14 @@ function CategoriesChoicePage() {
   if (isLoadingCategories) {
     return <FallbackLoader />;
   }
+
   const handleCategoryClick = (categoryId: number) => {
     navigate(`${PATHS.SECOND_STEP.CATEGORIES}/${categoryId}`);
   };
+
+  if (isError) {
+    return <ForbiddenPage />;
+  }
 
   return (
     <Stack>

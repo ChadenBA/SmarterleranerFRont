@@ -29,4 +29,35 @@ export const users = {
   update_profile: 'Mettre à jour le profil',
   profile_updated_successfully: 'Profil mis à jour avec succès',
   manage_user: 'Gérer les utilisateurs',
-}
+
+  // ----------------------- SILVERMAN RESULT -----------------------
+  whatmyresultmeans: 'Que signifient mes résultats ?',
+  Richard_M_Felder:
+    "Selon l 'Index des styles d'apprentissage de Richard M. Felder, il existe quatre dimensions des styles d'apprentissage, chacune avec deux catégories opposées (par exemple, actif et réfléchi).",
+  ResultscoreExplanation:
+    'Un score de 1 ou 3 indique une préférence légère, 5 ou 7 une préférence modérée, et 9 ou 11 une préférence forte.',
+  silvermanActive: 'Actif',
+  silvermanReflective: 'Réfléchi',
+  silvermanIntuitive: 'intuitif',
+  silvermanSensing: 'Sensitif',
+  silvermanAuditory: 'Auditif',
+  silvermanVisual: 'Visuel',
+  silvermanSequential: 'Séquentiel',
+  silvermanGlobal: 'Global',
+  explinationActive: 'Les apprenants actifs préfèrent les activités pratiques.',
+  explinationReflective: 'Les apprenants réfléchis préfèrent réfléchir aux choses.',
+  explinationIntuitive: 'Les apprenants intuitifs préfèrent les concepts abstraits.',
+  explinationSensing: 'Les apprenants sensori-moteurs préfèrent les faits concrets.',
+  explinationAuditory: 'Les apprenants auditifs préfèrent écouter les informations.',
+  explinationVisual: 'Les apprenants visuels préfèrent voir les informations.',
+  explinationGlobal: "Les apprenants globaux se concentrent sur l'ensemble.",
+  explinationSequential: 'Les apprenants séquentiels préfèrent un apprentissage étape par étape.',
+  strongpref: "Vos préférences d'apprentissage les plus fortes",
+  strongprefparagraph:
+    "D'après vos réponses, vos préférences d'apprentissage les plus fortes sont :",
+  withscore: ' avec un score de',
+  No_strong_preference_identified: 'Aucune préférence forte identifiée',
+  No_description_available: 'Aucune description disponible',
+  Please_answer_all_questions: 'Veuillez répondre à toutes les questions avant de soumettre.',
+  Learning_Style_Questionnaire: "Questionnaire sur les styles d'apprentissage",
+};

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { LearningStyleData } from 'types/interfaces/SilvermanResultData';
-import useStyles from './ResultExplanation.style'; // Import the styles
+import useStyles from './ResultExplanation.style';
+import { useTranslation } from 'react-i18next';
 
 interface ResultExplanationProps {
   scores: {
@@ -11,82 +12,73 @@ interface ResultExplanationProps {
 
 const ResultExplanation: React.FC<ResultExplanationProps> = ({ scores }) => {
   const classes = useStyles();
+  const { t } = useTranslation();
+
+  const pairs = [
+    { left: 'Reflective', right: 'Active' },
+    { left: 'Intuitive', right: 'Sensing' },
+    { left: 'Auditory', right: 'Visual' },
+    { left: 'Global', right: 'Sequential' },
+  ];
 
   const getDescription = (category: string) => {
     const descriptions: { [key: string]: string } = {
-      Active: 'Active learners are generally hands-on and prefer engaging in physical activities.',
-      Reflective:
-        'Reflective learners think things through before acting and prefer to work alone.',
-      Intuitive: 'Intuitive learners focus on the big picture and prefer abstract concepts.',
-      Sensing:
-        'Sensing learners focus on concrete facts and details and prefer hands-on experiences.',
-      Auditory: 'Auditory learners prefer to hear information and may benefit from discussions.',
-      Visual: 'Visual learners prefer to see information and often use diagrams and charts.',
-      Global: 'Global learners see the overall picture and prefer to understand the big picture.',
-      Sequential: 'Sequential learners prefer to learn step-by-step and follow a logical sequence.',
+      Active: t('users.explinationActive'),
+      Reflective: t('users.explinationReflective'),
+      Intuitive: t('users.explinationIntuitive'),
+      Sensing: t('users.explinationSensing'),
+      Auditory: t('users.explinationAuditory'),
+      Visual: t('users.explinationVisual'),
+      Global: t('users.explinationGlobal'),
+      Sequential: t('users.explinationSequential'),
     };
 
-    return descriptions[category] || 'No description available.';
+    return descriptions[category] || t('users.No description available.');
   };
 
-  const getStrongestPreferences = () => {
-    let maxScore = 0;
-    let strongestCategories: string[] = [];
+  const getMaxPreferenceForPairs = () => {
+    const maxPreferences = pairs.map((pair) => {
+      const leftScore = Math.abs(Number(scores[pair.left]?.score || 0));
+      const rightScore = Math.abs(Number(scores[pair.right]?.score || 0));
 
-    for (const category in scores) {
-      const data: LearningStyleData = scores[category];
-      const score = Math.abs(Number(data.score));
-
-      if (!isNaN(score)) {
-        if (score > maxScore) {
-          maxScore = score;
-          strongestCategories = [category];
-        } else if (score === maxScore) {
-          strongestCategories.push(category);
-        }
+      if (leftScore > rightScore) {
+        return { category: pair.left, score: leftScore };
+      } else {
+        return { category: pair.right, score: rightScore };
       }
-    }
-
-    return { strongestCategories, maxScore };
+    });
+    return maxPreferences;
   };
 
-  const { strongestCategories, maxScore } = getStrongestPreferences();
+  const maxPreferences = getMaxPreferenceForPairs();
 
   return (
     <Box mt={4} className={classes.container}>
       <Typography variant="h1" component="h1" gutterBottom className={classes.title}>
-        What do my results mean?
+        {t('users.whatmyresultmeans')}
       </Typography>
       <Typography variant="body1" paragraph className={classes.paragraph}>
-        According to the Index of Learning Styles by Richard M. Felder, there are four dimensions of
-        learning styles, each with two opposing categories (e.g., active and reflective).
+        {t('users.Richard_M_Felder')}
       </Typography>
       <Typography variant="body1" paragraph className={classes.paragraph}>
-        If your score for a learning style dimension is 1 or 3, you have a mild preference for that
-        category.
-      </Typography>
-      <Typography variant="body1" paragraph className={classes.paragraph}>
-        If your score for a dimension is 5 or 7, you have a moderate preference for that category.
-      </Typography>
-      <Typography variant="body1" paragraph className={classes.paragraph}>
-        If your score for a dimension is 9 or 11, you have a strong preference for that category.
+        {t('users.ResultscoreExplanation')}
       </Typography>
       <Typography variant="h5" component="h2" gutterBottom className={classes.subtitle}>
-        Your Strongest Learning Preference
+        {t('users.strongpref')}
       </Typography>
       <Typography variant="body1" paragraph className={classes.paragraph}>
-        Based on your responses, your strongest learning preference(s) are:
+        {t('users.strongprefparagraph')}
       </Typography>
-      {strongestCategories.length > 0 ? (
-        strongestCategories.map((category) => (
+      {maxPreferences.length > 0 ? (
+        maxPreferences.map(({ category, score }) => (
           <Typography key={category} variant="body1" paragraph className={classes.paragraph}>
-            <strong>{category}</strong> with a score of <strong>{maxScore}</strong>.
-            {getDescription(category)}
+            <strong>{t(`users.silverman${category}`)}</strong> {t('users.withscore')}{' '}
+            <strong>{score}</strong>.{getDescription(category)}
           </Typography>
         ))
       ) : (
         <Typography variant="body1" paragraph className={classes.paragraph}>
-          No strong preference identified.
+          {t('users.No_strong_preference_identified')}
         </Typography>
       )}
     </Box>

@@ -20,3 +20,15 @@ export interface QuizSubmission {
   totalScorePossible: number;
   status: string;
 }
+
+export interface QuizLoSubmissionApi {
+  score: number;
+  total_score_possible: number;
+  passed: boolean;
+}
+
+export interface QuizLoSubmission {
+  score: number;
+  totalScorePossible: number;
+  passed: boolean;
+}
