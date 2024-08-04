@@ -34,6 +34,14 @@ export interface CourseForAdmin {
   title: string;
   description: string;
   categoryId: number;
+  category?: {
+    id: number;
+    title: string;
+  };
+  subcategory?: {
+    id: number;
+    title: string;
+  };
   subcategoryId: number;
   isOffline?: 1 | 0;
   isActive?: 1 | 0;

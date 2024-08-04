@@ -1,7 +1,8 @@
-import { Button, Typography, Box, Stack, alpha, styled } from '@mui/material';
+import { Typography, Box, Stack, alpha, styled } from '@mui/material';
 import { BLUE, GREY } from '@config/colors/colors';
 import { StyleProps } from './CourseCard.style.type';
 import { ThemeModeEnum } from '@config/enums/theme.enum';
+import { LoadingButton } from '@mui/lab';
 
 export const CourseCardContainer = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'width',
@@ -63,7 +64,7 @@ export const CourseTitle = styled(Typography)(({ theme }) => ({
   },
 }));
 
-export const BuyButton = styled(Button)(({ theme }) => ({
+export const BuyButton = styled(LoadingButton)(({ theme }) => ({
   backgroundColor: BLUE.main,
   color: theme.palette.common.white,
   borderRadius: 20,

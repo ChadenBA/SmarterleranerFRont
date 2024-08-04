@@ -7,6 +7,7 @@ import {
   ApiLO,
   ApiQuestion,
   CourseApi,
+  EnrollCourseResponse,
   SingleCourseResponseData,
   StudentQuiz,
   StudentQuizApi,
@@ -22,7 +23,13 @@ import { Question, Quiz } from 'types/models/Quiz';
 import { decodeQuestionType, getQuestionTypeFilter } from '@utils/helpers/course.helpers';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { QuestionTypeEnum, QuestionTypeLabelEnum } from '@config/enums/questionType.enum';
-import { Eu, QuizSubmission, QuizSubmissionApi } from 'types/models/Eu';
+import {
+  Eu,
+  QuizLoSubmission,
+  QuizLoSubmissionApi,
+  QuizSubmission,
+  QuizSubmissionApi,
+} from 'types/models/Eu';
 import { Lo } from 'types/models/Lo';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
 
@@ -103,6 +110,14 @@ export const transformSingleCourse = (course: CourseApi): CourseForAdmin => {
     coverMedia: transformSingleMedia(course.media[0]),
     isSubscribed: course.is_subscribed ? 1 : 0,
     studentLevel: course.student_level,
+    category: {
+      id: course.category.id,
+      title: course.category.title,
+    },
+    subcategory: {
+      id: course.subcategory.id,
+      title: course.subcategory.title,
+    },
   };
 };
 
@@ -451,6 +466,32 @@ export const transformQuizSubmissionResponse = (
       score: data.data.score,
       totalScorePossible: data.data.total_score_possible,
       status: data.data.status,
+    },
+  };
+};
+
+export const transformLoQuizSubmissionResponse = (
+  data: ItemDetailsResponse<QuizLoSubmissionApi>,
+): ItemDetailsResponse<QuizLoSubmission> => {
+  return {
+    message: data.message,
+    data: {
+      score: data.data.score,
+      totalScorePossible: data.data.total_score_possible,
+      passed: data.data.passed,
+    },
+  };
+};
+
+export interface EnrollCourseResponseApi {
+  courses_count: number;
+}
+export const transformEnrollCourseResponse = (
+  data: EnrollCourseResponseApi,
+): EnrollCourseResponse => {
+  return {
+    data: {
+      coursesCount: data.courses_count,
     },
   };
 };

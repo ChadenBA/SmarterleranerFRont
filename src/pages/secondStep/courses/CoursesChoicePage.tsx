@@ -4,6 +4,7 @@ import { PATHS } from '@config/constants/paths';
 import CourseCard from '@features/courses/coursesCard/CourseCard';
 import CoursesListSkeleton from '@features/courses/coursesList/coursesListSkeleton/CoursesListSkeleton';
 import { Stack, Button, Typography, Skeleton } from '@mui/material';
+import ForbiddenPage from '@pages/forbidden/ForbiddenPage';
 import { useGetCoursesBySubcategoryQuery } from '@redux/apis/courses/coursesApi';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -22,6 +23,7 @@ function CoursesChoicePage() {
     data: coursesData,
     isLoading: isLoadingCourses,
     isFetching,
+    isError,
   } = useGetCoursesBySubcategoryQuery({
     params: queryParams,
     subcategoryId: subcategoryIdNumber,
@@ -43,6 +45,10 @@ function CoursesChoicePage() {
 
   if (!coursesData?.data?.length) {
     return <NoDataFound message={t('course.not_found')} />;
+  }
+
+  if (isError) {
+    return <ForbiddenPage />;
   }
 
   return (

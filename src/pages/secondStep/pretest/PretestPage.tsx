@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { useGetCourseByIdQuery, useSubmitQuizMutation } from '@redux/apis/courses/coursesApi';
-import { Typography, List, ListItem, Stack } from '@mui/material';
+import { Typography, List, ListItem, Stack, useTheme } from '@mui/material';
 import { FormProvider, useForm } from 'react-hook-form';
 import CustomRadioButton from '@components/Inputs/customRadioButton/CustomRadioButton';
 import CustomCheckboxButtonWithValue from '@components/Inputs/customCheckboxButton/CustomCheckboxButtonWithValue';
@@ -12,7 +12,7 @@ import { QuizSubmission } from 'types/models/Eu';
 import { useTranslation } from 'react-i18next';
 import { QUIZ_FORM_CONFIG } from '@features/courses/addCourse/AddCourseForm.constants';
 import { StyledQuestionsContainer } from './PrestestPage.style';
-import { useAppDispatch } from '@redux/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CustomLoadingButton from '@components/buttons/customLoadingButton/CustomLoadingButton';
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
@@ -56,11 +56,18 @@ function PretestPage() {
   });
   const [open, setOpen] = useState(false);
 
+  const user = useAppSelector((state) => state.auth.user);
+
   const onClose = () => {
     setOpen(false);
     setQuizResults(undefined);
-    navigate(PATHS.SECOND_STEP.SILVERMAN_QUESTIONS);
+    if (user?.result != null) {
+      navigate(`${PATHS.COURSES.ROOT}/${courseId}`);
+    } else {
+      navigate(`${PATHS.SECOND_STEP.SILVERMAN_QUESTIONS}/${courseId}`);
+    }
   };
+  const theme = useTheme();
 
   if (quizResults) {
     return (
@@ -87,7 +94,7 @@ function PretestPage() {
   if (isError) return <Error />;
 
   return (
-    <>
+    <Stack sx={{ background: theme.palette.background.default, borderRadius: 5 }}>
       <Stack spacing={2} pl={10} pt={4} pb={2}>
         <Typography variant="h2">
           {courseData?.title} {t('common.pretest')}
@@ -151,7 +158,7 @@ function PretestPage() {
           </Stack>
         </FormProvider>
       </Stack>
-    </>
+    </Stack>
   );
 }
 

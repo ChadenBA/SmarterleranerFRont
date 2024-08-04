@@ -12,7 +12,7 @@ import {
   Alert as MuiAlert,
   Stack,
 } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   useGetQuestionsQuery,
   useSubmitResponsesMutation,
@@ -21,14 +21,18 @@ import { useAppDispatch } from '@redux/hooks';
 import { showError } from '@redux/slices/snackbarSlice';
 import AppAlert from '../appAlert/AppAlert';
 import { PATHS } from '@config/constants/paths';
+import { useTranslation } from 'react-i18next';
 
 const QUESTIONS_PER_PAGE = 11;
 
 const SilvermanForm: React.FC = () => {
+  const { courseId } = useParams<{ courseId: string }>();
   const { data: questions, isLoading, isError } = useGetQuestionsQuery();
   const [submitResponses] = useSubmitResponsesMutation();
   const [responses, setResponses] = useState<{ [key: number]: string }>({});
   const [currentPage, setCurrentPage] = useState<number>(0);
+
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -43,25 +47,30 @@ const SilvermanForm: React.FC = () => {
     event.preventDefault();
 
     if (!validateResponses(responses)) {
-      dispatch(showError('Please answer all questions before submitting.'));
+      dispatch(showError(t('users.Please_answer_all_questions')));
       return;
     }
 
     try {
       const formattedResponses = formatResponses(responses);
-      await submitResponses(formattedResponses).unwrap();
+      await submitResponses({
+        ...formattedResponses,
+        course_id: parseInt(String(courseId), 10),
+      }).unwrap();
       navigate(PATHS.DASHBOARD.STUDENT.ROOT);
     } catch (error) {
       console.error('Submission error:', error);
     }
   };
 
-  const formatResponses = (responses: { [key: number]: string }): { responses: string[] } => {
+  const formatResponses = (responses: {
+    [key: number]: string;
+  }): { responses: string[]; course_id: number } => {
     const sortedResponses = Object.keys(responses)
       .sort((a, b) => parseInt(a) - parseInt(b))
       .map((key) => responses[parseInt(key)]);
 
-    return { responses: sortedResponses };
+    return { responses: sortedResponses, course_id: parseInt(String(courseId), 10) };
   };
 
   const validateResponses = (responses: { [key: number]: string }): boolean => {
@@ -100,7 +109,7 @@ const SilvermanForm: React.FC = () => {
       }}
     >
       <Typography variant="h1" component="h1" gutterBottom>
-        Learning Style Questionnaire
+        {t('users.Learning_Style_Questionnaire')}
       </Typography>
       <form onSubmit={handleSubmit}>
         {(questions || [])
@@ -160,7 +169,7 @@ const SilvermanForm: React.FC = () => {
           </Button>
         </Box>
       </form>
-      <AppAlert /> {/* Include the custom alert component */}
+      <AppAlert />
     </Stack>
   );
 };

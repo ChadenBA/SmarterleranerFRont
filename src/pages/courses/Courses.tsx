@@ -14,9 +14,17 @@ import { useEffect } from 'react';
 import { RootState } from '@redux/store';
 import { useTranslation } from 'react-i18next';
 import CoursesList from '@features/courses/coursesList/CoursesList';
+import FilterHeader from '@features/courses/filterSection/filterHeader/FilterHeader';
 
 const Courses = () => {
-  const { queryParams, handlePageChange, handleSearchChange, handleResetFilters } = usePagination();
+  const {
+    queryParams,
+    handlePageChange,
+    handleSearchChange,
+    handleSortChange,
+    handleResetFilters,
+    handleFiltersRangeChange,
+  } = usePagination()
 
   const { t } = useTranslation();
 
@@ -41,6 +49,14 @@ const Courses = () => {
   return (
     <StackWithBackground>
       <Header />
+      <FilterHeader
+        isCoursePage
+        hasFilter
+        total={data?.meta.total as number}
+        handleOrderChange={handleSortChange}
+        queryParams={queryParams}
+        handleFiltersRangeChange={handleFiltersRangeChange}
+      />
 
       <Stack alignItems={'flex-end'} mr={2}>
         <Typography

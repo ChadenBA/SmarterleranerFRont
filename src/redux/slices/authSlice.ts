@@ -1,6 +1,8 @@
 import { GLOBAL_VARIABLES } from '@config/constants/globalVariables';
 import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
 import { authApi } from '@redux/apis/auth/authApi';
+import { courseApi } from '@redux/apis/courses/coursesApi';
+import { silvermanApi } from '@redux/apis/user/silvermanQuestionsApi';
 import { userApi } from '@redux/apis/user/usersApi';
 import { RootState } from '@redux/store';
 import { createSlice } from '@reduxjs/toolkit';
@@ -54,6 +56,19 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.media = payload.data.media;
         setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(payload.data));
+      })
+
+      .addMatcher(courseApi.endpoints.enrollCourse.matchFulfilled, (state, { payload }) => {
+        if (state.user) {
+          state.user.coursesCount = payload.data.coursesCount;
+          setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(state.user));
+        }
+      })
+      .addMatcher(silvermanApi.endpoints.submitResponses.matchFulfilled, (state, { payload }) => {
+        if (state.user) {
+          state.user.result = payload.result;
+          setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(state.user));
+        }
       });
   },
 });

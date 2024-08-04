@@ -8,7 +8,7 @@ export const footer = {
   student_dashboard: "Tableau de bord de l'étudiant",
   student_support: "Support de l'étudiant",
   news_letter: "Bulletin d'information",
-  address: 'Tunisie, Soussa, 4000',
+  address: 'Université de Londres',
   enter_email: 'Entrez votre email',
   subscribe: 'Souscrire',
-}
+};

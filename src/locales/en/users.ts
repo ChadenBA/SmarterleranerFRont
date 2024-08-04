@@ -29,4 +29,35 @@ export const users = {
   update_profile: 'Update Profile',
   profile_updated_successfully: 'Profile updated successfully',
   manage_user: 'Manage Users',
-}
+
+  // ----------------------- SILVERMAN RESULT -----------------------
+  whatmyresultmeans: 'What do my results mean?',
+  Richard_M_Felder:
+    'According to the Index of Learning Styles by Richard M. Felder, there are four dimensions of learning styles, each with two opposing categories (e.g., active and reflective).',
+  ResultscoreExplanation:
+    'A score of 1 or 3 indicates a mild preference, 5 or 7 a moderate preference, and 9 or 11 a strong preference.',
+  silvermanActive: 'Active',
+  silvermanReflective: 'Reflective',
+  silvermanIntuitive: 'Intuitive',
+  silvermanSensing: 'Sensing',
+  silvermanAuditory: 'Auditory',
+  silvermanVisual: 'Visual',
+  silvermanSequential: 'Sequential',
+  silvermanGlobal: 'Global',
+  explinationActive: 'Active learners prefer hands-on activities.',
+  explinationReflective: 'Reflective learners prefer to think things through.',
+  explinationIntuitive: 'Intuitive learners prefer abstract concepts.',
+  explinationSensing: 'Sensing learners prefer concrete facts.',
+  explinationAuditory: 'Auditory learners prefer listening to information.',
+  explinationVisual: 'Visual learners prefer seeing information.',
+  explinationGlobal: 'Global learners focus on the big picture.',
+  explinationSequential: 'Sequential learners prefer step-by-step learning.',
+  strongpref: 'Your Strongest Learning Preferences',
+  strongprefparagraph: ' Based on your responses, your strongest learning preferences are :',
+  withscore: 'with a score of',
+
+  No_strong_preference_identified: 'No strong preference identified',
+  No_description_available: 'No description available',
+  Please_answer_all_questions: 'Please answer all questions before submitting.',
+  Learning_Style_Questionnaire: 'Learning Style Questionnaire',
+};

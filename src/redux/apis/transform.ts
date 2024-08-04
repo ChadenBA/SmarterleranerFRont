@@ -4,7 +4,7 @@ import { generatePictureSrc } from '@utils/helpers/string.helpers';
 import { transformSingleUser } from './user/usersApi.transform';
 import { UpdateResponse, UpdateResponseApi } from './user/usersApi.type';
 export const transformMedia = (medias: MediaApi[]): Media[] => {
-  return medias.map((media) => transformSingleMedia(media));
+  return medias?.map((media) => transformSingleMedia(media));
 };
 
 export const transformSingleMedia = (media: MediaApi): Media => {

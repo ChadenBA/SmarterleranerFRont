@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 import { LearningStyleData } from 'types/interfaces/SilvermanResultData';
+import { useTranslation } from 'react-i18next';
 
 interface ResultsDisplayProps {
   scores: {
@@ -9,6 +10,8 @@ interface ResultsDisplayProps {
 }
 
 const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ scores }) => {
+  const { t } = useTranslation();
+
   if (!scores) return <Typography>No results available</Typography>;
 
   const pairs = [
@@ -24,15 +27,15 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ scores }) => {
     leftValue: number,
     rightValue: number,
   ) => {
-    const totalRange = 22; // Assuming the total range is from -11 to +11
+    const totalRange = 22;
     const normalizedLeftValue = Math.abs((leftValue / totalRange) * 100);
     const normalizedRightValue = Math.abs((rightValue / totalRange) * 100);
 
     return (
       <Box mb={4}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography>{leftLabel}</Typography>
-          <Typography>{rightLabel}</Typography>
+          <Typography>{t(`users.silverman${leftLabel}`)}</Typography>
+          <Typography>{t(`users.silverman${rightLabel}`)}</Typography>
         </Box>
         <Box
           position="relative"
@@ -48,7 +51,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ scores }) => {
               right: '50%',
               height: '100%',
               backgroundColor: '#fa853f',
-              borderRadius: '8px 0 0 5px',
+              borderRadius: '8px 0 0 8px',
               animation: 'mymove-left 2s ease-out forwards',
               width: 0,
               animationDelay: '0.5s',

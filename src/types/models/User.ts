@@ -1,4 +1,5 @@
 import { UserRoleEnum } from '@config/enums/role.enum';
+import { Result } from 'types/interfaces/SilvermanResultData';
 
 export interface User {
   id: number;
@@ -18,4 +19,5 @@ export interface User {
   createdAt?: string;
   password?: string;
   passwordConfirmation?: string;
+  result?: Result;
 }
