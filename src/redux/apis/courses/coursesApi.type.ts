@@ -125,5 +125,6 @@ export interface StudentQuizApi {
 export interface EnrollCourseResponse {
   data: {
     coursesCount: number;
+    latestCourseId: number;
   };
 }

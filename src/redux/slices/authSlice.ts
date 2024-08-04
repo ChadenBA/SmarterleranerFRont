@@ -69,6 +69,12 @@ const authSlice = createSlice({
           state.user.result = payload.result;
           setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(state.user));
         }
+      })
+      .addMatcher(courseApi.endpoints.enrollCourse.matchFulfilled, (state, { payload }) => {
+        if (state.user) {
+          state.user.latestCourseId = payload.data.latestCourseId;
+          setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(state.user));
+        }
       });
   },
 });

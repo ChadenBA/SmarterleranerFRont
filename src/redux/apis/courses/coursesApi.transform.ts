@@ -485,6 +485,7 @@ export const transformLoQuizSubmissionResponse = (
 
 export interface EnrollCourseResponseApi {
   courses_count: number;
+  latest_course_id: number;
 }
 export const transformEnrollCourseResponse = (
   data: EnrollCourseResponseApi,
@@ -492,6 +493,7 @@ export const transformEnrollCourseResponse = (
   return {
     data: {
       coursesCount: data.courses_count,
+      latestCourseId: data.latest_course_id,
     },
   };
 };
