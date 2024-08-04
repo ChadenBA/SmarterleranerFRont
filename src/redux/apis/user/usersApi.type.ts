@@ -17,6 +17,7 @@ export interface UserApi {
   media?: { id: number; model_id: number; file_name: string }[];
   created_at?: string;
   result?: Result;
+  latest_course_id?: number;
 }
 export interface SingleUserResponseData {
   message: string;

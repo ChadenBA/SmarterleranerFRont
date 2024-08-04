@@ -5,12 +5,18 @@ import { Navigate } from 'react-router-dom';
 
 export function SilvermanGuard({ children }: { children: ReactNode }) {
   const user = useAppSelector((state) => state.auth.user);
-  if (Boolean(user?.result)) {
-    return <Navigate to={PATHS.DASHBOARD.STUDENT.ROOT} replace />;
+
+  if (!user?.result) {
+    const courseId = user?.latestCourseId;
+    return (
+      <Navigate
+        to={{
+          pathname: `${PATHS.SECOND_STEP.SILVERMAN_QUESTIONS}/${courseId}`,
+        }}
+        replace
+      />
+    );
   }
-  // else if (!Boolean(user?.result)) {
-  //   return <Navigate to={PATHS.SECOND_STEP.SILVERMAN_QUESTIONS} replace />;
-  // }
 
   return <>{children}</>;
 }

@@ -60,6 +60,7 @@ export const transformSingleUser = (data: UserApi): User => {
     major: data.major,
     coursesCount: data.courses_count,
     result: data.result,
+    latestCourseId: data.latest_course_id,
     isValid: data.is_valid,
     media: data?.media
       ? {

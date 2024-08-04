@@ -20,4 +20,5 @@ export interface User {
   password?: string;
   passwordConfirmation?: string;
   result?: Result;
+  latestCourseId?: number;
 }

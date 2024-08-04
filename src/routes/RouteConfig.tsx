@@ -10,7 +10,6 @@ import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
 import SecondStepLayout from '@layouts/secondStepLayout/SecondStepLayout';
 import { SubscriberGuard } from '@guards/SubscriberGuard';
-import { LearnerGuard } from '@guards/LearnerGuard';
 import { SilvermanGuard } from '@guards/SilvermanGuard';
 
 const Courses = lazy(() => import('src/pages/courses/Courses'));
@@ -103,7 +102,9 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <AuthGuard>
             <SubscriberGuard>
-              <Courses />
+              <SilvermanGuard>
+                <Courses />
+              </SilvermanGuard>
             </SubscriberGuard>
           </AuthGuard>
         ),
@@ -113,7 +114,9 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <AuthGuard>
             <SubscriberGuard>
-              <CourseDetail />
+              <SilvermanGuard>
+                <CourseDetail />
+              </SilvermanGuard>
             </SubscriberGuard>
           </AuthGuard>
         ),
@@ -238,7 +241,9 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
             <SubscriberGuard>
-              <StudentDashboard />
+              <SilvermanGuard>
+                <StudentDashboard />
+              </SilvermanGuard>
             </SubscriberGuard>
           </RoleBasedGuard>
         ),
@@ -247,7 +252,11 @@ export const ROUTE_CONFIG: RouteObject[] = [
         path: PATHS.DASHBOARD.STUDENT.TAKE_QUIZ,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-            <PretestPage />
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <PretestPage />
+              </SilvermanGuard>
+            </SubscriberGuard>
           </RoleBasedGuard>
         ),
       },
@@ -257,7 +266,9 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
             <SubscriberGuard>
-              <StudentQuizPage />
+              <SilvermanGuard>
+                <StudentQuizPage />
+              </SilvermanGuard>
             </SubscriberGuard>
           </RoleBasedGuard>
         ),
@@ -267,7 +278,9 @@ export const ROUTE_CONFIG: RouteObject[] = [
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
             <SubscriberGuard>
-              <StudentCoursesPage />
+              <SilvermanGuard>
+                <StudentCoursesPage />
+              </SilvermanGuard>
             </SubscriberGuard>
           </RoleBasedGuard>
         ),
@@ -285,9 +298,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
     path: PATHS.SECOND_STEP.ROOT,
     element: (
       <AuthGuard>
-        <LearnerGuard>
-          <SecondStepLayout />
-        </LearnerGuard>
+        <SecondStepLayout />
       </AuthGuard>
     ),
     children: [
@@ -327,9 +338,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
         path: PATHS.SECOND_STEP.SILVERMAN,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-            <SilvermanGuard>
-              <SilvermanQuestionsPage />
-            </SilvermanGuard>
+            <SilvermanQuestionsPage />
           </RoleBasedGuard>
         ),
       },
