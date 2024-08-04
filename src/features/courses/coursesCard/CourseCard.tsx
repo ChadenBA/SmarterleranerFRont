@@ -63,7 +63,7 @@ const CourseCard = ({
   const [putCourseActive] = usePutCourseActiveMutation();
   const [setCourseOffline] = useSetCourseOfflineMutation();
   const [setCourseOnline] = useSetCourseOnlineMutation();
-  const [enrollCourse] = useEnrollCourseMutation();
+  const [enrollCourse, { isLoading }] = useEnrollCourseMutation();
 
   const handleDeleteCourse = async (id: number) => {
     try {
@@ -105,6 +105,20 @@ const CourseCard = ({
     }
   };
 
+  const handleClick = () => {
+    if (!isAdmin) {
+      if (Number(isEnrolled) === 1) {
+        if (studentLevel) {
+          navigateToCourseDetailPage(id);
+        } else {
+          navigate(`${PATHS.SECOND_STEP.QUIZ}/${id}`);
+        }
+      } else {
+        return;
+      }
+    }
+  };
+
   const handleButtonClick = () => {
     if (!user) {
       navigate(`/${PATHS.AUTH.ROOT}/${PATHS.AUTH.LOGIN}`);
@@ -136,7 +150,7 @@ const CourseCard = ({
 
   return (
     <CourseCardContainer width={width || '55vh'}>
-      <CourseImageContainer onClick={() => !isAdmin && navigateToCourseDetailPage(id)}>
+      <CourseImageContainer onClick={handleClick}>
         <CourseImage src={image} alt={courseTitle} />
       </CourseImageContainer>
 
@@ -160,11 +174,28 @@ const CourseCard = ({
           />
         )}
         <Divider />
-        {!isAdmin && Number(isEnrolled) === 1 && <QuizStatusChip status={studentLevel as string} />}
+        {!isAdmin &&
+          Number(isEnrolled) === 1 &&
+          (studentLevel ? (
+            <QuizStatusChip status={studentLevel} />
+          ) : (
+            <BuyButton
+              onClick={() => navigate(`${PATHS.DASHBOARD.STUDENT.QUIZ}/${id}`)}
+              variant="outlined"
+              color="primary"
+            >
+              {t('home.quiz_button')}
+            </BuyButton>
+          ))}
 
         {!isAdmin && !(Number(isEnrolled) === 1) ? (
           <Stack alignItems="flex-end" sx={{ zIndex: 999 }}>
-            <BuyButton onClick={handleButtonClick} variant="outlined" color="primary">
+            <BuyButton
+              loading={isLoading}
+              onClick={handleButtonClick}
+              variant="outlined"
+              color="primary"
+            >
               {!isEnrolled ? t('home.enroll_button') : GLOBAL_VARIABLES.EMPTY_STRING}
             </BuyButton>
           </Stack>

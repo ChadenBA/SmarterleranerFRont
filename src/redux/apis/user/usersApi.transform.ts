@@ -59,6 +59,8 @@ export const transformSingleUser = (data: UserApi): User => {
     birthDate: convertFromUnixTimestampToDate(data.birth_date ?? 0),
     major: data.major,
     coursesCount: data.courses_count,
+    result: data.result,
+    latestCourseId: data.latest_course_id,
     isValid: data.is_valid,
     media: data?.media
       ? {
@@ -77,7 +79,6 @@ export const transformSingleUser = (data: UserApi): User => {
 
 export const encodeUser = (values: FieldValues): FormData => {
   const formData = new FormData();
-  // birth_date out of formValues
 
   if (values.media) {
     formData.append('profile_picture', values.media);

@@ -1,4 +1,5 @@
 import { UserRoleEnum } from '@config/enums/role.enum';
+import { Result } from 'types/interfaces/SilvermanResultData';
 import { User } from 'types/models/User';
 
 export interface UserApi {
@@ -15,6 +16,8 @@ export interface UserApi {
   is_valid?: 0 | 1;
   media?: { id: number; model_id: number; file_name: string }[];
   created_at?: string;
+  result?: Result;
+  latest_course_id?: number;
 }
 export interface SingleUserResponseData {
   message: string;

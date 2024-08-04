@@ -11,12 +11,12 @@ export interface CourseApi {
   category_id: number;
   category: {
     id: number;
-    category: string;
+    title: string;
   };
   subcategory_id: number;
   subcategory: {
     id: number;
-    subcategory: string;
+    title: string;
   };
   description: string;
   is_active?: 0 | 1;
@@ -120,5 +120,11 @@ export interface StudentQuizApi {
       id: number;
       title: string;
     };
+  };
+}
+export interface EnrollCourseResponse {
+  data: {
+    coursesCount: number;
+    latestCourseId: number;
   };
 }

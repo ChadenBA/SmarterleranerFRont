@@ -59,7 +59,7 @@ export const TopBar = ({ items }: TopBarProps) => {
       setIsScrolled(false);
     }
   };
-
+  
   const disabled = user?.coursesCount === 0;
 
   const toggleDrawer = (open: boolean) => {

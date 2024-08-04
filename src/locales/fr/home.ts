@@ -44,4 +44,7 @@ export const home = {
   choose_category: '1ère étape: Choisissez une catégorie',
   choose_subcategory: '2ème étape: Choisissez une sous-catégorie',
   choose_course: '3ème étape: Choisissez un cours',
+  quiz_button: 'Commencer le pré-test',
+  access_forbidden: 'Accès interdit',
+  access_forbidden_description: "Vous n'êtes pas autorisé à accéder à cette page",
 };

@@ -9,7 +9,10 @@ import DashboardLayout from '@layouts/dashboardLayout/DashboardLayout';
 import { RoleBasedGuard } from '@guards/RoleBasedGuard';
 import { UserRoleEnum } from '@config/enums/role.enum';
 import SecondStepLayout from '@layouts/secondStepLayout/SecondStepLayout';
+import { SubscriberGuard } from '@guards/SubscriberGuard';
+import { SilvermanGuard } from '@guards/SilvermanGuard';
 
+const Courses = lazy(() => import('src/pages/courses/Courses'));
 const HomePage = lazy(() => import('src/pages/home/HomePage'));
 const NotFound = lazy(() => import('src/pages/notFound/NotFound'));
 const SignUpPage = lazy(() => import('src/pages/auth/signup/signupPage'));
@@ -72,6 +75,7 @@ const EnrolledCoursesList = lazy(
 const SilvermanQuestionsPage = lazy(
   () => import('src/pages/silvermanQuestions/SilvermanQuestionsPage'),
 );
+const CourseDetail = lazy(() => import('src/pages/courses/courseDetails/CourseDetail'));
 export const ROUTE_CONFIG: RouteObject[] = [
   {
     path: PATHS.AUTH.ROOT,
@@ -93,8 +97,33 @@ export const ROUTE_CONFIG: RouteObject[] = [
     children: [
       { path: PATHS.ROOT, element: <HomePage /> },
       { path: PATHS.ABOUT_US, element: <AboutUsPage /> },
+      {
+        path: PATHS.COURSES.ROOT,
+        element: (
+          <AuthGuard>
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <Courses />
+              </SilvermanGuard>
+            </SubscriberGuard>
+          </AuthGuard>
+        ),
+      },
+      {
+        path: PATHS.COURSES.COURSE,
+        element: (
+          <AuthGuard>
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <CourseDetail />
+              </SilvermanGuard>
+            </SubscriberGuard>
+          </AuthGuard>
+        ),
+      },
     ],
   },
+
   {
     path: PATHS.DASHBOARD.ROOT,
     element: (
@@ -204,19 +233,43 @@ export const ROUTE_CONFIG: RouteObject[] = [
           </RoleBasedGuard>
         ),
       },
+
+      // ------------------ STUDENT DASHBOARD ------------------
+
       {
         path: PATHS.DASHBOARD.STUDENT.ROOT,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-            <StudentDashboard />
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <StudentDashboard />
+              </SilvermanGuard>
+            </SubscriberGuard>
           </RoleBasedGuard>
         ),
       },
       {
+        path: PATHS.DASHBOARD.STUDENT.TAKE_QUIZ,
+        element: (
+          <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <PretestPage />
+              </SilvermanGuard>
+            </SubscriberGuard>
+          </RoleBasedGuard>
+        ),
+      },
+
+      {
         path: PATHS.DASHBOARD.STUDENT.MY_QUIZZES,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-            <StudentQuizPage />
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <StudentQuizPage />
+              </SilvermanGuard>
+            </SubscriberGuard>
           </RoleBasedGuard>
         ),
       },
@@ -224,7 +277,11 @@ export const ROUTE_CONFIG: RouteObject[] = [
         path: PATHS.DASHBOARD.STUDENT.MY_PROGRAM.ROOT,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
-            <StudentCoursesPage />
+            <SubscriberGuard>
+              <SilvermanGuard>
+                <StudentCoursesPage />
+              </SilvermanGuard>
+            </SubscriberGuard>
           </RoleBasedGuard>
         ),
         children: [
@@ -278,7 +335,7 @@ export const ROUTE_CONFIG: RouteObject[] = [
         ),
       },
       {
-        path: PATHS.SECOND_STEP.SILVERMAN_QUESTIONS,
+        path: PATHS.SECOND_STEP.SILVERMAN,
         element: (
           <RoleBasedGuard accessibleRoles={[UserRoleEnum.USER]}>
             <SilvermanQuestionsPage />
