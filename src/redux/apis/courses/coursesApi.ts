@@ -38,7 +38,7 @@ import {
   QuizSubmissionApi,
 } from 'types/models/Eu';
 import { FileWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
-import { Progress, setUploadProgress } from '../../slices/uploadSlice';
+import { setUploadProgress } from '../../slices/uploadSlice';
 import axios, { AxiosProgressEvent, AxiosRequestConfig } from 'axios';
 import { getFromLocalStorage, setToLocalStorage } from '@utils/localStorage/storage';
 import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
@@ -324,6 +324,7 @@ export const courseApi = createApi({
           };
         }
       },
+    }),
     submitLoQuiz: builder.mutation<
       ItemDetailsResponse<QuizLoSubmission>,
       { quizId: number | undefined; data: FieldValues }
