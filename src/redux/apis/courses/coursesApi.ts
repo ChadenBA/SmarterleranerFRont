@@ -305,8 +305,10 @@ export const courseApi = createApi({
           },
 
           onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+            const percentCompleted = (progressEvent.loaded * 100) / (progressEvent.total ?? 1);
+
             const progress = {
-              progress: Math.round((progressEvent.loaded * 100) / (progressEvent.total ?? 1)),
+              progress: percentCompleted,
               id: file.name + '-' + file.size + '-' + file.lastModified,
             };
             dispatch(setUploadProgress(progress));
