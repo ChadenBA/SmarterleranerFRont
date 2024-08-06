@@ -6,4 +6,5 @@ export const lo = {
   title_required: 'Le titre est requis',
   abstract: 'Abstrait',
   concrete: 'Concret',
+  type_required: 'Le type est requis',
 };

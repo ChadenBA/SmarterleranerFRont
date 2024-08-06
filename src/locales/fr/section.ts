@@ -22,6 +22,7 @@ export const section = {
   add: 'Ajouter une section',
   update: 'Mettre à jour la section',
   delete: 'Supprimer la section',
+  updated_success: 'Section mise à jour avec succès',
   quiz: {
     question: 'Question : ',
     question_placeholder: 'Entrez la question',
@@ -69,4 +70,4 @@ export const section = {
     percentage: 'Notes en pourcentage',
     result: 'Resultat',
   },
-}
+};

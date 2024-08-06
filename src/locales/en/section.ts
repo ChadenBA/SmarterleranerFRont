@@ -25,6 +25,7 @@ export const section = {
   add: 'Add section',
   update: 'Update section',
   delete: 'Delete section',
+  update_success: "Educational unit updated succesfully",
   quiz: {
     question: 'Question: ',
     questions: 'Questions',

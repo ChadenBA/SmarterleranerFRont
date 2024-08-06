@@ -12,7 +12,7 @@ import {
   useCreateEuMutation,
   useUpdateCourseMutation,
 } from '@redux/apis/courses/coursesApi';
-import { useAppDispatch } from '@redux/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { showError, showSuccess } from '@redux/slices/snackbarSlice';
 import CourseForm from './courseForm/CourseForm';
 import { useNavigate } from 'react-router-dom';
@@ -28,8 +28,8 @@ import {
 } from './sectionForm/EuForm.constants';
 import { PATHS } from '@config/constants/paths';
 import { MediaWithMetadata } from '@components/Inputs/uploadMultipleFiles/UplaodMultipleFiles.type';
-import { setToLocalStorage } from '@utils/localStorage/storage';
-import { LocalStorageKeysEnum } from '@config/enums/localStorage.enum';
+import { RootState } from '@redux/store';
+import { Progress } from '@redux/slices/uploadSlice';
 
 export default function AddCourseForm({
   isEditMode,
@@ -71,6 +71,15 @@ export default function AddCourseForm({
 
     return files;
   };
+  const uploadProgresses = useAppSelector((state: RootState) => state.upload.progresses);
+  // uploadProgresses is an object with keys as file names and values as upload progress how to convert it to boolean value
+  const [isUploading, setIsUploading] = useState(false);
+  useEffect(() => {
+    const isCurrentlyUploading = Object.values(uploadProgresses).some(
+      (progress: Progress) => progress.progress < 100,
+    );
+    setIsUploading(isCurrentlyUploading);
+  }, [uploadProgresses]);
 
   const [files, setFiles] = useState<Record<number, Record<number, MediaWithMetadata[]>>>(
     transformDefaultValuesToFiles(courseDefaultValues),
@@ -218,12 +227,22 @@ export default function AddCourseForm({
                 {t('common.skip')}
               </Button>
             )}
-            <CustomLoadingButton
-              isLoading={isLoading || isLoadingEu || isLoadingUpdate}
-              onClick={activeStep === 0 ? handleAddCourse : handleAddSection}
-            >
-              {isEditMode && activeStep === 0 ? t('common.update') : t('common.next')}
-            </CustomLoadingButton>
+            {activeStep === 0 && (
+              <CustomLoadingButton
+                isLoading={isLoading || isLoadingUpdate}
+                onClick={handleAddCourse}
+              >
+                {isEditMode ? t('common.update') : t('common.next')}
+              </CustomLoadingButton>
+            )}
+            {activeStep === 1 && !isEditMode && (
+              <CustomLoadingButton
+                isLoading={isLoadingEu || isLoadingUpdate || isUploading}
+                onClick={handleAddSection}
+              >
+                {t('common.finish')}
+              </CustomLoadingButton>
+            )}
           </Stack>
         </Stack>
       </Stack>

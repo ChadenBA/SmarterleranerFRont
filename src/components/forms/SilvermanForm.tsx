@@ -17,7 +17,7 @@ import {
   useGetQuestionsQuery,
   useSubmitResponsesMutation,
 } from '@redux/apis/user/silvermanQuestionsApi';
-import { useAppDispatch } from '@redux/hooks';
+import { useAppDispatch, useAppSelector } from '@redux/hooks';
 import { showError } from '@redux/slices/snackbarSlice';
 import AppAlert from '../appAlert/AppAlert';
 import { PATHS } from '@config/constants/paths';
@@ -26,7 +26,8 @@ import { useTranslation } from 'react-i18next';
 const QUESTIONS_PER_PAGE = 11;
 
 const SilvermanForm: React.FC = () => {
-  const { courseId } = useParams<{ courseId: string }>();
+  const courseId = useAppSelector((state) => state.auth.user?.latestCourseId);
+
   const { data: questions, isLoading, isError } = useGetQuestionsQuery();
   const [submitResponses] = useSubmitResponsesMutation();
   const [responses, setResponses] = useState<{ [key: number]: string }>({});

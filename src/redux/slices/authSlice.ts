@@ -66,7 +66,7 @@ const authSlice = createSlice({
       })
       .addMatcher(silvermanApi.endpoints.submitResponses.matchFulfilled, (state, { payload }) => {
         if (state.user) {
-          state.user.result = payload.result;
+          state.user.result = (payload as any).scores;
           setToLocalStorage(LocalStorageKeysEnum.User, JSON.stringify(state.user));
         }
       })
