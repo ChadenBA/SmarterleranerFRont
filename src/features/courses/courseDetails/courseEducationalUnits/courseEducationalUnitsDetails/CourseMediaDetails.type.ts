@@ -5,6 +5,6 @@ export interface CourseMediaDetailsProps {
   scroll: 'paper' | 'body' | undefined;
   onClose: () => void;
   lo: Lo;
-  isEnrolled?: boolean;
+  isEnrolled?: 0 | 1;
   currentMediaIndex: number;
 }

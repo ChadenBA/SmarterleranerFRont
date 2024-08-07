@@ -13,6 +13,7 @@ export interface CourseApi {
     id: number;
     title: string;
   };
+  passed_quizzes: number;
   subcategory_id: number;
   subcategory: {
     id: number;
@@ -77,6 +78,7 @@ export interface ApiLO {
   quiz: {
     id: number;
     questions: ApiQuestion[];
+    is_passed: boolean;
   };
 }
 

@@ -51,7 +51,7 @@ const ResultsDisplay: React.FC<ResultsDisplayProps> = ({ scores }) => {
               right: '50%',
               height: '100%',
               backgroundColor: '#fa853f',
-              borderRadius: '8px 0 0 8px',
+              borderRadius: '0 8px 8px 0',
               animation: 'mymove-left 2s ease-out forwards',
               width: 0,
               animationDelay: '0.5s',
