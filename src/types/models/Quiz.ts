@@ -6,6 +6,7 @@ export interface Quiz {
   questions: Question[];
 
   deletedQuestions?: number[];
+  isPassed?: boolean;
 }
 
 export interface Question {
@@ -25,7 +26,8 @@ export interface Answer {
 export interface QuizApi {
   id?: number;
   questions: ApiQuestion[];
-  time_left?: number;
+  deleted_questions?: number[];
+  is_passed?: boolean;
 }
 
 export interface QuestionApi {

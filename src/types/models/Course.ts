@@ -57,4 +57,5 @@ export interface CourseForAdmin {
   coverMedia: Media;
   isSubscribed?: 0 | 1;
   studentLevel?: string;
+  passedQuizzes: number;
 }

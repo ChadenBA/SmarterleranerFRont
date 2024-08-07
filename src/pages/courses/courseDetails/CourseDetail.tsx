@@ -58,6 +58,7 @@ export const CourseDetail = () => {
                 <CourseEducationalUnits
                   isEnrolled={course.isSubscribed}
                   eus={course.educationalUnits}
+                  passedQuizzes={course.passedQuizzes}
                 />
               ) : (
                 <RectangularCard title="Modules">

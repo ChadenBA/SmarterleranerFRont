@@ -102,6 +102,7 @@ export const transformSingleCourse = (course: CourseApi): CourseForAdmin => {
             },
           ],
         },
+    passedQuizzes: course.passed_quizzes,
     educationalUnits: transformEducationalUnits(course.educational_units),
     isActive: course?.is_active ? 1 : 0,
     isOffline: course?.is_offline ? 1 : 0,
@@ -150,6 +151,7 @@ export const transformLearningObjects = (learningObjects: ApiLO[]): Lo[] => {
     quiz: lo.quiz
       ? {
           id: lo.quiz.id,
+          isPassed: lo.quiz.is_passed,
           questions: lo.quiz.questions.map((question) => ({
             id: question.id,
             question: question.question,

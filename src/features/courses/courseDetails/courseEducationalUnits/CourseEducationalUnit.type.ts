@@ -5,4 +5,6 @@ export interface CourseEducationalUnitProps {
   eu: Eu;
   isEnrolled?: 0 | 1;
   los: Lo[];
+  passedQuizzes: number;
+  euIndex: number;
 }
