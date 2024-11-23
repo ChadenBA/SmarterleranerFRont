@@ -6,9 +6,9 @@ import { User } from 'types/models/User';
 //___________________get secret key from environment variables___________________
 const secretKey = ConfigEnv.HASH_KEY;
 
-if (!secretKey) {
-  throw new Error('SECRET_KEY is not defined in environment variables');
-}
+//if (!secretKey) {
+  //throw new Error('SECRET_KEY is not defined in environment variables');
+//}
 
 //___________________encrypt and decrypt___________________
 const encrypt = (data: string) => {
